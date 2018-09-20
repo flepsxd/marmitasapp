@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from './../auth/auth.service';
 
 
 @Component({
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
+    private authService: AuthService,
     private router: Router,
   ) { }
 
@@ -27,15 +28,21 @@ export class LoginComponent implements OnInit {
 
   }
 
+  isFieldInvalid(field: string) {
+    return (
+      (!this.loginForm.get(field).valid && this.loginForm.get(field).touched) ||
+      (this.loginForm.get(field).untouched && this.submitted)
+    );
+  }
+
   get f () { return this.loginForm.controls; }
 
   onSubmit(){
-    this.submitted = true;
-    if(this.loginForm.invalid){
-      return;
+    if(this.loginForm.valid){
+      this.authService.login(this.loginForm.value);
     }
+    this.submitted = true;
     this.loading = true;
-    this.router.navigate(['/']);
   }
 
 }

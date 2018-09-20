@@ -10,6 +10,7 @@ export class CrudComponent implements OnInit {
   @Input() columns: any[] = [];
   @Input() config: Object = {};
   @Input() cad: any;
+  componentRef: ComponentRef<any>;
   exibirDialog: boolean = false;
   selecionado: any;
 
@@ -30,11 +31,17 @@ export class CrudComponent implements OnInit {
   constructor(private resolver: ComponentFactoryResolver) { 
   }
 
-  onRowSelect($event){
+  onRowSelect(){
     this.container.clear(); 
-    const factory: ComponentFactory = this.resolver.resolveComponentFactory(this.cad);
+    const factory: ComponentFactory<any> = this.resolver.resolveComponentFactory(this.cad.component);
     this.componentRef = this.container.createComponent(factory);
+    this.componentRef.instance[this.cad.chave] = this.selecionado[this.cad.chave];
     this.exibirDialog = true;
+  }
+
+  dialogoAdd(){
+    this.selecionado = {};
+    this.onRowSelect();
   }
 
   ngOnInit(){

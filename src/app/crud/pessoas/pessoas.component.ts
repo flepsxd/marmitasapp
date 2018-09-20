@@ -9,10 +9,9 @@ import { PessoaComponent } from './pessoa/pessoa.component';
   styleUrls: ['./pessoas.component.css']
 })
 export class PessoasComponent implements OnInit {
-  exibirDialog: boolean;
   dados: Pessoa[];
   columns: Array<{}> = [];
-  cad: any = PessoaComponent;
+  cad: any;
 
 
   constructor(
@@ -20,6 +19,10 @@ export class PessoasComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.cad = {
+      component: PessoaComponent,
+      chave: 'idpessoa'
+    };
     this.dados = this.apiService.pessoas;
     this.columns = [
       {

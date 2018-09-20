@@ -1,4 +1,4 @@
-<p-table [value]="dados" [columns]="columns" [responsive]="true" (onRowSelect)="onRowSelect($event)" selectionMode="single" [(selection)]="selecionado"   [paginator]="true" [rows]="15">
+<p-table [value]="dados" [columns]="columns" [responsive]="true" (onRowSelect)="onRowSelect()" selectionMode="single" [(selection)]="selecionado"   [paginator]="true" [rows]="15">
   <ng-template pTemplate="header" let-columns>
     <tr >
       <th *ngFor="let col of columns; let i = index" [attr.data-index]="i">
@@ -13,6 +13,11 @@
           </td>
       </tr>
   </ng-template>
+  <ng-template pTemplate="summary" let-rowData>
+      <div style="text-align:left">
+          <button type="button" pButton icon="fa fa-plus" (click)="dialogoAdd()" label="Add"></button>
+      </div>
+  </ng-template> 
 </p-table>
 <p-dialog [(visible)]="exibirDialog" [responsive]="true" showEffect="fade" [modal]="true">
   Content

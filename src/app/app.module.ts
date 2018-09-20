@@ -125,7 +125,7 @@ const childRoutes: Routes = [{
   ],
   providers: [AuthService, AuthGuard, ApiService],
   exports: [RouterModule],
-  entryComponents: [PessoaComponent],
+  entryComponents: [PessoaComponent, LancamentoComponent, PedidoComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

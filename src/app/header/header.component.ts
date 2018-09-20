@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { AuthService } from './../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
-import {MenuItem} from 'primeng/api';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-header',
@@ -16,11 +16,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.items = [
-      { label: 'Pessoas'},
-      { label: 'Pedidos'},
-      { label: 'Lançamentos'},
+      { label: 'Pessoas', routerLink: '/pessoas'},
+      { label: 'Pedidos', routerLink: '/pedidos'},
+      { label: 'Lançamentos', routerLink: '/lancamentos'},
       { label: 'Linha do Tempo'},
-      { label: 'Logout'}
+      { label: 'Logout', command: (event) => { this.authService.logout()}}
     ];
     this.isLoggedIn$ = this.authService.isLoggedIn;
   }

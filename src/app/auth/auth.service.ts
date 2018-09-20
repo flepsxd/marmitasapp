@@ -8,6 +8,7 @@ export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
 
   get isLoggedIn() {
+    //return localStorage.getItem('username');
     return this.loggedIn.asObservable(); 
   }
 
@@ -18,11 +19,13 @@ export class AuthService {
   login(user: User){
     if (user.username !== '' && user.password !== '' ) { 
       this.loggedIn.next(true);
-      this.router.navigate(['/']);
+      localStorage.setItem('username', user.username);
+      this.router.navigate(['/pessoas']);
     }
   }
 
-  logout() {                       
+  logout() {                  
+    localStorage.removeItem('username');     
     this.loggedIn.next(false);
     this.router.navigate(['/login']);
   }

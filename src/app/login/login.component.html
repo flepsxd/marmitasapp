@@ -3,10 +3,12 @@
     <p-card title="Login" class="ui-g-12 ui-md-6 ui-lg-4 form-group ui-g">
         <form  class="ui-g-12" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <div class="ui-g-12">
-                <input type="text" id="username" class="ui-g-12" placeholder="E-mail" formControlName="username" pInputText [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                <input type="text" id="username" class="ui-g-12" placeholder="E-mail" formControlName="username" pInputText [ngClass]="{ 'is-invalid': submitted && f.username.errors }"  />
+                <p-message *ngIf="isFieldInvalid('username')" severity="error" text="E-mail é obrigatório"></p-message>
             </div>
             <div class="ui-g-12">
                 <input type="password" class="ui-g-12" placeholder="Senha" id="password" formControlName="password" pPassword [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                <p-message *ngIf="isFieldInvalid('password')" severity="error" text="Senha é obrigatório"></p-message>
             </div>
             <button type="submit" pButton [disabled]="loading" class="ui-g-12 btn btn-primary">Login</button>
         </form>

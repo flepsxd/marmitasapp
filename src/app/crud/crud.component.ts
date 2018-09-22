@@ -48,4 +48,28 @@ export class CrudComponent implements OnInit {
     
   }
 
+  salvar() {
+    if(this.componentRef.instance.confirmar){
+      this.componentRef.instance.confirmar().then(()=>{
+        this.exibirDialog = false;
+        console.log('dialog');
+        });
+    } else {
+      this.exibirDialog = false;
+    }
+  }
+
+  cancelar(){
+    if(this.componentRef.instance.confirmar){
+      this.componentRef.instance.confirmar().then(()=>{
+        this.exibirDialog = false;
+        console.log('cancelar dialog');
+        });
+    } else {
+      this.exibirDialog = false;
+    }
+  }
+
+
+
 }

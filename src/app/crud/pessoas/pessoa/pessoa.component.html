@@ -1,3 +1,21 @@
-<p>
-  pessoa works!
-</p>
+<form [formGroup]="pessoaForm" (ngSubmit)="onSubmit()">
+    <div class="ui-g ui-fluid">
+      <div class="ui-g-12">
+          <h3>Nome</h3>
+          <input type="text" class="ui-g-12" placeholder="Nome" formControlName="nome" pInputText    />
+      </div>
+      <div class="ui-g-12">
+            <h3>Telefone</h3>
+          <input type="text" class="ui-g-12" placeholder="Telefone" formControlName="telefone" pInputText  />
+      </div>
+      <div class="ui-g-12">
+            <h3>E-mail</h3>
+          <input type="text" class="ui-g-12" placeholder="E-mail" formControlName="email" pInputText  />
+      </div>
+      <div class="ui-g-12">
+        <h3>Status</h3>
+        <p-inputSwitch formControlName="statusB" (onChange)="alteraStatus()" [style]="{float: right}"></p-inputSwitch>
+      </div>
+    </div>
+</form>
+    

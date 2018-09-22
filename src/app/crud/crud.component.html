@@ -14,12 +14,17 @@
       </tr>
   </ng-template>
   <ng-template pTemplate="summary" let-rowData>
-      <div style="text-align:left">
-          <button type="button" pButton icon="fa fa-plus" (click)="dialogoAdd()" label="Add"></button>
+      <div style="text-align:right">
+          <button type="button" pButton icon="pi pi-plus" (click)="dialogoAdd()" label="Adicionar"></button>
       </div>
   </ng-template> 
 </p-table>
-<p-dialog [(visible)]="exibirDialog" [responsive]="true" showEffect="fade" [modal]="true">
-  Content
+<p-dialog [header]="cad.header" [(visible)]="exibirDialog" [responsive]="true" showEffect="fade" [modal]="true">
   <template #dialogContainer></template>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button pButton icon="pi pi-close"  (click)="cancelar()" label="Cancelar"></button>
+      <button pButton icon="pi pi-check" (click)="salvar()" label="Salvar"></button>
+    </div>
+  </p-footer>
 </p-dialog>

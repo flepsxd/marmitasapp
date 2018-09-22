@@ -21,7 +21,8 @@ export class PessoasComponent implements OnInit {
   ngOnInit() {
     this.cad = {
       component: PessoaComponent,
-      chave: 'idpessoa'
+      chave: 'idpessoa',
+      header: 'Cadastro de Pessoas'
     };
     this.dados = this.apiService.pessoas;
     this.columns = [

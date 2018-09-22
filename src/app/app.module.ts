@@ -10,6 +10,7 @@ import {CardModule} from 'primeng/card';
 import {MessageModule} from 'primeng/message';
 import {TableModule} from 'primeng/table';
 import { DialogModule, Dialog } from 'primeng/dialog';
+import {InputSwitchModule} from 'primeng/inputswitch';
 
 import { AppComponent } from './app.component';
 import { AuthGuard } from './auth/auth.guard';
@@ -44,45 +45,15 @@ const childRoutes: Routes = [{
     children: [
       { 
         path: 'pessoas', 
-        component: PessoasComponent,
-        children: [
-          {
-            path: 'editar/:idpessoa',
-            component: PessoaComponent
-          },
-          {
-            path: 'novo',
-            component: PessoaComponent
-          }
-        ]
+        component: PessoasComponent
       },
       { 
         path: 'pedidos', 
-        component: PedidosComponent,
-        children: [
-          {
-            path: 'editar/:idpedido',
-            component: PedidoComponent
-          },
-          {
-            path: 'novo',
-            component: PedidoComponent
-          }
-        ]
+        component: PedidosComponent
       },
       { 
         path: 'lancamentos', 
-        component: LancamentosComponent,
-        children: [
-          {
-            path: 'editar/:idlancamento',
-            component: LancamentoComponent
-          },
-          {
-            path: 'novo',
-            component: LancamentoComponent
-          }
-        ]
+        component: LancamentosComponent
       }
     ]
   }
@@ -114,6 +85,7 @@ const childRoutes: Routes = [{
     MessageModule,
     TableModule,
     CardModule,
+    InputSwitchModule,
     DialogModule,
     RouterModule.forRoot(
       appRoutes,

@@ -27,20 +27,20 @@ export class PessoasComponent implements OnInit {
     this.dados = this.apiService.pessoas;
     this.columns = [
       {
-        descricao: 'Nome',
-        campo: 'nome'
+        header: 'Nome',
+        field: 'nome'
       },
       {
-        descricao: 'Telefone',
-        campo: 'telefone'
+        header: 'Telefone',
+        field: 'telefone'
       },
       {
-        descricao: 'E-mail',
-        campo: 'email'
+        header: 'E-mail',
+        field: 'email'
       },
       {
-        descricao: 'Status',
-        campo: 'status'
+        header: 'Status',
+        field: 'status'
       },
     ];
   }

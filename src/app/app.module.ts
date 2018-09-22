@@ -27,6 +27,8 @@ import { LancamentoComponent } from './crud/lancamentos/lancamento/lancamento.co
 import { PedidoComponent } from './crud/pedidos/pedido/pedido.component';
 import { CrudComponent } from './crud/crud.component';
 import { ApiService } from './api/api.service';
+import { ProdutosComponent } from './crud/produtos/produtos.component';
+import { ProdutoComponent } from './crud/produtos/produto/produto.component';
 
 const appRoutes: Routes = [
   { 
@@ -54,6 +56,10 @@ const childRoutes: Routes = [{
       { 
         path: 'lancamentos', 
         component: LancamentosComponent
+      },
+      {
+        path: 'produtos',
+        component: ProdutosComponent
       }
     ]
   }
@@ -71,7 +77,9 @@ const childRoutes: Routes = [{
     PessoaComponent,
     LancamentoComponent,
     PedidoComponent,
-    CrudComponent
+    CrudComponent,
+    ProdutosComponent,
+    ProdutoComponent
   ],
   imports: [
     BrowserModule,

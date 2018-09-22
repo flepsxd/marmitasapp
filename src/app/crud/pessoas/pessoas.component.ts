@@ -40,7 +40,10 @@ export class PessoasComponent implements OnInit {
       },
       {
         header: 'Status',
-        field: 'status'
+        field: 'status',
+        fn: function(dado){
+          return dado == 'A' ? 'Ativo' : 'Inativo';
+        }
       },
     ];
   }

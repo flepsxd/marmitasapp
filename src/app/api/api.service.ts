@@ -62,4 +62,10 @@ export class ApiService {
     return formatCurrency(val, 'PT', 'R$');
   }
 
+  public aoSelecionar(form, reference, val){
+    var obj = {};
+    obj[reference] = val[reference];
+    form.patchValue(obj);
+  }
+
 }

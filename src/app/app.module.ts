@@ -11,6 +11,9 @@ import {MessageModule} from 'primeng/message';
 import {TableModule} from 'primeng/table';
 import { DialogModule, Dialog } from 'primeng/dialog';
 import {InputSwitchModule} from 'primeng/inputswitch';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+import {CalendarModule} from 'primeng/calendar';
+import {InputTextareaModule} from 'primeng/inputtextarea';
 
 import { AppComponent } from './app.component';
 import { AuthGuard } from './auth/auth.guard';
@@ -95,6 +98,9 @@ const childRoutes: Routes = [{
     CardModule,
     InputSwitchModule,
     DialogModule,
+    CalendarModule,
+    InputTextareaModule,
+    AutoCompleteModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true}
@@ -105,7 +111,7 @@ const childRoutes: Routes = [{
   ],
   providers: [AuthService, AuthGuard, ApiService],
   exports: [RouterModule],
-  entryComponents: [PessoaComponent, LancamentoComponent, PedidoComponent],
+  entryComponents: [PessoaComponent, LancamentoComponent, PedidoComponent, ProdutoComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

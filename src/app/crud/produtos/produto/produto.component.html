@@ -1,3 +1,17 @@
-<p>
-  produto works!
-</p>
+<form [formGroup]="produtoForm">
+  <div class="ui-g ui-fluid">
+    <div class="ui-g-12">
+      <h3>Descrição</h3>
+      <input type="text" class="ui-g-12" placeholder="Descrição" formControlName="descricao" pInputText    />
+    </div>
+    <div class="ui-g-12">
+      <h3>Preço</h3>
+      <input type="text" class="ui-g-12" placeholder="Preço" formControlName="preco" pInputText  />
+    </div>
+    <div class="ui-g-12">
+      <h3>Status</h3>
+      <p-inputSwitch formControlName="statusB" (onChange)="alteraStatus()" [style]="{float: right}"></p-inputSwitch>
+    </div>
+  </div>
+</form>
+  

@@ -36,4 +36,11 @@ export class ApiService {
     });
   }
 
+  public getId(model, reference, val, only = true) {
+    var get = this[model].filter((ele)=>{
+      return ele[reference] == val;
+    });
+    return only ? get[0] : get;
+  }
+
 }

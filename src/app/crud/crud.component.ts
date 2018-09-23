@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ViewContainerRef, ComponentFactory, ComponentFactoryResolver, ComponentRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild,
+         ViewContainerRef, ComponentFactory, ComponentFactoryResolver, ComponentRef } from '@angular/core';
 
 @Component({
   selector: 'app-crud',
@@ -6,20 +7,20 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ViewContaine
   styleUrls: ['./crud.component.css']
 })
 export class CrudComponent implements OnInit {
-  @ViewChild("dialogContainer", { read: ViewContainerRef}) container;
+  @ViewChild('dialogContainer', { read: ViewContainerRef}) container;
   @Input() columns: any[] = [];
   @Input() config: Object = {};
   @Input() cad: any;
   componentRef: ComponentRef<any>;
-  exibirDialog: boolean = false;
+  exibirDialog: any = false;
   selecionado: any;
 
   @Output('getDados') getDados: EventEmitter<any> = new EventEmitter();
   @Output('editDados') editDados: EventEmitter<any> = new EventEmitter();
   @Output('incDados') incDados: EventEmitter<any> = new EventEmitter();
   @Output('deleteDados') deleteDados: EventEmitter<any> = new EventEmitter();
-  _dados:any[] = [];
-  
+  _dados: any[] = [];
+
 
   @Input() get dados(): any[] {
     return this._dados;
@@ -28,29 +29,24 @@ export class CrudComponent implements OnInit {
     this._dados = val;
   }
 
-  constructor(private resolver: ComponentFactoryResolver) { 
+  constructor(private resolver: ComponentFactoryResolver) {
   }
 
-  onRowSelect(){
-    this.container.clear(); 
-    const factory: ComponentFactory<any> = this.resolver.resolveComponentFactory(this.cad.component);
+  onRowSelect($event) {
+    this.container.clear();
+    const factory: ComponentFactory<any> = this.resolver.resolveComponentFactory(this.cad);
     this.componentRef = this.container.createComponent(factory);
     this.componentRef.instance[this.cad.chave] = this.selecionado[this.cad.chave];
     this.exibirDialog = true;
   }
 
-  dialogoAdd(){
-    this.selecionado = {};
-    this.onRowSelect();
-  }
+  ngOnInit() {
 
-  ngOnInit(){
-    
   }
 
   salvar() {
-    if(this.componentRef.instance.confirmar){
-      this.componentRef.instance.confirmar().then(()=>{
+    if (this.componentRef.instance.confirmar) {
+      this.componentRef.instance.confirmar().then(() => {
         this.exibirDialog = false;
         console.log('dialog');
         });
@@ -59,9 +55,9 @@ export class CrudComponent implements OnInit {
     }
   }
 
-  cancelar(){
-    if(this.componentRef.instance.confirmar){
-      this.componentRef.instance.confirmar().then(()=>{
+  cancelar() {
+    if (this.componentRef.instance.confirmar) {
+      this.componentRef.instance.confirmar().then(() => {
         this.exibirDialog = false;
         console.log('cancelar dialog');
         });

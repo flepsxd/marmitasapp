@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
       { label: 'Pessoas', routerLink: '/pessoas'},
       { label: 'Pedidos', routerLink: '/pedidos'},
       { label: 'Lançamentos', routerLink: '/lancamentos'},
+      { label: 'Produtos', routerLink: '/produtos'},
       { label: 'Linha do Tempo'},
       { label: 'Logout', command: (event) => { this.authService.logout(); }}
     ];

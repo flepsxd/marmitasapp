@@ -10,6 +10,18 @@ import {CardModule} from 'primeng/card';
 import {MessageModule} from 'primeng/message';
 import {TableModule} from 'primeng/table';
 import { DialogModule, Dialog } from 'primeng/dialog';
+import {InputSwitchModule} from 'primeng/inputswitch';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+import {CalendarModule} from 'primeng/calendar';
+import {InputTextareaModule} from 'primeng/inputtextarea';
+import { CurrencyMaskModule } from "ng2-currency-mask";
+import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from "ng2-currency-mask/src/currency-mask.config";
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+import localePtExtra from '@angular/common/locales/extra/pt';
+import { CurrencyPipe } from '@angular/common';
+ 
 
 import { AppComponent } from './app.component';
 import { AuthGuard } from './auth/auth.guard';
@@ -26,6 +38,9 @@ import { LancamentoComponent } from './crud/lancamentos/lancamento/lancamento.co
 import { PedidoComponent } from './crud/pedidos/pedido/pedido.component';
 import { CrudComponent } from './crud/crud.component';
 import { ApiService } from './api/api.service';
+import { ProdutosComponent } from './crud/produtos/produtos.component';
+import { ProdutoComponent } from './crud/produtos/produto/produto.component';
+import { PedidoItensComponent } from './crud/pedidos/pedido-itens/pedido-itens.component';
 
 const appRoutes: Routes = [
   { 
@@ -44,49 +59,34 @@ const childRoutes: Routes = [{
     children: [
       { 
         path: 'pessoas', 
-        component: PessoasComponent,
-        children: [
-          {
-            path: 'editar/:idpessoa',
-            component: PessoaComponent
-          },
-          {
-            path: 'novo',
-            component: PessoaComponent
-          }
-        ]
+        component: PessoasComponent
       },
       { 
         path: 'pedidos', 
-        component: PedidosComponent,
-        children: [
-          {
-            path: 'editar/:idpedido',
-            component: PedidoComponent
-          },
-          {
-            path: 'novo',
-            component: PedidoComponent
-          }
-        ]
+        component: PedidosComponent
       },
       { 
         path: 'lancamentos', 
-        component: LancamentosComponent,
-        children: [
-          {
-            path: 'editar/:idlancamento',
-            component: LancamentoComponent
-          },
-          {
-            path: 'novo',
-            component: LancamentoComponent
-          }
-        ]
+        component: LancamentosComponent
+      },
+      {
+        path: 'produtos',
+        component: ProdutosComponent
       }
     ]
   }
 ]
+
+const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
+  align: "right",
+  allowNegative: true,
+  decimal: ",",
+  precision: 2,
+  prefix: "R$ ",
+  suffix: "",
+  thousands: "."
+};
+registerLocaleData(localePt, 'pt', localePtExtra);
 
 @NgModule({
   declarations: [
@@ -100,7 +100,10 @@ const childRoutes: Routes = [{
     PessoaComponent,
     LancamentoComponent,
     PedidoComponent,
-    CrudComponent
+    CrudComponent,
+    ProdutosComponent,
+    ProdutoComponent,
+    PedidoItensComponent
   ],
   imports: [
     BrowserModule,
@@ -114,7 +117,12 @@ const childRoutes: Routes = [{
     MessageModule,
     TableModule,
     CardModule,
+    InputSwitchModule,
     DialogModule,
+    CalendarModule,
+    InputTextareaModule,
+    AutoCompleteModule,
+    CurrencyMaskModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true}
@@ -123,9 +131,9 @@ const childRoutes: Routes = [{
       childRoutes
     )
   ],
-  providers: [AuthService, AuthGuard, ApiService],
+  providers: [AuthService, AuthGuard, ApiService, { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig} ,{provide: LOCALE_ID, useValue: 'pt'}, CurrencyPipe],
   exports: [RouterModule],
-  entryComponents: [PessoaComponent],
+  entryComponents: [PessoaComponent, LancamentoComponent, PedidoComponent, PedidoItensComponent, ProdutoComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

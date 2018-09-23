@@ -9,10 +9,9 @@ import { PessoaComponent } from './pessoa/pessoa.component';
   styleUrls: ['./pessoas.component.css']
 })
 export class PessoasComponent implements OnInit {
-  exibirDialog: boolean;
   dados: Pessoa[];
   columns: Array<{}> = [];
-  cad: any = PessoaComponent;
+  cad: any;
 
 
   constructor(
@@ -20,23 +19,31 @@ export class PessoasComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.cad = {
+      component: PessoaComponent,
+      chave: 'idpessoa',
+      header: 'Cadastro de Pessoas'
+    };
     this.dados = this.apiService.pessoas;
     this.columns = [
       {
-        descricao: 'Nome',
-        campo: 'nome'
+        header: 'Nome',
+        field: 'nome'
       },
       {
-        descricao: 'Telefone',
-        campo: 'telefone'
+        header: 'Telefone',
+        field: 'telefone'
       },
       {
-        descricao: 'E-mail',
-        campo: 'email'
+        header: 'E-mail',
+        field: 'email'
       },
       {
-        descricao: 'Status',
-        campo: 'status'
+        header: 'Status',
+        field: 'status',
+        fn: function(dado){
+          return dado == 'A' ? 'Ativo' : 'Inativo';
+        }
       },
     ];
   }

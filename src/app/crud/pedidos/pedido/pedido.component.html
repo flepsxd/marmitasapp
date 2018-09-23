@@ -1,3 +1,35 @@
-<p>
-  pedido works!
-</p>
+<form [formGroup]="pedidoForm">
+  <div class="ui-g ui-fluid">
+    <div class="ui-g-12">
+      <h3>Pessoa</h3>
+      <p-autoComplete class="ui-g-12" formControlName="idpessoa" [suggestions]="dadosPessoas" (completeMethod)="getPessoas($event)" field="idpessoa" [forceSelection]="true" [dropdown]="true">
+        <ng-template let-pessoa pTemplate="item">
+          <div *ngIf="pessoa.nome">Nome: {{pessoa.nome}}</div>
+          <div *ngIf="pessoa.email">E-mail: {{pessoa.email}}</div>
+          <div *ngIf="pessoa.telefone">Telefone: {{pessoa.telefone}}</div>
+        </ng-template>
+      </p-autoComplete>
+    </div>
+    <div class="ui-g-12">
+      <h3>Data/Hora</h3>
+      <p-calendar class="ui-g-12" placeholder="Data/Hora" formControlName="datahora" dateFormat="dd/mm/yy"></p-calendar>
+    </div>
+    <div class="ui-g-12">
+      <h3>Valor</h3>
+      <input type="text" class="ui-g-12" placeholder="Valor" formControlName="valor" pInputText  />
+    </div>
+    <div class="ui-g-12">
+      <h3>Observações</h3>
+      <textarea pInputTextarea class="ui-g-12" formControlName="observacoes" autoResize="false"></textarea>
+    </div>
+    <div class="ui-g-12">
+      <h3>Status</h3>
+      <p-inputSwitch formControlName="statusB" (onChange)="alteraStatus()" [style]="{float: right}"></p-inputSwitch>
+    </div>
+    <div class="ui-g-12">
+      <h3>Itens do Pedido</h3>
+      <app-crud [dados]="dadosPedidosItens" [columns]="colsPedidosItens" [cad]="cadPedidoItem"></app-crud>
+    </div>
+  </div>
+</form>
+  

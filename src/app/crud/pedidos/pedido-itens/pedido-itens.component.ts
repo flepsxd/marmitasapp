@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '../../../../../node_modules/@angular/forms';
 import { ApiService } from '../../../api/api.service';
 import { PedidoItens } from '../../pedido-itens';
+import { Produto } from '../../produto';
 
 @Component({
   selector: 'app-pedido-itens',
@@ -21,6 +22,8 @@ export class PedidoItensComponent implements OnInit {
   };
   @Input() idpedido_item: number;
 
+  dadosProdutos: Array<Produto>;
+
   constructor(
     private formBuilder: FormBuilder,
     private apiService: ApiService
@@ -29,6 +32,7 @@ export class PedidoItensComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getProdutos();
     this.getDados();
     this.pedidoItensForm = this.formBuilder.group({
       idproduto: [this.pedidoItens.idproduto, Validators.required],
@@ -41,8 +45,7 @@ export class PedidoItensComponent implements OnInit {
 
   getDados(){
     if (this.idpedido_item) {
-      let pedido_itens = [...this.apiService.pedido_itens];
-      this.pedidoItens = pedido_itens.filter((val)=>val.idpedido_item == this.idpedido_item)[0];
+      this.pedidoItens = this.apiService.getById('pedido_itens', 'idpedido_item', this.idpedido_item);
     }
   }
 
@@ -56,5 +59,9 @@ export class PedidoItensComponent implements OnInit {
     return new Promise((resolve, reject) => {
       reject(true);
     })
+  }
+
+  getProdutos($event = {query: null}){
+    this.dadosProdutos = this.apiService.filterAtivo('produtos', $event.query);
   }
 }

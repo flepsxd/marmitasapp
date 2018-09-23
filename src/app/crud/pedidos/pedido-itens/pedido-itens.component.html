@@ -1,3 +1,30 @@
-<p>
-  pedido-itens works!
-</p>
+<form [formGroup]="pedidoItensForm">
+    <div class="ui-g ui-fluid">
+      <div class="ui-g-12">
+        <h3>Produto</h3>
+        <p-autoComplete class="ui-g-12" formControlName="idproduto" [suggestions]="dadosProdutos" (completeMethod)="getProdutos($event)" field="idproduto" [forceSelection]="true" [dropdown]="true">
+          <ng-template let-produto pTemplate="item">
+            <div *ngIf="produto.descricao">Descrição: {{produto.descricao}}</div>
+            <div *ngIf="produto.preco" >Valor: {{produto.preco | currency:'BRL':true}}</div>
+          </ng-template>
+        </p-autoComplete>
+      </div>
+      <div class="ui-g-12">
+        <h3>Quantidade</h3>
+        <input type="text" class="ui-g-12" placeholder="Quantidade" formControlName="quantidade" pInputText  />
+      </div>
+      <div class="ui-g-12">
+        <h3>Valor Unitário</h3>
+        <input type="text" class="ui-g-12" placeholder="Valor Unitário" currencyMask formControlName="vlrunitario" pInputText  />
+      </div>
+      <div class="ui-g-12">
+        <h3>Desconto</h3>
+        <input type="text" class="ui-g-12" placeholder="Desconto" currencyMask formControlName="desconto" pInputText  />
+      </div>
+      <div class="ui-g-12">
+        <h3>Valor Total</h3>
+        <input type="text" class="ui-g-12" placeholder="Valor Total" currencyMask formControlName="vlrtotal" pInputText  />
+      </div>
+    </div>
+  </form>
+    

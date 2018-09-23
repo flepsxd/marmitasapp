@@ -32,15 +32,15 @@ export class PedidoComponent implements OnInit {
   colsPedidosItens: Array<any> = [
     {
       header: 'Produto',
-      field: function (dados){
+      field: 'idproduto',
+      fn: function (dados){
         return this.apiService.produtos.filter((val)=>val.idpedido = dados.idpedido)[0].descricao;
       }
     },
     {
       header: 'Valor Unitário',
-      field: function (dados) {
-        return 'R$ ' + dados.vlrunitario;
-      }
+      field: 'vlrunitario',
+      fn: this.apiService.currencyFormat
     },
     {
       header: 'Quantdiade',
@@ -48,15 +48,13 @@ export class PedidoComponent implements OnInit {
     },
     {
       header: 'Valor Total',
-      field: function(dados) {
-        return 'R$ ' + dados.vlrtotal;
-      }
+      field: 'vlrtotal',
+      fn: this.apiService.currencyFormat
     },
     {
       header: 'Desconto',
-      field: function(dados) {
-        return 'R$ ' + dados.desconto;
-      }
+      field: 'desconto',
+      fn: this.apiService.currencyFormat
     }
   ]
   dadosPedidosItens: Array<PedidoItens>;
@@ -90,9 +88,8 @@ export class PedidoComponent implements OnInit {
 
   getDados(){
     if (this.idpedido) {
-      let pedidos = [...this.apiService.pedidos];
-      this.pedido = pedidos.filter((val)=>val.idpedido == this.idpedido)[0];
-      this.dadosPedidosItens = this.apiService.pedido_itens.filter((val)=>val.idpedido == this.idpedido);
+      this.pedido = this.apiService.getById('pedido', 'idpedido', this.idpedido);
+      this.dadosPedidosItens = this.apiService.getById('pedido_itens', 'idpedido', this.idpedido, false);
     }
   }
 
@@ -113,10 +110,6 @@ export class PedidoComponent implements OnInit {
   }
 
   getPessoas($event = {query: null}) {
-    if($event && $event.query){
-      this.dadosPessoas = this.apiService.filter('pessoas', $event.query);
-    } else {
-      this.dadosPessoas = this.apiService.pessoas;
-    }
+    this.dadosPessoas = this.apiService.filterAtivo('pessoas', $event.query);
   }
 }

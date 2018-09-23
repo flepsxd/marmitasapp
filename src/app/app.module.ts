@@ -14,6 +14,14 @@ import {InputSwitchModule} from 'primeng/inputswitch';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {CalendarModule} from 'primeng/calendar';
 import {InputTextareaModule} from 'primeng/inputtextarea';
+import { CurrencyMaskModule } from "ng2-currency-mask";
+import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from "ng2-currency-mask/src/currency-mask.config";
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+import localePtExtra from '@angular/common/locales/extra/pt';
+import { CurrencyPipe } from '@angular/common';
+ 
 
 import { AppComponent } from './app.component';
 import { AuthGuard } from './auth/auth.guard';
@@ -69,6 +77,17 @@ const childRoutes: Routes = [{
   }
 ]
 
+const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
+  align: "right",
+  allowNegative: true,
+  decimal: ",",
+  precision: 2,
+  prefix: "R$ ",
+  suffix: "",
+  thousands: "."
+};
+registerLocaleData(localePt, 'pt', localePtExtra);
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -103,6 +122,7 @@ const childRoutes: Routes = [{
     CalendarModule,
     InputTextareaModule,
     AutoCompleteModule,
+    CurrencyMaskModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true}
@@ -111,7 +131,7 @@ const childRoutes: Routes = [{
       childRoutes
     )
   ],
-  providers: [AuthService, AuthGuard, ApiService],
+  providers: [AuthService, AuthGuard, ApiService, { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig} ,{provide: LOCALE_ID, useValue: 'pt'}, CurrencyPipe],
   exports: [RouterModule],
   entryComponents: [PessoaComponent, LancamentoComponent, PedidoComponent, PedidoItensComponent, ProdutoComponent],
   bootstrap: [AppComponent]

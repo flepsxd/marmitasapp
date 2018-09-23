@@ -33,9 +33,7 @@ export class ProdutosComponent implements OnInit {
       {
         header: 'Preço',
         field: 'preco',
-        fn: function (dado){
-          return "R$ " + dado;
-        }
+        fn: this.apiService.currencyFormat
       },
       {
         header: 'Status',

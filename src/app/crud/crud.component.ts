@@ -34,7 +34,7 @@ export class CrudComponent implements OnInit {
 
   onRowSelect($event) {
     this.container.clear();
-    const factory: ComponentFactory<any> = this.resolver.resolveComponentFactory(this.cad);
+    const factory: ComponentFactory<any> = this.resolver.resolveComponentFactory(this.cad.component);
     this.componentRef = this.container.createComponent(factory);
     this.componentRef.instance[this.cad.chave] = this.selecionado[this.cad.chave];
     this.exibirDialog = true;

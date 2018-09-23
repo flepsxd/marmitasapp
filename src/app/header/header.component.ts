@@ -9,7 +9,7 @@ import { MenuItem } from 'primeng/api';
   styles: []
 })
 export class HeaderComponent implements OnInit {
-  items: MenuItem[]; 
+  items: MenuItem[];
   isLoggedIn$: Observable<boolean>;
 
   constructor(private authService: AuthService) { }
@@ -20,12 +20,12 @@ export class HeaderComponent implements OnInit {
       { label: 'Pedidos', routerLink: '/pedidos'},
       { label: 'Lançamentos', routerLink: '/lancamentos'},
       { label: 'Linha do Tempo'},
-      { label: 'Logout', command: (event) => { this.authService.logout()}}
+      { label: 'Logout', command: (event) => { this.authService.logout(); }}
     ];
     this.isLoggedIn$ = this.authService.isLoggedIn;
   }
 
-  onLogout(){
-    this.authService.logout();                   
+  onLogout() {
+    this.authService.logout();
   }
 }

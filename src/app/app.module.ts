@@ -32,6 +32,7 @@ import { CrudComponent } from './crud/crud.component';
 import { ApiService } from './api/api.service';
 import { ProdutosComponent } from './crud/produtos/produtos.component';
 import { ProdutoComponent } from './crud/produtos/produto/produto.component';
+import { PedidoItensComponent } from './crud/pedidos/pedido-itens/pedido-itens.component';
 
 const appRoutes: Routes = [
   { 
@@ -82,7 +83,8 @@ const childRoutes: Routes = [{
     PedidoComponent,
     CrudComponent,
     ProdutosComponent,
-    ProdutoComponent
+    ProdutoComponent,
+    PedidoItensComponent
   ],
   imports: [
     BrowserModule,
@@ -111,7 +113,7 @@ const childRoutes: Routes = [{
   ],
   providers: [AuthService, AuthGuard, ApiService],
   exports: [RouterModule],
-  entryComponents: [PessoaComponent, LancamentoComponent, PedidoComponent, ProdutoComponent],
+  entryComponents: [PessoaComponent, LancamentoComponent, PedidoComponent, PedidoItensComponent, ProdutoComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

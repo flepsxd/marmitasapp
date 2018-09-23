@@ -26,6 +26,10 @@
       <h3>Status</h3>
       <p-inputSwitch formControlName="statusB" (onChange)="alteraStatus()" [style]="{float: right}"></p-inputSwitch>
     </div>
+    <div class="ui-g-12">
+      <h3>Itens do Pedido</h3>
+      <app-crud [dados]="dadosPedidosItens" [columns]="colsPedidosItens" [cad]="cadPedidoItem"></app-crud>
+    </div>
   </div>
 </form>
   

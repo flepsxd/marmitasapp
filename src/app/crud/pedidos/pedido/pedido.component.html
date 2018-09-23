@@ -3,8 +3,10 @@
     <div class="ui-g-12">
       <h3>Pessoa</h3>
       <p-autoComplete class="ui-g-12" formControlName="idpessoa" [suggestions]="dadosPessoas" (completeMethod)="getPessoas($event)" field="idpessoa" [forceSelection]="true" [dropdown]="true">
-        <ng-template let-value pTemplate="item">
-          {{value.nome}}
+        <ng-template let-pessoa pTemplate="item">
+          <div *ngIf="pessoa.nome">Nome: {{pessoa.nome}}</div>
+          <div *ngIf="pessoa.email">E-mail: {{pessoa.email}}</div>
+          <div *ngIf="pessoa.telefone">Telefone: {{pessoa.telefone}}</div>
         </ng-template>
       </p-autoComplete>
     </div>

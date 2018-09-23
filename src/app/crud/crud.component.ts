@@ -32,7 +32,7 @@ export class CrudComponent implements OnInit {
   constructor(private resolver: ComponentFactoryResolver) {
   }
 
-  onRowSelect($event) {
+  onRowSelect() {
     this.container.clear();
     const factory: ComponentFactory<any> = this.resolver.resolveComponentFactory(this.cad.component);
     this.componentRef = this.container.createComponent(factory);
@@ -64,6 +64,11 @@ export class CrudComponent implements OnInit {
     } else {
       this.exibirDialog = false;
     }
+  }
+
+  dialogoAdd() {
+    this.selecionado = {};
+    this.onRowSelect();
   }
 
 

@@ -38,8 +38,8 @@ export class ProdutosComponent implements OnInit {
       {
         header: 'Status',
         field: 'status',
-        fn: function(dado){
-          return dado == 'A' ? 'Ativo' : 'Inativo';
+        fn: function(dado) {
+          return dado === 'A' ? 'Ativo' : 'Inativo';
         }
       },
       {

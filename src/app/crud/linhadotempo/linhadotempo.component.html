@@ -1,7 +1,7 @@
 <div>
   <div class="scrumboard">
-    <p-card *ngFor="let item of scrumboard" [title]="item.header"   pDroppable="item"  (onDrop)="drop(item.filtro, dragActive, $event)">
-      <div class="ui-helper-clearfix" *ngFor="let pedido of item.dados" pDraggable="item" (onDragStart)="dragStart(pedido, $event)" (onDragEnd)="dragStop($event)">
+    <p-card *ngFor="let item of scrumboard" [title]="item.header"   pDroppable="item"  (onDrop)="drop(item, dragActive)">
+      <div class="ui-helper-clearfix" *ngFor="let pedido of item.dados" pDraggable="item" (onDragStart)="dragStart(pedido, $event)">
         <app-cardpedido [pedido]="pedido" ></app-cardpedido>
       </div>
     </p-card>

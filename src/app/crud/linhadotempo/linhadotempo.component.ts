@@ -44,18 +44,20 @@ export class LinhadotempoComponent implements OnInit {
     ];
   }
 
-  drop(filtro, pedido, $event){
-    pedido.etapa = filtro;
-    console.log($event);
+  drop(item, pedido){
+    this.scrumboard.forEach((val)=>{
+        var findIndex = val.dados.indexOf(pedido);
+        if(findIndex >= 0) {
+          val.dados.splice(findIndex, 1);
+        }
+    });
+    pedido.status = item.filtro;
+    item.dados.push(pedido);
+
   }
 
-  dragStart(pedido, $event){
+  dragStart(pedido){
     this.dragActive = pedido;
-    console.log($event);
-  }
-
-  dragStop($event){
-    console.log($event);
   }
 
 }

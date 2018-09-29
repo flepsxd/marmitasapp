@@ -45,13 +45,15 @@ export class LinhadotempoComponent implements OnInit {
   }
 
   drop(item, pedido){
+    if(item.filtro == pedido.etapa) return;
+    
     this.scrumboard.forEach((val)=>{
         var findIndex = val.dados.indexOf(pedido);
         if(findIndex >= 0) {
           val.dados.splice(findIndex, 1);
         }
     });
-    pedido.status = item.filtro;
+    pedido.etapa = item.filtro;
     item.dados.push(pedido);
 
   }

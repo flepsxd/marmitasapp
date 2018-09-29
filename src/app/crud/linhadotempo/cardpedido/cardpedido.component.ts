@@ -20,7 +20,7 @@ export class CardpedidoComponent implements OnInit {
     },
     {
       header: 'Valor',
-      field: this.apiService.currencyFormat
+      field: this.valor
     }
   ];
 

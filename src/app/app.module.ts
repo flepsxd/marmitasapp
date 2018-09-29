@@ -3,6 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'; // <-- NgModel lives here
+import {FlexLayoutModule} from "@angular/flex-layout";
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule, Button } from 'primeng/button';
 import {TabMenuModule} from 'primeng/tabmenu';
@@ -131,6 +132,7 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     AutoCompleteModule,
     CurrencyMaskModule,
     DragDropModule,
+    FlexLayoutModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true}

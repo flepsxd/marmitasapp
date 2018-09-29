@@ -36,6 +36,7 @@ export class PedidoItensComponent implements OnInit {
     this.getDados();
     this.pedidoItensForm = this.formBuilder.group({
       idproduto: [this.pedidoItens.idproduto, Validators.required],
+      produto:  [this.apiService.getById('produtos', 'idproduto', this.pedidoItens.idproduto) || null],
       vlrunitario: [this.pedidoItens.vlrunitario, Validators.required],
       quantidade: [this.pedidoItens.quantidade],
       vlrtotal: [this.pedidoItens.vlrtotal],

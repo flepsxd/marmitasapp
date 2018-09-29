@@ -2,7 +2,7 @@
   <div class="ui-g ui-fluid">
     <div class="ui-g-12">
       <h3>Pessoa</h3>
-        <p-autoComplete class="ui-g-12" [suggestions]="dadosPessoas" (completeMethod)="getPessoas($event)" field="nome" [forceSelection]="true" [dropdown]="true" dataKey="idpessoa" (onSelect)="apiService.aoSelecionar(pedidoForm, 'idpessoa', $event)">
+        <p-autoComplete class="ui-g-12" formControlName="pessoa" required [suggestions]="dadosPessoas" (completeMethod)="getPessoas($event)" field="nome" [forceSelection]="true" [dropdown]="true" dataKey="idpessoa" (onSelect)="apiService.aoSelecionar(pedidoForm, 'idpessoa', 'pessoa', $event)">
         <ng-template let-pessoa pTemplate="item">
           
           <div *ngIf="pessoa.nome">Nome: {{pessoa.nome}}</div>
@@ -13,7 +13,7 @@
     </div>
     <div class="ui-g-12">
       <h3>Data/Hora</h3>
-      <p-calendar class="ui-g-12" placeholder="Data/Hora" formControlName="datahora" dateFormat="dd/mm/yy"></p-calendar>
+      <p-calendar class="ui-g-12" placeholder="Data/Hora" showTime="true" formControlName="formatData" dateFormat="dd/mm/yy"></p-calendar>
     </div>
     <div class="ui-g-12">
       <h3>Valor</h3>

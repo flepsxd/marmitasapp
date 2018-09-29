@@ -19,7 +19,7 @@ export class PedidoComponent implements OnInit {
     idagendamento: null,
     idpessoa: null,
     idendereco: null,
-    datahora: new Date,
+    datahora: new Date().toJSON(),
     valor: null,
     observacoes: '',
     etapa: 'T',
@@ -77,18 +77,24 @@ export class PedidoComponent implements OnInit {
 
     this.pedidoForm = this.formBuilder.group({
       idpessoa: [this.pedido.idpessoa, Validators.required],
+      pessoa: [this.apiService.getById('pessoas', 'idpessoa', this.pedido.idpessoa) || null],
       datahora: [this.pedido.datahora],
+      formatData: [new Date(this.pedido.datahora)],
       etapa: [this.pedido.etapa, Validators.required],
       valor: [this.pedido.valor, Validators.required],
       observacoes: [this.pedido.observacoes, Validators.required],
       statusB: [this.pedido.status == 'A' ? true : false],
       status: [this.pedido.status, Validators.required]
     });
+
+    this.pedidoForm.get('formatData').valueChanges.subscribe((value)=>{
+      this.pedidoForm.patchValue({datahora: value.toJSON()})
+    });
   }
 
   getDados(){
     if (this.idpedido) {
-      this.pedido = this.apiService.getById('pedido', 'idpedido', this.idpedido);
+      this.pedido = this.apiService.getById('pedidos', 'idpedido', this.idpedido);
       this.dadosPedidosItens = this.apiService.getById('pedido_itens', 'idpedido', this.idpedido, false);
     }
   }

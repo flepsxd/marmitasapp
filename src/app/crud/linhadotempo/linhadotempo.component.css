@@ -1,0 +1,7 @@
+.scrumboard{
+    background: #ffffff;
+    display: flex;
+    padding: 0 5px;
+    height: calc(100vh - 80px);
+    overflow-x: scroll;
+}

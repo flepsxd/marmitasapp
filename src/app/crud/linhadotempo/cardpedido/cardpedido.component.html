@@ -1,0 +1,18 @@
+<p-card  [title]="pessoa.nome" [subtitle]="pessoa.telefone">
+  <p-table *ngIf="pedidoItens.length > 0" [columns]="columnsPedidoItens" [value]="pedidoItens">
+      <ng-template pTemplate="header" let-columns>
+          <tr>
+              <th *ngFor="let col of columns">
+                  {{col.header}}
+              </th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>
+              <td *ngFor="let col of columns">
+                      {{col.field(rowData)}}
+              </td>
+          </tr>
+      </ng-template>
+  </p-table>
+</p-card>

@@ -14,6 +14,7 @@ import {InputSwitchModule} from 'primeng/inputswitch';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {CalendarModule} from 'primeng/calendar';
 import {InputTextareaModule} from 'primeng/inputtextarea';
+import {DragDropModule} from 'primeng/dragdrop';
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from "ng2-currency-mask/src/currency-mask.config";
 import { LOCALE_ID } from '@angular/core';
@@ -41,6 +42,8 @@ import { ApiService } from './api/api.service';
 import { ProdutosComponent } from './crud/produtos/produtos.component';
 import { ProdutoComponent } from './crud/produtos/produto/produto.component';
 import { PedidoItensComponent } from './crud/pedidos/pedido-itens/pedido-itens.component';
+import { LinhadotempoComponent } from './crud/linhadotempo/linhadotempo.component';
+import { CardpedidoComponent } from './crud/linhadotempo/cardpedido/cardpedido.component';
 
 const appRoutes: Routes = [
   { 
@@ -50,12 +53,10 @@ const appRoutes: Routes = [
   {
     path: '',
     component: HomeComponent, 
-    canActivate: [AuthGuard],
   }
 ];
 const childRoutes: Routes = [{
     path: '',
-    canActivate: [AuthGuard],
     children: [
       { 
         path: 'pessoas', 
@@ -72,6 +73,10 @@ const childRoutes: Routes = [{
       {
         path: 'produtos',
         component: ProdutosComponent
+      },
+      {
+        path: 'linhadotempo',
+        component: LinhadotempoComponent
       }
     ]
   }
@@ -103,7 +108,9 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     CrudComponent,
     ProdutosComponent,
     ProdutoComponent,
-    PedidoItensComponent
+    PedidoItensComponent,
+    LinhadotempoComponent,
+    CardpedidoComponent,
   ],
   imports: [
     BrowserModule,
@@ -123,6 +130,7 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     InputTextareaModule,
     AutoCompleteModule,
     CurrencyMaskModule,
+    DragDropModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true}

@@ -24,22 +24,29 @@ export class PedidosComponent implements OnInit {
       chave: 'idpedido'
     };
     this.dados = this.apiService.pedidos;
+    let pessoasId = this.apiService.getById.bind(this.apiService, 'pessoas', 'idpessoa');
     this.columns = [
       {
-        descricao: 'Nome',
-        campo: 'nome'
+        header: 'Pedido',
+        field: 'idpedido'
       },
       {
-        descricao: 'Telefone',
-        campo: 'telefone'
+        header: 'Pessoa',
+        field: 'idpessoa',
+        fn: function(val){
+          return pessoasId(val).nome;
+        }
       },
       {
-        descricao: 'E-mail',
-        campo: 'email'
+        header: 'Data/Hora',
+        field: 'datahora',
+        fn: function(dado){
+          return new Date(dado).toLocaleString();
+        }
       },
       {
-        descricao: 'Status',
-        campo: 'status'
+        header: 'Status',
+        field: 'status'
       },
     ];
   }

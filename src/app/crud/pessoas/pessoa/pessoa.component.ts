@@ -1,5 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '../../../../../node_modules/@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators
+} from '../../../../../node_modules/@angular/forms';
 import { ApiService } from '../../../api/api.service';
 import { Pessoa } from '../../pessoa';
 
@@ -18,14 +22,13 @@ export class PessoaComponent implements OnInit {
     telefone: null,
     status: 'A'
   };
-  @Input() idpessoa: number;
+  @Input()
+  idpessoa: number;
 
   constructor(
     private formBuilder: FormBuilder,
     private apiService: ApiService
-  ) { 
-    
-  }
+  ) {}
 
   ngOnInit() {
     this.getDados();
@@ -38,26 +41,28 @@ export class PessoaComponent implements OnInit {
     });
   }
 
-  getDados(){
+  getDados() {
     if (this.idpessoa) {
-      let pessoas = [...this.apiService.pessoas];
-      this.pessoa = pessoas.filter((val)=>val.idpessoa == this.idpessoa)[0];
+      const pessoas = [...this.apiService.pessoas];
+      this.pessoa = pessoas.filter(val => val.idpessoa == this.idpessoa)[0];
     }
   }
 
   confirmar() {
     return new Promise((resolve, reject) => {
-      resolve(true);
+      setTimeout(resolve, 100);
     });
   }
 
   cancelar() {
     return new Promise((resolve, reject) => {
-      reject(true);
-    })
+      setTimeout(resolve, 100);
+    });
   }
 
-  alteraStatus(){
-    this.pessoaForm.patchValue({status: this.pessoaForm.get('statusB').value ? 'A' : 'F'});
+  alteraStatus() {
+    this.pessoaForm.patchValue({
+      status: this.pessoaForm.get('statusB').value ? 'A' : 'F'
+    });
   }
 }

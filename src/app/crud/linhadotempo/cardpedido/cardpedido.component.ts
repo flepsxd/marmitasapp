@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Pedido } from '../../pedido';
 import { ApiService } from '../../../api/api.service';
 import { Pessoa } from '../../pessoa';
@@ -10,7 +10,10 @@ import { PedidoItens } from '../../pedido-itens';
   styleUrls: ['./cardpedido.component.css']
 })
 export class CardpedidoComponent implements OnInit {
-  @Input() pedido: Pedido;
+  @ViewChild('pedidoFn')
+  pedidoFn: any;
+  @Input()
+  pedido: Pedido;
   pessoa: Pessoa;
   pedidoItens: Array<PedidoItens>;
   columnsPedidoItens: Array<any> = [
@@ -23,21 +26,47 @@ export class CardpedidoComponent implements OnInit {
       field: this.valor
     }
   ];
+  dialog = false;
 
-  constructor(private apiService: ApiService) {
-  }
+  constructor(private apiService: ApiService) {}
 
   ngOnInit() {
-    this.pessoa = this.apiService.getById('pessoas', 'idpessoa', this.pedido.idpessoa);
-    this.pedidoItens = this.apiService.getById('pedido_itens', 'idpedido', this.pedido.idpedido, false);
+    this.pessoa = this.apiService.getById(
+      'pessoas',
+      'idpessoa',
+      this.pedido.idpessoa
+    );
+    this.pedidoItens = this.apiService.getById(
+      'pedido_itens',
+      'idpedido',
+      this.pedido.idpedido,
+      false
+    );
   }
 
   produto(val) {
-    return this.apiService.getById('produtos', 'idproduto', val.idproduto).descricao;
+    return this.apiService.getById('produtos', 'idproduto', val.idproduto)
+      .descricao;
   }
 
-  valor(val){
+  valor(val) {
     return this.apiService.currencyFormat(val.vlrtotal);
   }
 
+  excluir() {}
+  editar() {
+    this.dialog = true;
+  }
+
+  salvar() {
+    this.apiService
+      .cancelarDialog(this.pedidoFn)
+      .then(() => (this.dialog = false));
+  }
+
+  cancelar() {
+    this.apiService
+      .cancelarDialog(this.pedidoFn)
+      .then(() => (this.dialog = false));
+  }
 }

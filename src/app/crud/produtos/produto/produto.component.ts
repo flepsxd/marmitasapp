@@ -45,13 +45,13 @@ export class ProdutoComponent implements OnInit {
 
   confirmar() {
     return new Promise((resolve, reject) => {
-      resolve(true);
+      setTimeout(resolve, 100);
     });
   }
 
   cancelar() {
     return new Promise((resolve, reject) => {
-      reject(true);
+      setTimeout(resolve, 100);
     })
   }
 

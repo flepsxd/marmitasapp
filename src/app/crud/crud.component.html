@@ -7,14 +7,14 @@
   </ng-template>
   <ng-template pTemplate="header" let-columns>
     <tr >
-      <th *ngFor="let col of columns; let i = index" [attr.data-index]="i">
+      <th *ngFor="let col of columns; let i = index" [attr.data-index]="i"  [ngClass]="[col.class || '', col.field]">
         {{col.header}}
       </th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr [pSelectableRow]="rowData">
-          <td *ngFor="let col of columns">
+          <td *ngFor="let col of columns"  [ngClass]="[col.class || '', col.field]">
               {{col.fn ? col.fn(rowData[col.field]) : rowData[col.field]}}
           </td>
       </tr>

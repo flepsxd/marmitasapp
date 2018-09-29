@@ -43,7 +43,8 @@ export class PessoasComponent implements OnInit {
         field: 'status',
         fn: function(dado){
           return dado == 'A' ? 'Ativo' : 'Inativo';
-        }
+        },
+        class: 'status'
       },
     ];
   }

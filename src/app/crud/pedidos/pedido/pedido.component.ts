@@ -1,5 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '../../../../../node_modules/@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators
+} from '../../../../../node_modules/@angular/forms';
 import { ApiService } from '../../../api/api.service';
 import { Pedido } from '../../pedido';
 import { Pessoa } from '../../pessoa';
@@ -22,10 +26,13 @@ export class PedidoComponent implements OnInit {
     datahora: new Date().toJSON(),
     valor: null,
     observacoes: '',
-    etapa: 'T',
+    etapa: 'A',
     status: 'A'
   };
-  @Input() idpedido: number;
+  @Input()
+  idpedido: number;
+  @Input()
+  etapa: string;
 
   dadosPessoas: Array<Pessoa>;
 
@@ -33,51 +40,59 @@ export class PedidoComponent implements OnInit {
     {
       header: 'Produto',
       field: 'idproduto',
-      fn: function (dados){
-        return this.apiService.produtos.filter((val)=>val.idpedido = dados.idpedido)[0].descricao;
+      class: 'id',
+      fn: function(dados) {
+        return this.apiService.produtos.filter(
+          val => (val.idpedido = dados.idpedido)
+        )[0].descricao;
       }
     },
     {
       header: 'Valor Unitário',
       field: 'vlrunitario',
+      class: 'valor',
       fn: this.apiService.currencyFormat
     },
     {
-      header: 'Quantdiade',
+      header: 'Quantidade',
       field: 'quantidade',
+      class: 'unidade'
     },
     {
       header: 'Valor Total',
       field: 'vlrtotal',
-      fn: this.apiService.currencyFormat
+      fn: this.apiService.currencyFormat,
+      class: 'valor'
     },
     {
       header: 'Desconto',
       field: 'desconto',
+      class: 'valor',
       fn: this.apiService.currencyFormat
     }
-  ]
+  ];
   dadosPedidosItens: Array<PedidoItens>;
   cadPedidoItem: Object;
 
   constructor(
     private formBuilder: FormBuilder,
     private apiService: ApiService
-  ) { 
-    
-  }
+  ) {}
 
   ngOnInit() {
     this.cadPedidoItem = {
       component: PedidoItensComponent,
-    chave: 'idpedido_item'
-    }
+      chave: 'idpedido_item'
+    };
     this.getPessoas();
     this.getDados();
 
     this.pedidoForm = this.formBuilder.group({
       idpessoa: [this.pedido.idpessoa, Validators.required],
-      pessoa: [this.apiService.getById('pessoas', 'idpessoa', this.pedido.idpessoa) || null],
+      pessoa: [
+        this.apiService.getById('pessoas', 'idpessoa', this.pedido.idpessoa) ||
+          null
+      ],
       datahora: [this.pedido.datahora],
       formatData: [new Date(this.pedido.datahora)],
       etapa: [this.pedido.etapa, Validators.required],
@@ -87,35 +102,50 @@ export class PedidoComponent implements OnInit {
       status: [this.pedido.status, Validators.required]
     });
 
-    this.pedidoForm.get('formatData').valueChanges.subscribe((value)=>{
-      this.pedidoForm.patchValue({datahora: value.toJSON()})
+    this.pedidoForm.get('formatData').valueChanges.subscribe(value => {
+      this.pedidoForm.patchValue({ datahora: value.toJSON() });
     });
   }
 
-  getDados(){
+  getDados() {
     if (this.idpedido) {
-      this.pedido = this.apiService.getById('pedidos', 'idpedido', this.idpedido);
-      this.dadosPedidosItens = this.apiService.getById('pedido_itens', 'idpedido', this.idpedido, false);
+      this.pedido = this.apiService.getById(
+        'pedidos',
+        'idpedido',
+        this.idpedido
+      );
+      this.dadosPedidosItens = this.apiService.getById(
+        'pedido_itens',
+        'idpedido',
+        this.idpedido,
+        false
+      );
+    } else {
+      if (this.etapa) {
+        this.pedido.etapa = this.etapa;
+      }
     }
   }
 
   confirmar() {
     return new Promise((resolve, reject) => {
-      resolve(true);
+      setTimeout(resolve, 100);
     });
   }
 
   cancelar() {
     return new Promise((resolve, reject) => {
-      reject(true);
-    })
+      setTimeout(resolve, 100);
+    });
   }
 
-  alteraStatus(){
-    this.pedidoForm.patchValue({status: this.pedidoForm.get('statusB').value ? 'A' : 'F'});
+  alteraStatus() {
+    this.pedidoForm.patchValue({
+      status: this.pedidoForm.get('statusB').value ? 'A' : 'F'
+    });
   }
 
-  getPessoas($event = {query: null}) {
+  getPessoas($event = { query: null }) {
     this.dadosPessoas = this.apiService.filterAtivo('pessoas', $event.query);
   }
 }

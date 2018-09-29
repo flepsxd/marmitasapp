@@ -28,7 +28,8 @@ export class PedidosComponent implements OnInit {
     this.columns = [
       {
         header: 'Pedido',
-        field: 'idpedido'
+        field: 'idpedido',
+        class: 'id'
       },
       {
         header: 'Pessoa',
@@ -46,7 +47,8 @@ export class PedidosComponent implements OnInit {
       },
       {
         header: 'Status',
-        field: 'status'
+        field: 'status',
+        class: 'status'
       },
     ];
   }

@@ -12,7 +12,7 @@ export class LinhadotempoComponent implements OnInit {
   cards: Array<Pedido>;
   dragActive: any;
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     this.scrumboard = [
@@ -44,22 +44,20 @@ export class LinhadotempoComponent implements OnInit {
     ];
   }
 
-  drop(item, pedido){
-    if(item.filtro == pedido.etapa) return;
-    
-    this.scrumboard.forEach((val)=>{
-        var findIndex = val.dados.indexOf(pedido);
-        if(findIndex >= 0) {
-          val.dados.splice(findIndex, 1);
-        }
+  drop(item, pedido) {
+    if (item.filtro === pedido.etapa) { return; }
+    let findIndex;
+    this.scrumboard.forEach(val => {
+      findIndex = val.dados.indexOf(pedido);
+      if (findIndex >= 0) {
+        val.dados.splice(findIndex, 1);
+      }
     });
     pedido.etapa = item.filtro;
     item.dados.push(pedido);
-
   }
 
-  dragStart(pedido){
+  dragStart(pedido) {
     this.dragActive = pedido;
   }
-
 }

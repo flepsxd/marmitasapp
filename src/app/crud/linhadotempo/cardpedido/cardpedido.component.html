@@ -18,9 +18,14 @@
     </p-table>
   </div>
   <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button pButton icon="pi pi-trash" (click)="excluir()"></button>
-      <button pButton icon="pi pi-pencil" (click)="editar()"></button>
+    <div fxLayout="row" fxLayoutAlign="space-between start">
+      <div>
+        <span>{{pedido.valor | currency:'BRL':true}}</span>
+      </div>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button pButton icon="pi pi-trash" (click)="excluir()"></button>
+        <button pButton icon="pi pi-pencil" (click)="editar()"></button>
+      </div>
     </div>
   </p-footer>
 </p-card>

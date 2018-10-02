@@ -22,10 +22,9 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
-    })
-
+      email: ['', Validators.required],
+      senha: ['', Validators.required]
+    });
   }
 
   isFieldInvalid(field: string) {
@@ -37,9 +36,9 @@ export class LoginComponent implements OnInit {
 
   get f () { return this.loginForm.controls; }
 
-  onSubmit(){
-    if(this.loginForm.valid){
-      this.authService.login(this.loginForm.value);
+  onSubmit() {
+    if (this.loginForm.valid) {
+      this.authService.login(this.loginForm.value).subscribe(data => this.authService.setLoggedIn(data, this.loginForm.value.email));
     }
     this.submitted = true;
     this.loading = true;

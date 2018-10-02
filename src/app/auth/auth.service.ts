@@ -1,31 +1,40 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from './user';
 
 @Injectable()
 export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
+  private token = '';
+  private url = 'http://marmitasapi/auth/';
+  private httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
 
   get isLoggedIn() {
-    //return localStorage.getItem('username');
-    return this.loggedIn.asObservable(); 
+    return this.loggedIn.asObservable();
   }
 
   constructor(
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {}
 
-  login(user: User){
-    if (user.username !== '' && user.password !== '' ) { 
+  setLoggedIn(data, username) {
       this.loggedIn.next(true);
-      localStorage.setItem('username', user.username);
+      localStorage.setItem('username', username);
+      this.token = data.token;
       this.router.navigate(['/pessoas']);
-    }
   }
 
-  logout() {                  
-    localStorage.removeItem('username');     
+  login(user: User): Observable<any> {
+      return this.http.post(this.url + 'login', user, this.httpOptions);
+  }
+
+  logout() {
+    localStorage.removeItem('username');
     this.loggedIn.next(false);
     this.router.navigate(['/login']);
   }

@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'; // <-- NgModel lives here
-import {FlexLayoutModule} from "@angular/flex-layout";
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule, Button } from 'primeng/button';
 import {TabMenuModule} from 'primeng/tabmenu';
@@ -16,15 +16,14 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
 import {CalendarModule} from 'primeng/calendar';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {DragDropModule} from 'primeng/dragdrop';
-import { CurrencyMaskModule } from "ng2-currency-mask";
-import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from "ng2-currency-mask/src/currency-mask.config";
+import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from 'ng2-currency-mask/src/currency-mask.config';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import localePtExtra from '@angular/common/locales/extra/pt';
 import { CurrencyPipe } from '@angular/common';
- 
-
+import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthService } from './auth/auth.service';
@@ -47,28 +46,28 @@ import { LinhadotempoComponent } from './crud/linhadotempo/linhadotempo.componen
 import { CardpedidoComponent } from './crud/linhadotempo/cardpedido/cardpedido.component';
 
 const appRoutes: Routes = [
-  { 
-    path: 'login', 
+  {
+    path: 'login',
     component: LoginComponent
   },
   {
     path: '',
-    component: HomeComponent, 
+    component: HomeComponent
   }
 ];
 const childRoutes: Routes = [{
     path: '',
     children: [
-      { 
-        path: 'pessoas', 
+      {
+        path: 'pessoas',
         component: PessoasComponent
       },
-      { 
-        path: 'pedidos', 
+      {
+        path: 'pedidos',
         component: PedidosComponent
       },
-      { 
-        path: 'lancamentos', 
+      {
+        path: 'lancamentos',
         component: LancamentosComponent
       },
       {
@@ -81,16 +80,16 @@ const childRoutes: Routes = [{
       }
     ]
   }
-]
+];
 
 const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
-  align: "right",
+  align: 'right',
   allowNegative: true,
-  decimal: ",",
+  decimal: ',',
   precision: 2,
-  prefix: "R$ ",
-  suffix: "",
-  thousands: "."
+  prefix: 'R$ ',
+  suffix: '',
+  thousands: '.'
 };
 registerLocaleData(localePt, 'pt', localePtExtra);
 
@@ -133,6 +132,7 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     CurrencyMaskModule,
     DragDropModule,
     FlexLayoutModule,
+    HttpClientModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true}
@@ -141,7 +141,10 @@ registerLocaleData(localePt, 'pt', localePtExtra);
       childRoutes
     )
   ],
-  providers: [AuthService, AuthGuard, ApiService, { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig} ,{provide: LOCALE_ID, useValue: 'pt'}, CurrencyPipe],
+  providers: [AuthService, AuthGuard, ApiService,
+      { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig },
+      { provide: LOCALE_ID, useValue: 'pt'}, CurrencyPipe
+  ],
   exports: [RouterModule],
   entryComponents: [PessoaComponent, LancamentoComponent, PedidoComponent, PedidoItensComponent, ProdutoComponent],
   bootstrap: [AppComponent]

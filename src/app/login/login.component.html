@@ -1,17 +1,20 @@
 <div class="ui-g">
-    <div class="ui-md-3 ui-lg-4"></div>
-    <p-card title="Login" class="ui-g-12 ui-md-6 ui-lg-4 form-group ui-g">
-        <form  class="ui-g-12" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <div class="ui-g-12">
-                <input type="text" id="email" class="ui-g-12" placeholder="E-mail" formControlName="email" pInputText [ngClass]="{ 'is-invalid': submitted && f.email.errors }"  />
-                <p-message *ngIf="isFieldInvalid('email')" severity="error" text="E-mail é obrigatório"></p-message>
-            </div>
-            <div class="ui-g-12">
-                <input type="password" class="ui-g-12" placeholder="Senha" id="senha" formControlName="senha" pPassword [ngClass]="{ 'is-invalid': submitted && f.senha.errors }" />
-                <p-message *ngIf="isFieldInvalid('senha')" severity="error" text="Senha é obrigatório"></p-message>
-            </div>
-            <button type="submit" pButton [disabled]="loading" class="ui-g-12 btn btn-primary">Login</button>
-        </form>
-    </p-card>
-    <div class="ui-md-3 ui-lg-4"></div>
+  <div class="ui-md-3 ui-lg-4"></div>
+  <p-card title="Login" class="ui-g-12 ui-md-6 ui-lg-4 form-group ui-g">
+    <form class="ui-g-12" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="ui-g-12">
+        <input type="email" id="email" class="ui-g-12" placeholder="E-mail" formControlName="email" pInputText
+          [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+        <p-message *ngIf="isFieldInvalid('email')" severity="error" text="E-mail é obrigatório"></p-message>
+      </div>
+      <div class="ui-g-12">
+        <input type="password" class="ui-g-12" placeholder="Senha" id="senha" formControlName="senha" pPassword
+          [ngClass]="{ 'is-invalid': submitted && f.senha.errors }" />
+        <p-message *ngIf="isFieldInvalid('senha')" severity="error" text="Senha é obrigatório"></p-message>
+      </div>
+      <button type="submit" pButton [disabled]="submitted" class="ui-g-12 btn btn-primary">Login</button>
+    </form>
+  </p-card>
+  <div class="ui-md-3 ui-lg-4"></div>
 </div>
+<p-growl [(value)]="msgs"></p-growl>

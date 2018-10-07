@@ -1,40 +1,52 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from './user';
+import { ApiService } from '../api/api.service';
+import { tap } from '../../../node_modules/rxjs/operators';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 @Injectable()
 export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
   private token = '';
-  private url = 'http://marmitasapi/auth/';
-  private httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
 
   get isLoggedIn() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.loggedIn.next(true);
+    }
     return this.loggedIn.asObservable();
   }
 
   constructor(
     private router: Router,
-    private http: HttpClient
+    private apiService: ApiService,
+    private msgService: MessageService
   ) {}
 
   setLoggedIn(data, username) {
-      this.loggedIn.next(true);
-      localStorage.setItem('username', username);
-      this.token = data.token;
-      this.router.navigate(['/pessoas']);
+    this.loggedIn.next(true);
+    this.token = data;
+    this.router.navigate(['/pessoas']);
+    this.msgService.add({
+      severity: 'success',
+      summary: 'Login!',
+      detail: 'Usuário logado com sucesso'
+    });
   }
 
   login(user: User): Observable<any> {
-      return this.http.post(this.url + 'login', user, this.httpOptions);
+    return this.apiService.add('auth/login', user).pipe(
+      tap(val => {
+        localStorage.setItem('token', val.token);
+        return val.token;
+      })
+    );
   }
 
   logout() {
-    localStorage.removeItem('username');
+    localStorage.removeItem('token');
     this.loggedIn.next(false);
     this.router.navigate(['/login']);
   }

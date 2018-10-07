@@ -1,4 +1,4 @@
-<p-card [title]="pessoa.nome" [subtitle]="'Contato: ' + pessoa.telefone">
+<p-card *ngIf="pessoa" [title]="pessoa.nome" [subtitle]="'Contato: ' + pessoa.telefone">
   <div>
     <p-table *ngIf="pedidoItens.length > 0" [columns]="columnsPedidoItens" [value]="pedidoItens">
       <ng-template pTemplate="header" let-columns>

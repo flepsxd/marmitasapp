@@ -3,32 +3,47 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'; // <-- NgModel lives here
+
 import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule, Button } from 'primeng/button';
-import {TabMenuModule} from 'primeng/tabmenu';
-import {CardModule} from 'primeng/card';
-import {MessageModule} from 'primeng/message';
-import {TableModule} from 'primeng/table';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { CardModule } from 'primeng/card';
+import { MessageModule } from 'primeng/message';
+import { TableModule } from 'primeng/table';
 import { DialogModule, Dialog } from 'primeng/dialog';
-import {InputSwitchModule} from 'primeng/inputswitch';
-import {AutoCompleteModule} from 'primeng/autocomplete';
-import {CalendarModule} from 'primeng/calendar';
-import {InputTextareaModule} from 'primeng/inputtextarea';
-import {DragDropModule} from 'primeng/dragdrop';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { CalendarModule } from 'primeng/calendar';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { DragDropModule } from 'primeng/dragdrop';
+import { GrowlModule } from 'primeng/growl';
+
 import { CurrencyMaskModule } from 'ng2-currency-mask';
-import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from 'ng2-currency-mask/src/currency-mask.config';
+import {
+  CurrencyMaskConfig,
+  CURRENCY_MASK_CONFIG
+} from 'ng2-currency-mask/src/currency-mask.config';
+
+import { MessageService } from 'primeng/components/common/messageservice';
+
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import localePtExtra from '@angular/common/locales/extra/pt';
+
 import { CurrencyPipe } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { AppComponent } from './app.component';
+
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { InterceptService } from './api/intercept.service';
+
 import { AuthGuard } from './auth/auth.guard';
 import { AuthService } from './auth/auth.service';
 import { LoginComponent } from './login/login.component';
-import { RouterModule, Routes, Router } from '../../node_modules/@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+
+import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { PessoasComponent } from './crud/pessoas/pessoas.component';
@@ -52,11 +67,14 @@ const appRoutes: Routes = [
   },
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
+    canActivate: [AuthGuard]
   }
 ];
-const childRoutes: Routes = [{
+const childRoutes: Routes = [
+  {
     path: '',
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'pessoas',
@@ -110,13 +128,14 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     ProdutoComponent,
     PedidoItensComponent,
     LinhadotempoComponent,
-    CardpedidoComponent,
+    CardpedidoComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     CommonModule,
     ReactiveFormsModule,
+    HttpClientModule,
     FormsModule,
     InputTextModule,
     ButtonModule,
@@ -131,22 +150,30 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     AutoCompleteModule,
     CurrencyMaskModule,
     DragDropModule,
+    GrowlModule,
     FlexLayoutModule,
     HttpClientModule,
-    RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: true}
-    ),
-    RouterModule.forChild(
-      childRoutes
-    )
+    RouterModule.forRoot(appRoutes, { enableTracing: true }),
+    RouterModule.forChild(childRoutes)
   ],
-  providers: [AuthService, AuthGuard, ApiService,
-      { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig },
-      { provide: LOCALE_ID, useValue: 'pt'}, CurrencyPipe
+  providers: [
+    AuthService,
+    AuthGuard,
+    ApiService,
+    { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig },
+    { provide: LOCALE_ID, useValue: 'pt' },
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptService, multi: true },
+    CurrencyPipe,
+    MessageService
   ],
   exports: [RouterModule],
-  entryComponents: [PessoaComponent, LancamentoComponent, PedidoComponent, PedidoItensComponent, ProdutoComponent],
+  entryComponents: [
+    PessoaComponent,
+    LancamentoComponent,
+    PedidoComponent,
+    PedidoItensComponent,
+    ProdutoComponent
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

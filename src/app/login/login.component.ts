@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from './../auth/auth.service';
-
+import { Message } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
@@ -11,14 +10,13 @@ import { AuthService } from './../auth/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  loading = false;
+  msgs: Message[] = [];
   submitted = false;
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-  ) { }
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -29,19 +27,32 @@ export class LoginComponent implements OnInit {
 
   isFieldInvalid(field: string) {
     return (
-      (!this.loginForm.get(field).valid && this.loginForm.get(field).touched) ||
+      (this.loginForm.get(field).invalid &&
+        this.loginForm.get(field).touched) ||
       (this.loginForm.get(field).untouched && this.submitted)
     );
   }
 
-  get f () { return this.loginForm.controls; }
+  get f() {
+    return this.loginForm.controls;
+  }
 
   onSubmit() {
     if (this.loginForm.valid) {
-      this.authService.login(this.loginForm.value).subscribe(data => this.authService.setLoggedIn(data, this.loginForm.value.email));
+      this.submitted = true;
+      this.authService.login(this.loginForm.value).subscribe(
+        data => {
+          this.authService.setLoggedIn(data, this.loginForm.value.email);
+        },
+        resp => {
+          this.msgs[0] = {
+            severity: 'error',
+            summary: 'Erro',
+            detail: resp.error.error
+          };
+          this.submitted = false;
+        }
+      );
     }
-    this.submitted = true;
-    this.loading = true;
   }
-
 }

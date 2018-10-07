@@ -33,36 +33,30 @@ export class PessoaComponent implements OnInit {
   ngOnInit() {
     this.getDados();
     this.pessoaForm = this.formBuilder.group({
+      idpessoa: [this.pessoa.idpessoa],
       nome: [this.pessoa.nome, Validators.required],
       telefone: [this.pessoa.telefone],
       email: [this.pessoa.email],
       status: [this.pessoa.status, Validators.required],
-      statusB: [this.pessoa.status == 'A' ? true : false]
+      statusB: [this.pessoa.status === 'A']
+    });
+
+    this.pessoaForm.get('statusB').valueChanges.subscribe(val => {
+      this.pessoaForm.patchValue({ status: val ? 'A' : 'I' });
     });
   }
 
   getDados() {
     if (this.idpessoa) {
-      const pessoas = [...this.apiService.pessoas];
-      this.pessoa = pessoas.filter(val => val.idpessoa == this.idpessoa)[0];
+      this.apiService.getId('pessoas', this.idpessoa).subscribe(resp => {
+        this.pessoa = resp.dados;
+        this.pessoaForm.patchValue(this.pessoa);
+        this.pessoaForm.patchValue({ statusB: this.pessoa.status === 'A' });
+      });
     }
   }
 
   confirmar() {
-    return new Promise((resolve, reject) => {
-      setTimeout(resolve, 100);
-    });
-  }
-
-  cancelar() {
-    return new Promise((resolve, reject) => {
-      setTimeout(resolve, 100);
-    });
-  }
-
-  alteraStatus() {
-    this.pessoaForm.patchValue({
-      status: this.pessoaForm.get('statusB').value ? 'A' : 'F'
-    });
+    return this.pessoaForm.value;
   }
 }

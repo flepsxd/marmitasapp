@@ -28,6 +28,7 @@ export class PedidoItensComponent implements OnInit {
   idpedido_item: number;
 
   dadosProdutos: Array<Produto>;
+  produtos: Array<Produto>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,17 +36,15 @@ export class PedidoItensComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getProdutos();
+    this.apiService.get('produtos').subscribe(resp => {
+      this.produtos = resp.dados;
+    });
     this.getDados();
+
     this.pedidoItensForm = this.formBuilder.group({
+      idpedido_item: [this.pedidoItens.idpedido_item],
       idproduto: [this.pedidoItens.idproduto, Validators.required],
-      produto: [
-        this.apiService.getById(
-          'produtos',
-          'idproduto',
-          this.pedidoItens.idproduto
-        ) || null
-      ],
+      produto: [this.pedidoItens.produto],
       vlrunitario: [this.pedidoItens.vlrunitario, Validators.required],
       quantidade: [this.pedidoItens.quantidade],
       vlrtotal: [this.pedidoItens.vlrtotal],
@@ -55,27 +54,20 @@ export class PedidoItensComponent implements OnInit {
 
   getDados() {
     if (this.idpedido_item) {
-      this.pedidoItens = this.apiService.getById(
-        'pedido_itens',
-        'idpedido_item',
-        this.idpedido_item
-      );
+      this.apiService
+        .getId('pedidositens', this.idpedido_item)
+        .subscribe(resp => {
+          this.pedidoItens = resp.dados;
+          this.pedidoItensForm.patchValue(this.pedidoItens);
+        });
     }
   }
 
   confirmar() {
-    return new Promise((resolve, reject) => {
-      setTimeout(resolve, 100);
-    });
-  }
-
-  cancelar() {
-    return new Promise((resolve, reject) => {
-      setTimeout(resolve, 100);
-    });
+    return this.pedidoItensForm.value;
   }
 
   getProdutos($event = { query: null }) {
-    this.dadosProdutos = this.apiService.filterAtivo('produtos', $event.query);
+    this.dadosProdutos = this.apiService.filter(this.produtos, $event.query);
   }
 }

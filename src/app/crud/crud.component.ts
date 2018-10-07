@@ -26,32 +26,29 @@ export class CrudComponent implements OnInit {
   config: Object = {};
   @Input()
   cad: any;
+  @Input()
+  source: Array<any>;
   componentRef: ComponentRef<any>;
   exibirDialog: any = false;
   selecionado: any;
-
-  @Output('getDados')
-  getDados: EventEmitter<any> = new EventEmitter();
-  @Output('editDados')
-  editDados: EventEmitter<any> = new EventEmitter();
-  @Output('incDados')
-  incDados: EventEmitter<any> = new EventEmitter();
-  @Output('deleteDados')
-  deleteDados: EventEmitter<any> = new EventEmitter();
-  _dados: any[] = [];
-
-  @Input()
-  get dados(): any[] {
-    return this._dados;
-  }
-  set dados(val: any[]) {
-    this._dados = val;
-  }
+  dados: Array<any>;
 
   constructor(
     private resolver: ComponentFactoryResolver,
     private apiService: ApiService
   ) {}
+
+  ngOnInit() {
+    if (this.source) {
+      this.dados = this.source;
+    } else {
+      this.apiService
+        .get(this.cad.resource + (this.cad.extraURL || ''))
+        .subscribe(resp => {
+          this.dados = resp.dados;
+        });
+    }
+  }
 
   onRowSelect() {
     this.container.clear();
@@ -65,18 +62,17 @@ export class CrudComponent implements OnInit {
     this.exibirDialog = true;
   }
 
-  ngOnInit() {}
-
   salvar() {
     this.apiService
-      .confirmDialog(this.componentRef.instance)
-      .then(() => (this.exibirDialog = false));
+      .confirmDialog(this.componentRef.instance, this.cad)
+      .subscribe(obj => {
+        this.ngOnInit();
+        this.exibirDialog = false;
+      });
   }
 
   cancelar() {
-    this.apiService
-      .cancelarDialog(this.componentRef.instance)
-      .then(() => (this.exibirDialog = false));
+    this.exibirDialog = false;
   }
 
   dialogoAdd() {

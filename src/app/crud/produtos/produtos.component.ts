@@ -9,7 +9,6 @@ import { ProdutoComponent } from './produto/produto.component';
   styleUrls: ['./produtos.component.css']
 })
 export class ProdutosComponent implements OnInit {
-  dados: Produto[];
   columns: Array<{}> = [];
   cad: any;
 
@@ -22,9 +21,9 @@ export class ProdutosComponent implements OnInit {
     this.cad = {
       component: ProdutoComponent,
       chave: 'idproduto',
+      resource: 'produtos',
       header: 'Cadastro de Produto'
     };
-    this.dados = this.apiService.produtos;
     this.columns = [
       {
         header: 'Descrição',

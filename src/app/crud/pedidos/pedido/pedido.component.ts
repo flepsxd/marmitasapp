@@ -35,16 +35,13 @@ export class PedidoComponent implements OnInit {
   etapa: string;
 
   dadosPessoas: Array<Pessoa>;
-
+  pessoas: Array<Pessoa>;
   colsPedidosItens: Array<any> = [
     {
       header: 'Produto',
-      field: 'idproduto',
-      class: 'id',
+      field: 'produto',
       fn: function(dados) {
-        return this.apiService.produtos.filter(
-          val => (val.idpedido = dados.idpedido)
-        )[0].descricao;
+        return dados.descricao;
       }
     },
     {
@@ -82,24 +79,26 @@ export class PedidoComponent implements OnInit {
   ngOnInit() {
     this.cadPedidoItem = {
       component: PedidoItensComponent,
+      resource: 'pedidositens',
+      extraURL: `/pedido/${this.idpedido}`,
       chave: 'idpedido_item'
     };
-    this.getPessoas();
+    this.apiService.get('pessoas', { ativo: true }).subscribe(resp => {
+      this.pessoas = resp.dados;
+    });
     this.getDados();
 
     this.pedidoForm = this.formBuilder.group({
-      idpessoa: [this.pedido.idpessoa, Validators.required],
-      pessoa: [
-        this.apiService.getById('pessoas', 'idpessoa', this.pedido.idpessoa) ||
-          null
-      ],
+      idpedido: [this.pedido.idpedido],
+      idpessoa: [this.pedido.idpessoa],
+      idendereco: [this.pedido.idendereco],
+      pessoas: [this.pedido.pessoas],
       datahora: [this.pedido.datahora],
       formatData: [new Date(this.pedido.datahora)],
-      etapa: [this.pedido.etapa, Validators.required],
-      valor: [this.pedido.valor, Validators.required],
-      observacoes: [this.pedido.observacoes, Validators.required],
-      statusB: [this.pedido.status == 'A' ? true : false],
-      status: [this.pedido.status, Validators.required]
+      etapa: [this.pedido.etapa],
+      valor: [this.pedido.valor],
+      observacoes: [this.pedido.observacoes],
+      status: [this.pedido.status]
     });
 
     this.pedidoForm.get('formatData').valueChanges.subscribe(value => {
@@ -109,43 +108,29 @@ export class PedidoComponent implements OnInit {
 
   getDados() {
     if (this.idpedido) {
-      this.pedido = this.apiService.getById(
-        'pedidos',
-        'idpedido',
-        this.idpedido
-      );
-      this.dadosPedidosItens = this.apiService.getById(
-        'pedido_itens',
-        'idpedido',
-        this.idpedido,
-        false
-      );
+      this.apiService.getId('pedidos', this.idpedido).subscribe(resp => {
+        this.pedido = resp.dados;
+        this.pedidoForm.patchValue(this.pedido);
+        this.addValidation();
+      });
     } else {
       if (this.etapa) {
         this.pedido.etapa = this.etapa;
       }
+      this.addValidation();
     }
   }
 
+  addValidation() {
+    this.pedidoForm.get('idpessoa').setValidators(Validators.required);
+    this.pedidoForm.get('idendereco').setValidators(Validators.required);
+  }
+
   confirmar() {
-    return new Promise((resolve, reject) => {
-      setTimeout(resolve, 100);
-    });
-  }
-
-  cancelar() {
-    return new Promise((resolve, reject) => {
-      setTimeout(resolve, 100);
-    });
-  }
-
-  alteraStatus() {
-    this.pedidoForm.patchValue({
-      status: this.pedidoForm.get('statusB').value ? 'A' : 'F'
-    });
+    return this.pedidoForm.value;
   }
 
   getPessoas($event = { query: null }) {
-    this.dadosPessoas = this.apiService.filterAtivo('pessoas', $event.query);
+    this.dadosPessoas = this.apiService.filter(this.pessoas, $event.query);
   }
 }

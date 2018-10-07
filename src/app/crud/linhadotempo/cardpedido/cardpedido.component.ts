@@ -1,8 +1,16 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ViewChild,
+  Output,
+  EventEmitter
+} from '@angular/core';
 import { Pedido } from '../../pedido';
 import { ApiService } from '../../../api/api.service';
 import { Pessoa } from '../../pessoa';
 import { PedidoItens } from '../../pedido-itens';
+import { Produto } from '../../produto';
 
 @Component({
   selector: 'app-cardpedido',
@@ -13,9 +21,12 @@ export class CardpedidoComponent implements OnInit {
   @ViewChild('pedidoFn')
   pedidoFn: any;
   @Input()
-  pedido: Pedido;
+  pedido: any;
+  @Output()
+  atualizar: EventEmitter<any> = new EventEmitter();
   pessoa: Pessoa;
   pedidoItens: Array<PedidoItens>;
+  produtos: Array<Produto>;
   columnsPedidoItens: Array<any> = [
     {
       header: 'Produto',
@@ -23,7 +34,7 @@ export class CardpedidoComponent implements OnInit {
     },
     {
       header: 'Valor',
-      field: this.valor
+      field: this.valor.bind(this)
     }
   ];
   dialog = false;
@@ -31,22 +42,12 @@ export class CardpedidoComponent implements OnInit {
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
-    this.pessoa = this.apiService.getById(
-      'pessoas',
-      'idpessoa',
-      this.pedido.idpessoa
-    );
-    this.pedidoItens = this.apiService.getById(
-      'pedido_itens',
-      'idpedido',
-      this.pedido.idpedido,
-      false
-    );
+    this.pessoa = this.pedido.pessoas;
+    this.pedidoItens = this.pedido.pedidos_itens;
   }
 
   produto(val) {
-    return this.apiService.getById('produtos', 'idproduto', val.idproduto)
-      .descricao;
+    return val.produto.descricao;
   }
 
   valor(val) {
@@ -60,13 +61,14 @@ export class CardpedidoComponent implements OnInit {
 
   salvar() {
     this.apiService
-      .cancelarDialog(this.pedidoFn)
-      .then(() => (this.dialog = false));
+      .confirmDialog(this.pedidoFn, { resource: 'pedidos', chave: 'idpedido' })
+      .subscribe(obj => {
+        this.atualizar.emit();
+        this.dialog = false;
+      });
   }
 
   cancelar() {
-    this.apiService
-      .cancelarDialog(this.pedidoFn)
-      .then(() => (this.dialog = false));
+    this.dialog = false;
   }
 }

@@ -28,13 +28,13 @@ export class ApiService {
     private http: HttpClient
   ) {}
 
-  public get(rota, extra = {}): Observable<any> {
+  public get(rota, extra?): Observable<any> {
     return this.http
       .get(`${this.API_URL}/${rota}`, this.getParams(extra))
       .pipe(response => response);
   }
 
-  public getId(rota, id, extra = {}): Observable<any> {
+  public getId(rota, id, extra?): Observable<any> {
     return this.http
       .get(`${this.API_URL}/${rota}/${id}`, this.getParams(extra))
       .pipe(response => response);
@@ -52,7 +52,7 @@ export class ApiService {
       .pipe(response => response);
   }
 
-  public getParams(extra = {}) {
+  public getParams(extra = { token: '' }) {
     const token = localStorage.getItem('token');
     if (token) {
       extra.token = token;

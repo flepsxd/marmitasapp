@@ -6,7 +6,6 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { Pedido } from '../../pedido';
 import { ApiService } from '../../../api/api.service';
 import { Pessoa } from '../../pessoa';
 import { PedidoItens } from '../../pedido-itens';
@@ -24,6 +23,10 @@ export class CardpedidoComponent implements OnInit {
   pedido: any;
   @Output()
   atualizar: EventEmitter<any> = new EventEmitter();
+  @Input()
+  idetapa: any;
+  @Input()
+  ordem: any;
   pessoa: Pessoa;
   pedidoItens: Array<PedidoItens>;
   produtos: Array<Produto>;
@@ -34,6 +37,7 @@ export class CardpedidoComponent implements OnInit {
     },
     {
       header: 'Valor',
+      class: 'valor',
       field: this.valor.bind(this)
     }
   ];
@@ -44,6 +48,16 @@ export class CardpedidoComponent implements OnInit {
   ngOnInit() {
     this.pessoa = this.pedido.pessoas;
     this.pedidoItens = this.pedido.pedidos_itens;
+    if (
+      this.idetapa !== this.pedido.etapa ||
+      this.ordem !== this.pedido.ordem
+    ) {
+      this.pedido.etapa = this.idetapa;
+      this.pedido.ordem = this.ordem;
+      this.apiService
+        .change('pedidos', this.pedido.idpedido, this.pedido)
+        .subscribe();
+    }
   }
 
   produto(val) {

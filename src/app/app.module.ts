@@ -20,6 +20,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DragDropModule } from 'primeng/dragdrop';
 import { GrowlModule } from 'primeng/growl';
 
+import { DragulaModule } from 'ng2-dragula';
+
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 import {
   CurrencyMaskConfig,
@@ -154,7 +156,8 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     FlexLayoutModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes, { enableTracing: true }),
-    RouterModule.forChild(childRoutes)
+    RouterModule.forChild(childRoutes),
+    DragulaModule.forRoot()
   ],
   providers: [
     AuthService,

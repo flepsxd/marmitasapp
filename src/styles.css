@@ -4,6 +4,7 @@
   overflow: auto;
   position: absolute;
   top: 50px;
+  width: 100%;
 }
 
 body {
@@ -37,4 +38,32 @@ body>app-root {
 body>app-root>* {
   height: 100%;
   max-height: 100%;
+}
+
+.id,
+.status {
+  width: 80px;
+}
+
+.valor:not(th),
+.preco:not(th) {
+  text-align: right;
+}
+
+.valor,
+.preco {
+  width: 140px;
+  max-width: 140px;
+}
+
+.unidade {
+  width: 100px;
+}
+
+.ml-10 {
+  margin-left: 10px !important;
+}
+
+.mr-10 {
+  margin-left: 10px !important;
 }

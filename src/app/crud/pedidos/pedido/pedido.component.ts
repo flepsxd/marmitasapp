@@ -26,7 +26,6 @@ export class PedidoComponent implements OnInit {
     datahora: new Date().toJSON(),
     valor: null,
     observacoes: '',
-    etapa: 'A',
     status: 'A'
   };
   @Input()
@@ -95,7 +94,6 @@ export class PedidoComponent implements OnInit {
       pessoas: [this.pedido.pessoas],
       datahora: [this.pedido.datahora],
       formatData: [new Date(this.pedido.datahora)],
-      etapa: [this.pedido.etapa],
       valor: [this.pedido.valor],
       observacoes: [this.pedido.observacoes],
       status: [this.pedido.status]
@@ -114,9 +112,6 @@ export class PedidoComponent implements OnInit {
         this.addValidation();
       });
     } else {
-      if (this.etapa) {
-        this.pedido.etapa = this.etapa;
-      }
       this.addValidation();
     }
   }

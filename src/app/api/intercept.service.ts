@@ -8,9 +8,8 @@ import {
   HttpEvent
 } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
 import { tap, catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { throwError, Observable } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable()

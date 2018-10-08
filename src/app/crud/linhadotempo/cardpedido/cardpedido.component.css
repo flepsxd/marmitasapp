@@ -1,0 +1,12 @@
+:host /deep/ .ui-card-title {
+  font-size: 1.2em;
+}
+
+:host /deep/ .ui-card-subtitle {
+  font-size: 0.9em;
+}
+
+:host /deep/ th,
+:host /deep/ td {
+  font-size: 0.8em;
+}

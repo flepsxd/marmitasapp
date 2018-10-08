@@ -3,14 +3,14 @@
     <p-table *ngIf="pedidoItens.length > 0" [columns]="columnsPedidoItens" [value]="pedidoItens">
       <ng-template pTemplate="header" let-columns>
         <tr>
-          <th *ngFor="let col of columns">
+          <th *ngFor="let col of columns" [ngClass]="col.class">
             {{col.header}}
           </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-columns="columns">
         <tr>
-          <td *ngFor="let col of columns">
+          <td *ngFor="let col of columns" [ngClass]="col.class">
             {{col.field(rowData)}}
           </td>
         </tr>
@@ -24,7 +24,7 @@
       </div>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
         <button pButton icon="pi pi-trash" (click)="excluir()"></button>
-        <button pButton icon="pi pi-pencil" (click)="editar()"></button>
+        <button pButton icon="pi pi-pencil" (click)="editar()" class="ml-10"></button>
       </div>
     </div>
   </p-footer>
@@ -35,7 +35,7 @@
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
       <button pButton icon="pi pi-times" (click)="cancelar()" label="Cancelar"></button>
-      <button pButton icon="pi pi-check" (click)="salvar()" label="Salvar"></button>
+      <button pButton icon="pi pi-check" (click)="salvar()" label="Salvar" class="ml-10"></button>
     </div>
   </p-footer>
 </p-dialog>

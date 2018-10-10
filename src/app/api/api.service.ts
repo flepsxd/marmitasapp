@@ -115,7 +115,9 @@ export class ApiService {
   }
 
   public confirmDialog(instance, cad) {
-    if (instance.confirmar) {
+    if (instance.confirmarProprio) {
+      return instance.confirmarProprio();
+    } else if (instance.confirmar) {
       const dados = instance.confirmar();
       let obs;
       if (dados[cad.chave]) {

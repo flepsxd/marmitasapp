@@ -1,0 +1,42 @@
+<p-card subtitle="Endereço">
+  <div class="ui-g ui-fluid" [formGroup]="endereco">
+    <div class="ui-g-12 ui-g-nopad">
+      <div class="ui-g-3">
+        <h4>CEP</h4>
+        <input pInputText formControlName="cep" placeholder="CEP">
+      </div>
+    </div>
+    <div class="ui-g-12 ui-g-nopad">
+      <div class="ui-g-6">
+        <h4>Endereço</h4>
+        <input pInputText formControlName="endereco" placeholder="Endereço">
+      </div>
+      <div class="ui-g-3">
+        <h4>Número</h4>
+        <input pInputText formControlName="numero" placeholder="Número">
+      </div>
+      <div class="ui-g-3">
+        <h4>Complemento</h4>
+        <input pInputText formControlName="complemento" placeholder="Complemento">
+      </div>
+    </div>
+    <div class="ui-g-6">
+      <h4>Cidade</h4>
+      <p-autoComplete class="" formControlName="cidade" [suggestions]="dadosCidades" (completeMethod)="getCidades($event)"
+        field="nome" [dropdown]="true" dataKey="idcidade" (onSelect)="apiService.aoSelecionar(endereco, 'idcidade', 'cidade', $event)">
+        <ng-template let-cidade pTemplate="item">
+          <div *ngIf="cidade.nome">{{cidade.nome}}</div>
+        </ng-template>
+      </p-autoComplete>
+    </div>
+    <div class="ui-g-6">
+      <h4>Bairro</h4>
+      <p-autoComplete class="" formControlName="bairro" [suggestions]="dadosBairros" (completeMethod)="getBairros($event)"
+        field="nome" [dropdown]="true" dataKey="idbairro" (onSelect)="apiService.aoSelecionar(endereco, 'idbairro', 'bairro', $event)">
+        <ng-template let-bairro pTemplate="item">
+          <div *ngIf="bairro.nome">{{bairro.nome}}</div>
+        </ng-template>
+      </p-autoComplete>
+    </div>
+  </div>
+</p-card>

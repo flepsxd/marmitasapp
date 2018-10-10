@@ -39,6 +39,7 @@ export class PedidoComponent implements OnInit {
     {
       header: 'Produto',
       field: 'produto',
+      class: 'descricao',
       fn: function(dados) {
         return dados.descricao;
       }
@@ -67,7 +68,7 @@ export class PedidoComponent implements OnInit {
       fn: this.apiService.currencyFormat
     }
   ];
-  dadosPedidosItens: Array<PedidoItens>;
+  dadosPedidosItens: Array<PedidoItens> = [];
   cadPedidoItem: Object;
 
   constructor(
@@ -85,7 +86,6 @@ export class PedidoComponent implements OnInit {
     this.apiService.get('pessoas', { ativo: true }).subscribe(resp => {
       this.pessoas = resp.dados;
     });
-    this.getDados();
 
     this.pedidoForm = this.formBuilder.group({
       idpedido: [this.pedido.idpedido],
@@ -96,11 +96,27 @@ export class PedidoComponent implements OnInit {
       formatData: [new Date(this.pedido.datahora)],
       valor: [this.pedido.valor],
       observacoes: [this.pedido.observacoes],
-      status: [this.pedido.status]
+      status: [this.pedido.status],
+      endereco: this.formBuilder.group({
+        idbairro: [null],
+        idcidade: [null],
+        cidade: [null],
+        bairro: [null],
+        endereco: [null],
+        numero: [null],
+        complemento: [null],
+        cep: [null, Validators.maxLength(9)]
+      })
     });
+
+    this.getDados();
 
     this.pedidoForm.get('formatData').valueChanges.subscribe(value => {
       this.pedidoForm.patchValue({ datahora: value.toJSON() });
+    });
+
+    this.pedidoForm.get('pessoas').valueChanges.subscribe(value => {
+      this.pedidoForm.patchValue({ endereco: value.endereco });
     });
   }
 
@@ -108,7 +124,11 @@ export class PedidoComponent implements OnInit {
     if (this.idpedido) {
       this.apiService.getId('pedidos', this.idpedido).subscribe(resp => {
         this.pedido = resp.dados;
+        this.dadosPedidosItens = this.pedido.pedidos_itens || [];
         this.pedidoForm.patchValue(this.pedido);
+        this.pedidoForm
+          .get('endereco')
+          .patchValue(this.pedido.endereco || this.pedido.pessoas.endereco);
         this.addValidation();
       });
     } else {
@@ -122,7 +142,9 @@ export class PedidoComponent implements OnInit {
   }
 
   confirmar() {
-    return this.pedidoForm.value;
+    const pedido = this.pedidoForm.value;
+    pedido.pedidos_itens = this.dadosPedidosItens;
+    return pedido;
   }
 
   getPessoas($event = { query: null }) {

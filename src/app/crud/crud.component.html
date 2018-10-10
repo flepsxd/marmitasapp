@@ -1,35 +1,38 @@
-<p-table #dt [value]="dados" [columns]="columns" [responsive]="true" (onRowSelect)="onRowSelect()" selectionMode="single" [(selection)]="selecionado"   [paginator]="true" [rows]="15">
-    <ng-template pTemplate="caption">
-      <div style="text-align: right">        
-          <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-          <input type="text" pInputText size="50" placeholder="Filtrar" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
-      </div>
+<p-table #dt [value]="dados" [columns]="columns" [responsive]="true" (onRowSelect)="onRowSelect()" selectionMode="single"
+  [(selection)]="selecionado" [paginator]="true" [rows]="15">
+  <ng-template pTemplate="caption">
+    <div style="text-align: right">
+      <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+      <input type="text" pInputText size="50" placeholder="Filtrar" (input)="dt.filterGlobal($event.target.value, 'contains')"
+        style="width:auto">
+    </div>
   </ng-template>
   <ng-template pTemplate="header" let-columns>
-    <tr >
-      <th *ngFor="let col of columns; let i = index" [attr.data-index]="i"  [ngClass]="[col.class || '', col.field]">
+    <tr>
+      <th *ngFor="let col of columns; let i = index" [attr.data-index]="i" [ngClass]="[col.class || '', col.field]">
         {{col.header}}
       </th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns">
-      <tr [pSelectableRow]="rowData">
-          <td *ngFor="let col of columns"  [ngClass]="[col.class || '', col.field]">
-              {{col.fn ? col.fn(rowData[col.field]) : rowData[col.field]}}
-          </td>
-      </tr>
+    <tr [pSelectableRow]="rowData">
+      <td *ngFor="let col of columns" [ngClass]="[col.class || '', col.field]">
+        {{col.fn ? col.fn(rowData[col.field]) : rowData[col.field]}}
+      </td>
+    </tr>
   </ng-template>
   <ng-template pTemplate="summary" let-rowData>
-      <div style="text-align:right">
-          <button type="button" pButton icon="pi pi-plus" (click)="dialogoAdd()" label="Adicionar"></button>
-      </div>
-  </ng-template> 
+    <div style="text-align:right">
+      <button type="button" pButton icon="pi pi-plus" (click)="dialogoAdd()" label="Adicionar"></button>
+    </div>
+  </ng-template>
 </p-table>
-<p-dialog [header]="cad.header" [(visible)]="exibirDialog" appendTo="body" [responsive]="true" showEffect="fade" [modal]="true">
+<p-dialog [header]="cad.header" [(visible)]="exibirDialog" appendTo="body" [responsive]="true" showEffect="fade"
+  [modal]="true" [contentStyle]="{'max-height': '600px', 'max-width': '800px'}">
   <template #dialogContainer></template>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button pButton icon="pi pi-times"  (click)="cancelar()" label="Cancelar"></button>
+      <button pButton icon="pi pi-times" (click)="cancelar()" label="Cancelar"></button>
       <button pButton icon="pi pi-check" (click)="salvar()" label="Salvar"></button>
     </div>
   </p-footer>

@@ -3,7 +3,7 @@
     <div class="ui-g-12">
       <h3>Pessoa</h3>
       <p-autoComplete class="ui-g-12" formControlName="pessoas" [suggestions]="dadosPessoas" (completeMethod)="getPessoas($event)"
-        field="nome" [forceSelection]="true" [dropdown]="true" dataKey="idpessoa" (onSelect)="apiService.aoSelecionar(pedidoForm, 'idpessoa', 'pessoa', $event)">
+        field="nome" [dropdown]="true" dataKey="idpessoa" (onSelect)="apiService.aoSelecionar(pedidoForm, 'idpessoa', 'pessoa', $event)">
         <ng-template let-pessoa pTemplate="item">
 
           <div *ngIf="pessoa.nome">Nome: {{pessoa.nome}}</div>
@@ -12,6 +12,7 @@
         </ng-template>
       </p-autoComplete>
     </div>
+    <app-endereco [endereco]="pedidoForm.get('endereco')"></app-endereco>
     <div class="ui-g-12">
       <h3>Data/Hora</h3>
       <p-calendar class="ui-g-12" placeholder="Data/Hora" showTime="true" formControlName="formatData" dateFormat="dd/mm/yy"></p-calendar>
@@ -26,7 +27,7 @@
     </div>
     <div class="ui-g-12">
       <h3>Itens do Pedido</h3>
-      <app-crud [columns]="colsPedidosItens" [cad]="cadPedidoItem"></app-crud>
+      <app-crud [source]="dadosPedidosItens" [columns]="colsPedidosItens" [cad]="cadPedidoItem"></app-crud>
     </div>
   </div>
 </form>

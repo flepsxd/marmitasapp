@@ -61,6 +61,7 @@ import { ProdutoComponent } from './crud/produtos/produto/produto.component';
 import { PedidoItensComponent } from './crud/pedidos/pedido-itens/pedido-itens.component';
 import { LinhadotempoComponent } from './crud/linhadotempo/linhadotempo.component';
 import { CardpedidoComponent } from './crud/linhadotempo/cardpedido/cardpedido.component';
+import { EnderecoComponent } from './crud/endereco/endereco.component';
 
 const appRoutes: Routes = [
   {
@@ -130,7 +131,8 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     ProdutoComponent,
     PedidoItensComponent,
     LinhadotempoComponent,
-    CardpedidoComponent
+    CardpedidoComponent,
+    EnderecoComponent
   ],
   imports: [
     BrowserModule,

@@ -7,6 +7,7 @@ import {
 import { ApiService } from '../../../api/api.service';
 import { PedidoItens } from '../../pedido-itens';
 import { Produto } from '../../produto';
+import { Observable } from '../../../../../node_modules/rxjs';
 
 @Component({
   selector: 'app-pedido-itens',
@@ -63,8 +64,11 @@ export class PedidoItensComponent implements OnInit {
     }
   }
 
-  confirmar() {
-    return this.pedidoItensForm.value;
+  confirmarProprio() {
+    return new Observable(observer => {
+      observer.next(this.pedidoItensForm.value);
+      observer.complete();
+    });
   }
 
   getProdutos($event = { query: null }) {

@@ -56,7 +56,8 @@ body>app-root>* {
   max-width: 140px;
 }
 
-.unidade {
+.unidade,
+.descricao {
   width: 100px;
 }
 
@@ -66,4 +67,10 @@ body>app-root>* {
 
 .mr-10 {
   margin-left: 10px !important;
+}
+
+h4,
+h3 {
+  margin-block-start: 0.5em !important;
+  margin-block-end: 0.5em !important;
 }

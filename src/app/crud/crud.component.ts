@@ -50,7 +50,7 @@ export class CrudComponent implements OnInit {
     }
   }
 
-  onRowSelect() {
+  onRowSelect(event) {
     this.container.clear();
     const factory: ComponentFactory<
       any
@@ -66,6 +66,13 @@ export class CrudComponent implements OnInit {
     this.apiService
       .confirmDialog(this.componentRef.instance, this.cad)
       .subscribe(obj => {
+        if (this.source) {
+          if (this.selecionado[this.cad.chave]) {
+            this.source[this.source.indexOf(this.selecionado)] = obj;
+          } else {
+            this.source.push(obj);
+          }
+        }
         this.ngOnInit();
         this.exibirDialog = false;
       });
@@ -77,6 +84,6 @@ export class CrudComponent implements OnInit {
 
   dialogoAdd() {
     this.selecionado = {};
-    this.onRowSelect();
+    this.onRowSelect({ data: this.selecionado });
   }
 }

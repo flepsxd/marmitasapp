@@ -15,6 +15,10 @@ import { Pessoa } from '../../pessoa';
 export class PessoaComponent implements OnInit {
   pessoaForm: FormGroup;
   status: boolean;
+  dadosCidades: Array<any>;
+  cidades: Array<any>;
+  bairros: Array<any>;
+  dadosBairros: Array<any>;
   pessoa: Pessoa = {
     idpessoa: null,
     nome: '',
@@ -38,7 +42,17 @@ export class PessoaComponent implements OnInit {
       telefone: [this.pessoa.telefone],
       email: [this.pessoa.email],
       status: [this.pessoa.status, Validators.required],
-      statusB: [this.pessoa.status === 'A']
+      statusB: [this.pessoa.status === 'A'],
+      endereco: this.formBuilder.group({
+        idbairro: [null],
+        idcidade: [null],
+        cidade: [null],
+        bairro: [null],
+        endereco: [null],
+        numero: [null],
+        complemento: [null],
+        cep: [null, Validators.maxLength(9)]
+      })
     });
 
     this.pessoaForm.get('statusB').valueChanges.subscribe(val => {

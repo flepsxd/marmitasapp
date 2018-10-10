@@ -27,7 +27,9 @@ export class CrudComponent implements OnInit {
   @Input()
   cad: any;
   @Input()
-  source: Array<any>;
+  source?: Array<any>;
+  @Output()
+  aoAtualizar: EventEmitter<any> = new EventEmitter();
   componentRef: ComponentRef<any>;
   exibirDialog: any = false;
   selecionado: any;
@@ -50,7 +52,7 @@ export class CrudComponent implements OnInit {
     }
   }
 
-  onRowSelect(event) {
+  onRowSelect() {
     this.container.clear();
     const factory: ComponentFactory<
       any
@@ -59,6 +61,13 @@ export class CrudComponent implements OnInit {
     this.componentRef.instance[this.cad.chave] = this.selecionado[
       this.cad.chave
     ];
+    if (
+      this.source &&
+      JSON.stringify(this.selecionado).toLowerCase() !==
+        JSON.stringify({}).toLowerCase()
+    ) {
+      this.componentRef.instance.source = this.selecionado;
+    }
     this.exibirDialog = true;
   }
 
@@ -67,14 +76,18 @@ export class CrudComponent implements OnInit {
       .confirmDialog(this.componentRef.instance, this.cad)
       .subscribe(obj => {
         if (this.source) {
-          if (this.selecionado[this.cad.chave]) {
+          if (this.selecionado[this.cad.chave] || !this.selecionado.novo) {
             this.source[this.source.indexOf(this.selecionado)] = obj;
           } else {
+            this.selecionado.novo = false;
             this.source.push(obj);
           }
         }
         this.ngOnInit();
         this.exibirDialog = false;
+        if (this.aoAtualizar) {
+          this.aoAtualizar.emit(true);
+        }
       });
   }
 
@@ -83,7 +96,7 @@ export class CrudComponent implements OnInit {
   }
 
   dialogoAdd() {
-    this.selecionado = {};
-    this.onRowSelect({ data: this.selecionado });
+    this.selecionado = { novo: true };
+    this.onRowSelect();
   }
 }

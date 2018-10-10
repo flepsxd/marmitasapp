@@ -24,6 +24,7 @@ export class PedidoComponent implements OnInit {
     idpessoa: null,
     idendereco: null,
     datahora: new Date().toJSON(),
+    previsao: new Date().toJSON(),
     valor: null,
     observacoes: '',
     status: 'A'
@@ -68,7 +69,7 @@ export class PedidoComponent implements OnInit {
       fn: this.apiService.currencyFormat
     }
   ];
-  dadosPedidosItens: Array<PedidoItens> = [];
+  dadosPedidosItens: Array<PedidoItens>;
   cadPedidoItem: Object;
 
   constructor(
@@ -94,6 +95,9 @@ export class PedidoComponent implements OnInit {
       pessoas: [this.pedido.pessoas],
       datahora: [this.pedido.datahora],
       formatData: [new Date(this.pedido.datahora)],
+      tempoprevisto: [],
+      previsao: [this.pedido.previsao],
+      previsaoFormat: [new Date(this.pedido.previsao)],
       valor: [this.pedido.valor],
       observacoes: [this.pedido.observacoes],
       status: [this.pedido.status],
@@ -113,11 +117,37 @@ export class PedidoComponent implements OnInit {
 
     this.pedidoForm.get('formatData').valueChanges.subscribe(value => {
       this.pedidoForm.patchValue({ datahora: value.toJSON() });
+      const previsao = new Date(value);
+      previsao.setMinutes(
+        previsao.getMinutes() + this.pedidoForm.get('tempoprevisto').value
+      );
+      this.pedidoForm.patchValue({ previsaoFormat: previsao });
+    });
+    this.pedidoForm.get('previsaoFormat').valueChanges.subscribe(value => {
+      this.pedidoForm.patchValue({ previsao: value.toJSON() });
+    });
+
+    this.pedidoForm.get('tempoprevisto').valueChanges.subscribe(value => {
+      const datahora = new Date(this.pedidoForm.get('formatData').value);
+      const previsao = new Date(
+        datahora.setMinutes(datahora.getMinutes() + value)
+      );
+      this.pedidoForm.patchValue({ previsaoFormat: previsao });
     });
 
     this.pedidoForm.get('pessoas').valueChanges.subscribe(value => {
-      this.pedidoForm.patchValue({ endereco: value.endereco });
+      if (typeof value === 'object') {
+        this.pedidoForm.patchValue({ endereco: value.endereco });
+      }
     });
+  }
+
+  calculaPrevisaoETempo() {
+    const datahora = new Date(this.pedidoForm.get('datahora').value);
+    const previsao = new Date(this.pedidoForm.get('previsao').value);
+    const diffMs = previsao.getTime() - datahora.getTime();
+    const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+    return diffMins || 0;
   }
 
   getDados() {
@@ -126,12 +156,20 @@ export class PedidoComponent implements OnInit {
         this.pedido = resp.dados;
         this.dadosPedidosItens = this.pedido.pedidos_itens || [];
         this.pedidoForm.patchValue(this.pedido);
+        this.pedidoForm.patchValue({
+          tempoprevisto: this.calculaPrevisaoETempo()
+        });
+        this.pedidoForm.patchValue({
+          formatData: new Date(this.pedido.datahora),
+          previsaoFormat: new Date(this.pedido.previsao)
+        });
         this.pedidoForm
           .get('endereco')
           .patchValue(this.pedido.endereco || this.pedido.pessoas.endereco);
         this.addValidation();
       });
     } else {
+      this.dadosPedidosItens = [];
       this.addValidation();
     }
   }
@@ -148,6 +186,27 @@ export class PedidoComponent implements OnInit {
   }
 
   getPessoas($event = { query: null }) {
-    this.dadosPessoas = this.apiService.filter(this.pessoas, $event.query);
+    if (!$event.query) {
+      this.dadosPessoas = this.pessoas;
+    } else {
+      this.dadosPessoas = this.apiService.filter(
+        this.pessoas,
+        $event.query,
+        function(ele) {
+          return (ele.telefone + '')
+            .toLowerCase()
+            .replace(/\D/gm, '')
+            .includes($event.query.toLowerCase().replace(/\D/gm, ''));
+        }
+      );
+    }
+  }
+
+  aoAtualizar() {
+    let valor = 0;
+    this.dadosPedidosItens.forEach(function(val, index) {
+      valor += val.vlrtotal;
+    });
+    this.pedidoForm.get('valor').patchValue(valor);
   }
 }

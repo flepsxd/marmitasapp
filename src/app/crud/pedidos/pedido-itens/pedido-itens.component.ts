@@ -28,6 +28,9 @@ export class PedidoItensComponent implements OnInit {
   @Input()
   idpedido_item: number;
 
+  @Input()
+  source: PedidoItens;
+
   dadosProdutos: Array<Produto>;
   produtos: Array<Produto>;
 
@@ -47,20 +50,55 @@ export class PedidoItensComponent implements OnInit {
       idproduto: [this.pedidoItens.idproduto, Validators.required],
       produto: [this.pedidoItens.produto],
       vlrunitario: [this.pedidoItens.vlrunitario, Validators.required],
-      quantidade: [this.pedidoItens.quantidade],
+      quantidade: [this.pedidoItens.quantidade || 1],
       vlrtotal: [this.pedidoItens.vlrtotal],
       desconto: [this.pedidoItens.desconto]
+    });
+
+    this.pedidoItensForm.get('produto').valueChanges.subscribe(prod => {
+      this.pedidoItensForm.patchValue({ vlrunitario: prod.preco });
+    });
+
+    this.pedidoItensForm
+      .get('vlrunitario')
+      .valueChanges.subscribe(vlrunitario => {
+        this.pedidoItensForm.patchValue({
+          vlrtotal:
+            this.pedidoItensForm.get('quantidade').value * vlrunitario -
+            this.pedidoItensForm.get('desconto').value
+        });
+      });
+
+    this.pedidoItensForm.get('desconto').valueChanges.subscribe(desconto => {
+      this.pedidoItensForm.patchValue({
+        vlrtotal:
+          this.pedidoItensForm.get('quantidade').value *
+            this.pedidoItensForm.get('vlrunitario').value -
+          desconto
+      });
+    });
+
+    this.pedidoItensForm.get('quantidade').valueChanges.subscribe(value => {
+      this.pedidoItensForm.patchValue({
+        vlrtotal:
+          value * this.pedidoItensForm.get('vlrunitario').value -
+          this.pedidoItensForm.get('desconto').value
+      });
     });
   }
 
   getDados() {
-    if (this.idpedido_item) {
-      this.apiService
-        .getId('pedidositens', this.idpedido_item)
-        .subscribe(resp => {
-          this.pedidoItens = resp.dados;
-          this.pedidoItensForm.patchValue(this.pedidoItens);
-        });
+    if (this.source) {
+      this.pedidoItens = this.source;
+    } else {
+      if (this.idpedido_item) {
+        this.apiService
+          .getId('pedidositens', this.idpedido_item)
+          .subscribe(resp => {
+            this.pedidoItens = resp.dados;
+            this.pedidoItensForm.patchValue(this.pedidoItens);
+          });
+      }
     }
   }
 

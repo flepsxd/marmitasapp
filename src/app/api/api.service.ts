@@ -67,15 +67,19 @@ export class ApiService {
     };
   }
 
-  public filter(reference, val) {
+  public filter(reference, val, filtro = null) {
     const ref = typeof reference === 'string' ? this[reference] : reference;
     return (ref || []).filter(ele => {
       let filtered = false;
-      Object.keys(ele).forEach(key => {
-        if (ele[key] && !filtered) {
-          filtered = (ele[key] + '').toLowerCase().includes(val);
-        }
-      });
+      if (filtro) {
+        filtered = filtro(ele);
+      } else {
+        Object.keys(ele).forEach(key => {
+          if (ele[key] && !filtered) {
+            filtered = (ele[key] + '').toLowerCase().includes(val);
+          }
+        });
+      }
       return filtered;
     });
   }

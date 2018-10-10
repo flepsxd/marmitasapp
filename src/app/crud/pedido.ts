@@ -8,6 +8,7 @@ export interface Pedido {
   idpessoa: number;
   idendereco?: number;
   datahora: string;
+  previsao: string;
   valor: number;
   observacoes?: string;
   pessoas?: Pessoa;

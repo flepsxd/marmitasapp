@@ -13,13 +13,17 @@
       </p-autoComplete>
     </div>
     <app-endereco [endereco]="pedidoForm.get('endereco')"></app-endereco>
-    <div class="ui-g-12">
+    <div class="ui-g-4">
       <h3>Data/Hora</h3>
-      <p-calendar class="ui-g-12" placeholder="Data/Hora" showTime="true" formControlName="formatData" dateFormat="dd/mm/yy"></p-calendar>
+      <p-calendar placeholder="Data/Hora" showTime="true" formControlName="formatData" dateFormat="dd/mm/yy"></p-calendar>
     </div>
-    <div class="ui-g-12">
-      <h3>Valor</h3>
-      <input type="text" class="ui-g-12" placeholder="Valor" formControlName="valor" pInputText currencyMask />
+    <div class="ui-g-4">
+      <h3>Tempo Previsto</h3>
+      <input type="number" class="ui-g-12" placeholder="Tempo Previsto" formControlName="tempoprevisto" pInputText />
+    </div>
+    <div class="ui-g-4">
+      <h3>Previsão</h3>
+      <p-calendar placeholder="Previsão" showTime="true" formControlName="previsaoFormat" dateFormat="dd/mm/yy"></p-calendar>
     </div>
     <div class="ui-g-12">
       <h3>Observações</h3>
@@ -27,7 +31,12 @@
     </div>
     <div class="ui-g-12">
       <h3>Itens do Pedido</h3>
-      <app-crud [source]="dadosPedidosItens" [columns]="colsPedidosItens" [cad]="cadPedidoItem"></app-crud>
+      <app-crud *ngIf="dadosPedidosItens" [source]="dadosPedidosItens" [columns]="colsPedidosItens" [cad]="cadPedidoItem"
+        (aoAtualizar)="aoAtualizar()"></app-crud>
+    </div>
+    <div class="ui-g-12">
+      <h3>Valor</h3>
+      <input type="text" class="ui-g-12" placeholder="Valor" formControlName="valor" pInputText currencyMask />
     </div>
   </div>
 </form>

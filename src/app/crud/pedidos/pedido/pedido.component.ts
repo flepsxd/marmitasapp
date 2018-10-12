@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild
+} from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -36,6 +43,10 @@ export class PedidoComponent implements OnInit {
 
   dadosPessoas: Array<Pessoa>;
   pessoas: Array<Pessoa>;
+  cadastroPessoa = false;
+  @ViewChild('cadPessoa')
+  cadPessoa: any;
+  novaPessoa: Pessoa;
   colsPedidosItens: Array<any> = [
     {
       header: 'Produto',
@@ -193,10 +204,16 @@ export class PedidoComponent implements OnInit {
         this.pessoas,
         $event.query,
         function(ele) {
-          return (ele.telefone + '')
-            .toLowerCase()
-            .replace(/\D/gm, '')
-            .includes($event.query.toLowerCase().replace(/\D/gm, ''));
+          return (
+            (ele.telefone + '')
+              .toLowerCase()
+              .replace(/\D/gm, '')
+              .includes($event.query.toLowerCase().replace(/\D/gm, '')) ||
+            (ele.nome + '')
+              .toLowerCase()
+              .replace(/\D/gm, '')
+              .includes($event.query.toLowerCase().replace(/\D/gm, ''))
+          );
         }
       );
     }
@@ -208,5 +225,25 @@ export class PedidoComponent implements OnInit {
       valor += val.vlrtotal;
     });
     this.pedidoForm.get('valor').patchValue(valor);
+  }
+
+  cadastrarPessoa($event) {
+    if (typeof this.pedidoForm.get('pessoas').value === 'string') {
+      this.novaPessoa = {
+        idpessoa: null,
+        nome: '',
+        status: 'A',
+        telefone: this.pedidoForm.get('pessoas').value
+      };
+      this.cadastroPessoa = true;
+    }
+  }
+
+  salvarPessoa() {
+    const pessoa = this.cadPessoa.confirmar();
+    this.apiService.add('pessoas', pessoa).subscribe(resp => {
+      this.pedidoForm.get('pessoas').patchValue(resp.dados);
+      this.cadastroPessoa = false;
+    });
   }
 }

@@ -28,6 +28,7 @@ export class PessoaComponent implements OnInit {
   };
   @Input()
   idpessoa: number;
+  @Input() source: Pessoa;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -61,7 +62,9 @@ export class PessoaComponent implements OnInit {
   }
 
   getDados() {
-    if (this.idpessoa) {
+    if (this.source) {
+      this.pessoa = this.source;
+    } else  if (this.idpessoa) {
       this.apiService.getId('pessoas', this.idpessoa).subscribe(resp => {
         this.pessoa = resp.dados;
         this.pessoaForm.patchValue(this.pessoa);

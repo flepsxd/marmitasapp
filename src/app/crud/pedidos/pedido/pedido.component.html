@@ -3,7 +3,7 @@
     <div class="ui-g-12">
       <h3>Pessoa</h3>
       <p-autoComplete class="ui-g-12" formControlName="pessoas" [suggestions]="dadosPessoas" (completeMethod)="getPessoas($event)"
-        field="nome" [dropdown]="true" dataKey="idpessoa" (onSelect)="apiService.aoSelecionar(pedidoForm, 'idpessoa', 'pessoa', $event)">
+        field="nome" [dropdown]="true" dataKey="idpessoa" (onBlur)="cadastrarPessoa($event)" (onSelect)="apiService.aoSelecionar(pedidoForm, 'idpessoa', 'pessoa', $event)">
         <ng-template let-pessoa pTemplate="item">
 
           <div *ngIf="pessoa.nome">Nome: {{pessoa.nome}}</div>
@@ -40,3 +40,13 @@
     </div>
   </div>
 </form>
+<p-dialog [header]="'Cadastro de Pessoa'" [(visible)]="cadastroPessoa" appendTo="body" [responsive]="true" showEffect="fade"
+  [modal]="true" [contentStyle]="{'max-height': '600px', 'max-width': '800px'}">
+  <app-pessoa #cadPessoa *ngIf="cadastroPessoa" [source]="novaPessoa"></app-pessoa>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button pButton icon="pi pi-times" (click)="cancelar()" label="Cancelar"></button>
+      <button pButton icon="pi pi-check" (click)="salvarPessoa()" label="Salvar"></button>
+    </div>
+  </p-footer>
+</p-dialog>

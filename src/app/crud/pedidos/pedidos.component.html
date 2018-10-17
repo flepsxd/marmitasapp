@@ -1,1 +1,1 @@
-<app-crud [columns]="columns" [cad]="cad"></app-crud>
+<app-crud *ngIf="etapas.length > 0" [columns]="columns" [cad]="cad" [filtros]="filtros"></app-crud>

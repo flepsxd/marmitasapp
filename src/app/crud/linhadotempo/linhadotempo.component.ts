@@ -13,6 +13,7 @@ export class LinhadotempoComponent implements OnInit {
   scrumboard: Array<any>;
   cards: Array<Pedido>;
   dragActive: any;
+  filtros: Array<any> = [];
 
   subs = new Subscription();
 
@@ -20,6 +21,13 @@ export class LinhadotempoComponent implements OnInit {
     private apiService: ApiService,
     private dragulaService: DragulaService
   ) {
+    this.filtros = [{
+      type: 'date',
+      title: 'Data',
+      value: new Date(),
+      key: 'datahora',
+      valorFormatado: new Date().toJSON()
+    }];
     this.subs.add(
       this.dragulaService
         .dropModel('timeline')
@@ -50,7 +58,12 @@ export class LinhadotempoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.apiService.get('pedidos/timeline').subscribe(resp => {
+
+    this.getDados();
+  }
+
+  getDados() {
+    this.apiService.get('pedidos/timeline', this.apiService.tratarFilter(this.filtros)).subscribe(resp => {
       this.scrumboard = resp.dados;
     });
   }
@@ -77,5 +90,17 @@ export class LinhadotempoComponent implements OnInit {
 
   log() {
     console.log(arguments);
+  }
+
+  alterarFiltro(filtro, index, value) {
+    if (filtro.array) {
+      value = value.map((val) => val[filtro.dataKey]);
+    }
+    filtro.valorFormatado = value;
+    this.filtros[index] = filtro;
+  }
+
+  filtrar() {
+    this.getDados();
   }
 }

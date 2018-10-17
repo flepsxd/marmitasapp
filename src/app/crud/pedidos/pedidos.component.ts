@@ -10,9 +10,31 @@ import { PedidoComponent } from './pedido/pedido.component';
 })
 export class PedidosComponent implements OnInit {
   columns: Array<{}> = [];
+  etapas: Array<any> = [];
   cad: any;
+  filtros: Array<any>;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService) {
+    this.apiService.get('etapas').subscribe(resp => {
+      this.etapas = resp.dados;
+      this.filtros = [
+        {
+          type: 'date',
+          title: 'Data',
+          key: 'datahora'
+        },
+        {
+          type: 'multiple',
+          title: 'Status',
+          key: 'pedidos_ordem.idetapa',
+          dataKey: 'idetapa',
+          keyLabel: 'descricao',
+          array: true,
+          opcoes: this.etapas
+        }
+      ];
+    });
+  }
 
   ngOnInit() {
     this.cad = {
@@ -28,10 +50,7 @@ export class PedidosComponent implements OnInit {
       },
       {
         header: 'Pessoa',
-        field: 'pessoas',
-        fn: function(val) {
-          return val.nome;
-        }
+        field: 'pessoa_nome'
       },
       {
         header: 'Data/Hora',
@@ -42,7 +61,7 @@ export class PedidosComponent implements OnInit {
       },
       {
         header: 'Status',
-        field: 'status',
+        field: 'status_formatado',
         class: 'status'
       }
     ];

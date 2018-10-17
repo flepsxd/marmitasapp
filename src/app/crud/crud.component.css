@@ -1,1 +1,4 @@
 
+:host /deep/ .ui-table-caption {
+  padding: 0px !important;
+}

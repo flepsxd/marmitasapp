@@ -1,0 +1,26 @@
+
+<div *ngIf="dados.filtros.length > 0" class="padding-caption ui-g ui-fluid">
+  <div class="ui-g-2" *ngFor="let filtro of dados.filtros; let i = index" [attr.data-index]="i">
+      <h3>{{filtro.title}}</h3>
+      <div  *ngIf="filtro.type == 'date'">
+          <p-calendar [placeholder]="filtro.title" [(ngModel)]="filtro.value" (onSelect)="filtroChange(filtro, i, filtro.value.toJSON())" (onInput)="filtroChange(filtro, i, filtro.value.toJSON())" dateFormat="dd/mm/yy"></p-calendar>
+      </div>
+      <div *ngIf="filtro.type == 'toggle'">
+          <p-triStateCheckbox [(ngModel)]="filtro.value" (onChange)="filtroChange(filtro, i, (filtro.value ? filtro.valorVerdadeiro : filtro.valorFalso))" [label]="filtro.value ? filtro.verdadeiro : (filtro.value == false ? filtro.falso : 'Sem Filtro')"></p-triStateCheckbox>
+      </div>
+      <div *ngIf="filtro.type == 'multiple'">
+          <p-multiSelect [options]="filtro.opcoes" [(ngModel)]="filtro.value" [dataKey]="filtro.dataKey" defaultLabel="Selecione..." [optionLabel]="filtro.keyLabel" (onChange)="filtroChange(filtro, i, $event.value)"></p-multiSelect>
+      </div>
+      <div *ngIf="filtro.type == 'input'">
+          <input type="text" pInputText [(ngModel)]="filtro.value" [placeholder]="filtro.title" (onChange)="filtroChange(filtro, i, filtro.value)">
+      </div>
+  </div>
+  <div style="margin-left: auto; margin-right: 20px; margin-top: auto;">
+    <button pButton icon="pi pi-filter" (click)="fnFiltrar()" label="Filtrar"></button>
+  </div>
+</div>
+<div *ngIf="dados.length > 0" class="separate"></div>
+<div *ngIf="!searchDesabilitado" class="padding-caption input-search">
+  <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+  <input type="text" pInputText size="50" placeholder="Filtrar" (input)="pesquisar($event.target.value, 'contains')" style="width:auto">
+</div>

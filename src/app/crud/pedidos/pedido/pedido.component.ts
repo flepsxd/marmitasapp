@@ -85,7 +85,7 @@ export class PedidoComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private apiService: ApiService
+    public apiService: ApiService
   ) {}
 
   ngOnInit() {
@@ -95,9 +95,7 @@ export class PedidoComponent implements OnInit {
       extraURL: `/pedido/${this.idpedido}`,
       chave: 'idpedido_item'
     };
-    this.apiService.get('pessoas', { ativo: true }).subscribe(resp => {
-      this.pessoas = resp.dados;
-    });
+    this.loadPessoa();
 
     this.pedidoForm = this.formBuilder.group({
       idpedido: [this.pedido.idpedido],
@@ -153,11 +151,17 @@ export class PedidoComponent implements OnInit {
     });
   }
 
+  loadPessoa() {
+    this.apiService.get('pessoas', { ativo: true }).subscribe(resp => {
+      this.pessoas = resp.dados;
+    });
+  }
+
   calculaPrevisaoETempo() {
     const datahora = new Date(this.pedidoForm.get('datahora').value);
     const previsao = new Date(this.pedidoForm.get('previsao').value);
     const diffMs = previsao.getTime() - datahora.getTime();
-    const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+    const diffMins = Math.round(diffMs / 60000);
     return diffMins || 0;
   }
 
@@ -244,6 +248,7 @@ export class PedidoComponent implements OnInit {
     this.apiService.add('pessoas', pessoa).subscribe(resp => {
       this.pedidoForm.get('pessoas').patchValue(resp.dados);
       this.cadastroPessoa = false;
+      this.loadPessoa();
     });
   }
 }

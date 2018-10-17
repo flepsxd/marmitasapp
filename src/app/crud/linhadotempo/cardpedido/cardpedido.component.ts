@@ -48,10 +48,7 @@ export class CardpedidoComponent implements OnInit {
   ngOnInit() {
     this.pessoa = this.pedido.pessoas;
     this.pedidoItens = this.pedido.pedidos_itens;
-    if (
-      this.idetapa !== this.pedido.etapa ||
-      this.ordem !== this.pedido.ordem
-    ) {
+    if (this.idetapa !== this.pedido.etapa) {
       this.pedido.etapa = this.idetapa;
       this.pedido.ordem = this.ordem;
       this.apiService

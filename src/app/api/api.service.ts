@@ -19,7 +19,7 @@ export class ApiService {
   public produtos: Array<Produto>;
   public enderecos: Array<Endereco>;
   public pedido_itens: Array<PedidoItens>;
-  private API_URL = 'http://localhost/marmita';
+  private API_URL = 'http://marmitasapi.com';
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
@@ -132,6 +132,23 @@ export class ApiService {
       return obs();
     } else {
       throw Error('Não foi criado objeto de retorno confirmar no componente');
+    }
+  }
+
+  public tratarFilter(filtros) {
+    const paraFiltrar = {};
+    const newFiltros = filtros.filter((val) => typeof val.valorFormatado !== 'undefined');
+    if (newFiltros.length > 0) {
+      newFiltros.forEach(filtro => {
+        if (filtro.valorFormatado) {
+          paraFiltrar[filtro.key] = filtro.valorFormatado;
+        }
+      });
+      return {
+        filter: JSON.stringify(paraFiltrar)
+      };
+    } else {
+      return paraFiltrar;
     }
   }
 }

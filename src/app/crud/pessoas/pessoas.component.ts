@@ -11,10 +11,22 @@ import { PessoaComponent } from './pessoa/pessoa.component';
 export class PessoasComponent implements OnInit {
   columns: Array<{}> = [];
   cad: any;
+  filtros: Array<any> = [];
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
+    this.filtros = [
+      {
+        key: 'status',
+        title: 'Status',
+        type: 'toggle',
+        verdadeiro: 'Ativo',
+        falso: 'Inativo',
+        valorVerdadeiro: 'A',
+        valorFalso: 'I'
+      }
+    ];
     this.cad = {
       component: PessoaComponent,
       chave: 'idpessoa',
@@ -36,10 +48,7 @@ export class PessoasComponent implements OnInit {
       },
       {
         header: 'Status',
-        field: 'status',
-        fn: function(dado) {
-          return dado === 'A' ? 'Ativo' : 'Inativo';
-        },
+        field: 'status_formatado',
         class: 'status'
       }
     ];

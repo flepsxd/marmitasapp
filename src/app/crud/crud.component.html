@@ -1,16 +1,13 @@
 <p-table #dt [value]="dados" [columns]="columns" [responsive]="true" (onRowSelect)="onRowSelect()" selectionMode="single"
-  [(selection)]="selecionado" [paginator]="true" [rows]="15">
+  [(selection)]="selecionado" [paginator]="true" [rows]="20" >
   <ng-template pTemplate="caption">
-    <div style="text-align: right">
-      <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-      <input type="text" pInputText size="50" placeholder="Filtrar" (input)="dt.filterGlobal($event.target.value, 'contains')"
-        style="width:auto">
-    </div>
+    <app-filtros [dados]="dt" (search)="dt.filterGlobal($event, 'contains')" (alterarFiltro)="dt.filtroChange($event.filtro, $event.index, $event.valor)" (filtrar)="dt.filtrar($event)"></app-filtros>
   </ng-template>
   <ng-template pTemplate="header" let-columns>
     <tr>
-      <th *ngFor="let col of columns; let i = index" [attr.data-index]="i" [ngClass]="[col.class || '', col.field]">
+      <th *ngFor="let col of columns; let i = index" [attr.data-index]="i" [ngClass]="[col.class || '', col.field]" [pSortableColumn]="col.field">
         {{col.header}}
+        <p-sortIcon [field]="col.field"></p-sortIcon>
       </th>
     </tr>
   </ng-template>

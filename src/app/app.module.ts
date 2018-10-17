@@ -19,6 +19,9 @@ import { CalendarModule } from 'primeng/calendar';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DragDropModule } from 'primeng/dragdrop';
 import { GrowlModule } from 'primeng/growl';
+import {ToggleButtonModule} from 'primeng/togglebutton';
+import {MultiSelectModule} from 'primeng/multiselect';
+import {TriStateCheckboxModule} from 'primeng/tristatecheckbox';
 
 import { DragulaModule } from 'ng2-dragula';
 
@@ -62,6 +65,7 @@ import { PedidoItensComponent } from './crud/pedidos/pedido-itens/pedido-itens.c
 import { LinhadotempoComponent } from './crud/linhadotempo/linhadotempo.component';
 import { CardpedidoComponent } from './crud/linhadotempo/cardpedido/cardpedido.component';
 import { EnderecoComponent } from './crud/endereco/endereco.component';
+import { FiltrosComponent } from './filtros/filtros.component';
 
 const appRoutes: Routes = [
   {
@@ -132,7 +136,8 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     PedidoItensComponent,
     LinhadotempoComponent,
     CardpedidoComponent,
-    EnderecoComponent
+    EnderecoComponent,
+    FiltrosComponent
   ],
   imports: [
     BrowserModule,
@@ -155,6 +160,9 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     CurrencyMaskModule,
     DragDropModule,
     GrowlModule,
+    ToggleButtonModule,
+    MultiSelectModule,
+    TriStateCheckboxModule,
     FlexLayoutModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes, { enableTracing: true }),

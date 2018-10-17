@@ -1,0 +1,12 @@
+:host /deep/ .separate{
+  border-top: 1px solid black;
+  width: 100%;
+}
+
+:host /deep/ .padding-caption  {
+  padding: 0.571em 1em;
+}
+
+:host /deep/ .input-search {
+  text-align: left;
+}

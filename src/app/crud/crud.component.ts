@@ -20,6 +20,7 @@ import { ApiService } from '../api/api.service';
 export class CrudComponent implements OnInit {
   @ViewChild('dialogContainer', { read: ViewContainerRef })
   container;
+  @ViewChild('dt') dt: any;
   @Input()
   columns: any[] = [];
   @Input()
@@ -31,6 +32,7 @@ export class CrudComponent implements OnInit {
   @Output()
   aoAtualizar: EventEmitter<any> = new EventEmitter();
   componentRef: ComponentRef<any>;
+  @Input() filtros: Array<any> = [];
   exibirDialog: any = false;
   selecionado: any;
   dados: Array<any>;
@@ -41,11 +43,18 @@ export class CrudComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.dt.filtros = this.filtros;
+    this.dt.filtroChange = this.filtroChange;
+    this.dt.filtrar = this.carregarDados.bind(this);
+    this.carregarDados();
+  }
+
+  carregarDados() {
     if (this.source) {
       this.dados = this.source;
     } else {
       this.apiService
-        .get(this.cad.resource + (this.cad.extraURL || ''))
+        .get(this.cad.resource + (this.cad.extraURL || ''), this.apiService.tratarFilter(this.filtros))
         .subscribe(resp => {
           this.dados = resp.dados;
         });
@@ -98,5 +107,14 @@ export class CrudComponent implements OnInit {
   dialogoAdd() {
     this.selecionado = { novo: true };
     this.onRowSelect();
+  }
+
+  filtroChange(filtro, index, value) {
+    if (filtro.array) {
+      value = value.map((val) => val[filtro.dataKey]);
+    }
+    filtro.valorFormatado = value;
+    this.filtros[index] = filtro;
+    console.log(this.filtros);
   }
 }

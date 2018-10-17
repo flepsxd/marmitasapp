@@ -1,3 +1,4 @@
+<app-filtros searchDesabilitado="true" [dados]="{filtros: filtros}" (alterarFiltro)="alterarFiltro($event.filtro, $event.index, $event.valor)" (filtrar)="filtrar($event)"></app-filtros>
 <div fxLayout="row">
   <p-card fxFlex="auto" *ngFor="let item of scrumboard" [title]="item.header">
     <div dragula="timeline" [(dragulaModel)]="item.dados" (dragulaModelChange)="log($event,item)">

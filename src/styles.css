@@ -40,9 +40,11 @@ body>app-root>* {
   max-height: 100%;
 }
 
-.id,
-.status {
+.id {
   width: 80px;
+}
+.status {
+  width: 100px;
 }
 
 .valor:not(th),

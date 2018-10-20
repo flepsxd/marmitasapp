@@ -22,6 +22,7 @@ import { GrowlModule } from 'primeng/growl';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {TriStateCheckboxModule} from 'primeng/tristatecheckbox';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
 
 import { DragulaModule } from 'ng2-dragula';
 
@@ -163,6 +164,7 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     ToggleButtonModule,
     MultiSelectModule,
     TriStateCheckboxModule,
+    OverlayPanelModule,
     FlexLayoutModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes, { enableTracing: true }),

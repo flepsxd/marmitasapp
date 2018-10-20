@@ -1,5 +1,9 @@
-<p-card *ngIf="pessoa" [title]="pessoa.nome" [subtitle]="'Contato: ' + pessoa.telefone">
-  <div>
+<p-card  *ngIf="pessoa" [style]="{'margin-bottom': '10px'}" [title]="pessoa.nome" [subtitle]="'Contato: ' + pessoa.telefone">
+  <div *ngIf="compareDate(10)"  [ngSwitch]="mensagemExpira">
+    <p-message *ngSwitchCase="0" severity="error" text="Pedido expirado"></p-message>
+    <p-message *ngSwitchCase="10" severity="warn" text="Pedido expirando"></p-message>
+  </div>
+  <p-overlayPanel #table [style]="{'max-width': '300px'}">
     <p-table *ngIf="pedidoItens.length > 0" [columns]="columnsPedidoItens" [value]="pedidoItens">
       <ng-template pTemplate="header" let-columns>
         <tr>
@@ -16,7 +20,8 @@
         </tr>
       </ng-template>
     </p-table>
-  </div>
+  </p-overlayPanel>
+  <button type="text" icon="pi pi-search" pButton label="Itens" (click)="table.toggle($event)" [style]="{'margin-top': '10px'}"></button>
   <p-footer>
     <div fxLayout="row" fxLayoutAlign="space-between start">
       <div>
@@ -29,13 +34,3 @@
     </div>
   </p-footer>
 </p-card>
-<p-dialog [(visible)]="dialog" [header]="'Pedido ' + pedido.idpedido" appendTo="body" [modal]="true" [responsive]="true"
-  showEffect="fade">
-  <app-pedido #pedidoFn *ngIf="dialog" [idpedido]="pedido.idpedido"></app-pedido>
-  <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button pButton icon="pi pi-times" (click)="cancelar()" label="Cancelar"></button>
-      <button pButton icon="pi pi-check" (click)="salvar()" label="Salvar" class="ml-10"></button>
-    </div>
-  </p-footer>
-</p-dialog>

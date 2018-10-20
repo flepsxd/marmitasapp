@@ -13,7 +13,10 @@ export class LinhadotempoComponent implements OnInit {
   scrumboard: Array<any>;
   cards: Array<Pedido>;
   dragActive: any;
+  pedido: any = {};
   filtros: Array<any> = [];
+  cadastroPedido = false;
+  @ViewChild('pedidoFn') pedidoFn: any;
 
   subs = new Subscription();
 
@@ -90,6 +93,31 @@ export class LinhadotempoComponent implements OnInit {
 
   log() {
     console.log(arguments);
+  }
+
+  adicionar(item) {
+    this.setPedido({idetapa: item.idetapa});
+  }
+
+  excluirPedido(idpedido) {
+  }
+
+  setPedido(item) {
+    this.pedido = item;
+    this.cadastroPedido = true;
+  }
+
+  cancelar() {
+    this.cadastroPedido = false;
+  }
+
+  salvar() {
+    this.apiService
+      .confirmDialog(this.pedidoFn, { resource: 'pedidos', chave: 'idpedido' })
+      .subscribe(obj => {
+        this.cadastroPedido = false;
+        this.getDados();
+      });
   }
 
   alterarFiltro(filtro, index, value) {

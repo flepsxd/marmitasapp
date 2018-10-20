@@ -6,6 +6,7 @@ import { Produto } from '../crud/produto';
 import { Endereco } from '../crud/endereco';
 import { PedidoItens } from '../crud/pedido-itens';
 
+import * as moment from 'moment';
 import { formatCurrency } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from '../../../node_modules/rxjs';
@@ -151,4 +152,13 @@ export class ApiService {
       return paraFiltrar;
     }
   }
+
+  public parseDate(date) {
+    return moment(date).toDate();
+  }
+
+  public dateToJSON(data) {
+    return moment(data).format();
+  }
+
 }

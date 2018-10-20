@@ -40,6 +40,7 @@ export class PedidoComponent implements OnInit {
   idpedido: number;
   @Input()
   etapa: string;
+  @Input() source: any;
 
   dadosPessoas: Array<Pessoa>;
   pessoas: Array<Pessoa>;
@@ -103,10 +104,10 @@ export class PedidoComponent implements OnInit {
       idendereco: [this.pedido.idendereco],
       pessoas: [this.pedido.pessoas],
       datahora: [this.pedido.datahora],
-      formatData: [new Date(this.pedido.datahora)],
+      formatData: [this.apiService.parseDate(this.pedido.datahora)],
       tempoprevisto: [],
       previsao: [this.pedido.previsao],
-      previsaoFormat: [new Date(this.pedido.previsao)],
+      previsaoFormat: [this.apiService.parseDate(this.pedido.previsao)],
       valor: [this.pedido.valor],
       observacoes: [this.pedido.observacoes],
       status: [this.pedido.status],
@@ -125,7 +126,7 @@ export class PedidoComponent implements OnInit {
     this.getDados();
 
     this.pedidoForm.get('formatData').valueChanges.subscribe(value => {
-      this.pedidoForm.patchValue({ datahora: value.toJSON() });
+      this.pedidoForm.patchValue({ datahora: this.apiService.dateToJSON(value) });
       const previsao = new Date(value);
       previsao.setMinutes(
         previsao.getMinutes() + this.pedidoForm.get('tempoprevisto').value
@@ -133,7 +134,7 @@ export class PedidoComponent implements OnInit {
       this.pedidoForm.patchValue({ previsaoFormat: previsao });
     });
     this.pedidoForm.get('previsaoFormat').valueChanges.subscribe(value => {
-      this.pedidoForm.patchValue({ previsao: value.toJSON() });
+      this.pedidoForm.patchValue({ previsao: this.apiService.dateToJSON(value) });
     });
 
     this.pedidoForm.get('tempoprevisto').valueChanges.subscribe(value => {
@@ -158,15 +159,17 @@ export class PedidoComponent implements OnInit {
   }
 
   calculaPrevisaoETempo() {
-    const datahora = new Date(this.pedidoForm.get('datahora').value);
-    const previsao = new Date(this.pedidoForm.get('previsao').value);
+    const datahora = this.apiService.parseDate(this.pedidoForm.get('datahora').value);
+    const previsao = this.apiService.parseDate(this.pedidoForm.get('previsao').value);
     const diffMs = previsao.getTime() - datahora.getTime();
     const diffMins = Math.round(diffMs / 60000);
     return diffMins || 0;
   }
 
   getDados() {
-    if (this.idpedido) {
+    if (this.source && !this.idpedido) {
+      this.pedido = this.source;
+    } else if (this.idpedido) {
       this.apiService.getId('pedidos', this.idpedido).subscribe(resp => {
         this.pedido = resp.dados;
         this.dadosPedidosItens = this.pedido.pedidos_itens || [];
@@ -175,8 +178,8 @@ export class PedidoComponent implements OnInit {
           tempoprevisto: this.calculaPrevisaoETempo()
         });
         this.pedidoForm.patchValue({
-          formatData: new Date(this.pedido.datahora),
-          previsaoFormat: new Date(this.pedido.previsao)
+          formatData: this.apiService.parseDate(this.pedido.datahora),
+          previsaoFormat: this.apiService.parseDate(this.pedido.previsao)
         });
         this.pedidoForm
           .get('endereco')

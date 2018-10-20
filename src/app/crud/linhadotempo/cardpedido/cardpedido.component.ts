@@ -22,7 +22,9 @@ export class CardpedidoComponent implements OnInit {
   @Input()
   pedido: any;
   @Output()
-  atualizar: EventEmitter<any> = new EventEmitter();
+  setPedido: EventEmitter<any> = new EventEmitter();
+  @Output()
+  excluirPedido: EventEmitter<any> = new EventEmitter();
   @Input()
   idetapa: any;
   @Input()
@@ -30,6 +32,7 @@ export class CardpedidoComponent implements OnInit {
   pessoa: Pessoa;
   pedidoItens: Array<PedidoItens>;
   produtos: Array<Produto>;
+  mensagemExpira: any;
   columnsPedidoItens: Array<any> = [
     {
       header: 'Produto',
@@ -65,21 +68,20 @@ export class CardpedidoComponent implements OnInit {
     return this.apiService.currencyFormat(val.vlrtotal);
   }
 
-  excluir() {}
+  excluir() {
+    this.excluirPedido.emit(this.pedido.idpedido);
+  }
   editar() {
-    this.dialog = true;
+    this.setPedido.emit(this.pedido);
   }
 
-  salvar() {
-    this.apiService
-      .confirmDialog(this.pedidoFn, { resource: 'pedidos', chave: 'idpedido' })
-      .subscribe(obj => {
-        this.atualizar.emit();
-        this.dialog = false;
-      });
-  }
-
-  cancelar() {
-    this.dialog = false;
+  compareDate(tempo = 0) {
+    const previsao = this.apiService.parseDate(this.pedido.previsao);
+    const agora = new Date();
+    const diffMs = previsao.getTime() - agora.getTime();
+    const diffMins = Math.round(diffMs / 60000);
+    const val = diffMins <= tempo ? (diffMins <= 0 ? 0 : tempo) : null;
+    this.mensagemExpira = val !== null ? val : this.mensagemExpira;
+    return this.mensagemExpira !== undefined ? true : false;
   }
 }

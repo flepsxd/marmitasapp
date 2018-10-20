@@ -57,7 +57,7 @@ export class PedidosComponent implements OnInit {
         field: 'datahora',
         fn: function(dado) {
           return new Date(dado).toLocaleString();
-        }
+        }.bind(this)
       },
       {
         header: 'Status',

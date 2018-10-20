@@ -70,6 +70,12 @@ body>app-root>* {
 .mr-10 {
   margin-right: 10px !important;
 }
+.mt-10 {
+  margin-top: 10px !important;
+}
+.mb-10 {
+  margin-bottom: 10px !important;
+}
 
 .pl-10 {
   padding-left: 10px !important;

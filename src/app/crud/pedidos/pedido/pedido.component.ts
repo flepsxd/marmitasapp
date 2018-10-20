@@ -169,6 +169,8 @@ export class PedidoComponent implements OnInit {
   getDados() {
     if (this.source && !this.idpedido) {
       this.pedido = this.source;
+      this.dadosPedidosItens = [];
+      this.addValidation();
     } else if (this.idpedido) {
       this.apiService.getId('pedidos', this.idpedido).subscribe(resp => {
         this.pedido = resp.dados;

@@ -10,3 +10,10 @@
 :host /deep/ h2 {
   padding: 10px;
 }
+
+
+:host /deep/ p-card {
+  -webkit-box-shadow: -1px 3px 3px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: -1px 3px 3px 0px rgba(0,0,0,0.75);
+  box-shadow: -1px 3px 3px 0px rgba(0,0,0,0.75);
+}

@@ -7,7 +7,7 @@
     </p-header>
     <div dragula="timeline" [(dragulaModel)]="item.dados" (dragulaModelChange)="log($event,item)">
       <div class="ui-helper-clearfix" *ngFor="let pedido of item.dados; let i = index" [attr.data-index]="i">
-        <app-cardpedido  [pedido]="pedido" (excluirPedido)="excluirPedido($event)" (setPedido)="setPedido($event)" [idetapa]="item.idetapa" [ordem]="i"></app-cardpedido>
+        <app-cardpedido  [pedido]="pedido" (excluirPedido)="excluirPedido($event)" (setPedido)="setPedido($event)" [etapa]="item" [ordem]="i"></app-cardpedido>
       </div>
     </div>
   </p-card>

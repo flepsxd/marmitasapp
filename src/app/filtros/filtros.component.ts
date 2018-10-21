@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ApiService } from '../api/api.service';
 
 @Component({
   selector: 'app-filtros',
@@ -11,7 +12,9 @@ export class FiltrosComponent implements OnInit {
   @Output() search: EventEmitter<any>  = new EventEmitter();
   @Output() alterarFiltro: EventEmitter<any>  = new EventEmitter();
   @Output() filtrar: EventEmitter<any>  = new EventEmitter();
-  constructor() { }
+  constructor(
+    private apiService: ApiService
+  ) { }
 
   ngOnInit() {
   }
@@ -31,5 +34,9 @@ export class FiltrosComponent implements OnInit {
   fnFiltrar() {
     this.filtrar.emit();
   }
+
+  dateToJSON(value) {
+    return this.apiService.dateToJSON(value);
+  };
 
 }

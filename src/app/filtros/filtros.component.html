@@ -3,7 +3,7 @@
   <div class="ui-g-2" *ngFor="let filtro of dados.filtros; let i = index" [attr.data-index]="i">
       <h3>{{filtro.title}}</h3>
       <div  *ngIf="filtro.type == 'date'">
-          <p-calendar [placeholder]="filtro.title" [(ngModel)]="filtro.value" (onSelect)="filtroChange(filtro, i, filtro.value.toJSON())" (onInput)="filtroChange(filtro, i, filtro.value.toJSON())" dateFormat="dd/mm/yy"></p-calendar>
+          <p-calendar [placeholder]="filtro.title" [(ngModel)]="filtro.value" (onSelect)="filtroChange(filtro, i, dateToJSON(filtro.value))" (onInput)="filtroChange(filtro, i, dateToJSON(filtro.value))" dateFormat="dd/mm/yy"></p-calendar>
       </div>
       <div *ngIf="filtro.type == 'toggle'">
           <p-triStateCheckbox [(ngModel)]="filtro.value" (onChange)="filtroChange(filtro, i, (filtro.value ? filtro.valorVerdadeiro : filtro.valorFalso))" [label]="filtro.value ? filtro.verdadeiro : (filtro.value == false ? filtro.falso : 'Sem Filtro')"></p-triStateCheckbox>

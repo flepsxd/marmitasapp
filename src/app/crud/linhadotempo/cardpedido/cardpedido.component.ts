@@ -1,3 +1,4 @@
+import { MenuItem } from 'primeng/api';
 import {
   Component,
   OnInit,
@@ -26,7 +27,7 @@ export class CardpedidoComponent implements OnInit {
   @Output()
   excluirPedido: EventEmitter<any> = new EventEmitter();
   @Input()
-  idetapa: any;
+  etapa: any;
   @Input()
   ordem: any;
   pessoa: Pessoa;
@@ -45,19 +46,31 @@ export class CardpedidoComponent implements OnInit {
     }
   ];
   dialog = false;
+  periodos: MenuItem[];
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     this.pessoa = this.pedido.pessoas;
     this.pedidoItens = this.pedido.pedidos_itens;
-    if (this.idetapa !== this.pedido.etapa) {
-      this.pedido.etapa = this.idetapa;
+    if (this.etapa.idetapa !== this.pedido.etapa) {
+      this.pedido.etapa = this.etapa.idetapa;
       this.pedido.ordem = this.ordem;
       this.apiService
         .change('pedidos', this.pedido.idpedido, this.pedido)
         .subscribe();
     }
+    this.periodos = [
+      {
+        'label': new Date(this.pedido.datahora).toLocaleTimeString()
+      },
+      {
+        'label': ('~ ' + this.time_convert(this.tempoEstimado()))
+      },
+      {
+        'label': new Date(this.pedido.previsao).toLocaleTimeString()
+      }
+    ];
   }
 
   produto(val) {
@@ -71,8 +84,17 @@ export class CardpedidoComponent implements OnInit {
   excluir() {
     this.excluirPedido.emit(this.pedido.idpedido);
   }
+
   editar() {
     this.setPedido.emit(this.pedido);
+  }
+
+  tempoEstimado() {
+    const datahora = this.apiService.parseDate(this.pedido.datahora);
+    const previsao = this.apiService.parseDate(this.pedido.previsao);
+    const diffMs = previsao.getTime() - datahora.getTime();
+    const diffMins = Math.round(diffMs / 60000);
+    return diffMins || 0;
   }
 
   compareDate(tempo = 0) {
@@ -83,5 +105,11 @@ export class CardpedidoComponent implements OnInit {
     const val = diffMins <= tempo ? (diffMins <= 0 ? 0 : tempo) : null;
     this.mensagemExpira = val !== null ? val : this.mensagemExpira;
     return this.mensagemExpira !== undefined ? true : false;
+  }
+
+  time_convert(num) { 
+    const hours = Math.floor(num / 60);  
+    const minutes = num % 60;
+    return `${hours}:${minutes}:00`;         
   }
 }

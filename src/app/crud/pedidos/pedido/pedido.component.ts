@@ -256,4 +256,18 @@ export class PedidoComponent implements OnInit {
       this.loadPessoa();
     });
   }
+
+  somenteNumero(event = null, control = null): boolean {
+    if(control && this.pedidoForm.get(control).value)  {
+      this.pedidoForm.get(control).patchValue(this.pedidoForm.get(control).value.toString().replace(/[^0-9]/g, ''));
+    }
+    if(event) {
+      const charCode = (event.which) ? event.which : event.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+      }
+      return true;
+    }
+
+  }
 }

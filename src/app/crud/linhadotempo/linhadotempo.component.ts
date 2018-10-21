@@ -29,7 +29,7 @@ export class LinhadotempoComponent implements OnInit {
       title: 'Data',
       value: new Date(),
       key: 'datahora',
-      valorFormatado: new Date().toJSON()
+      valorFormatado: this.apiService.dateToJSON(new Date())
     }];
     this.subs.add(
       this.dragulaService

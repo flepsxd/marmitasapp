@@ -1,8 +1,9 @@
 <p-card  *ngIf="pessoa" [style]="{'margin-bottom': '10px'}" [title]="pessoa.nome" [subtitle]="'Contato: ' + pessoa.telefone">
-  <div *ngIf="compareDate(10)"  [ngSwitch]="mensagemExpira">
+  <div *ngIf="!etapa.finalizado && compareDate(10)"  [ngSwitch]="mensagemExpira">
     <p-message *ngSwitchCase="0" severity="error" text="Pedido expirado"></p-message>
     <p-message *ngSwitchCase="10" severity="warn" text="Pedido expirando"></p-message>
   </div>
+  <p-steps [model]="periodos" [activeIndex]="etapa.finalizado ? 2 : 0"></p-steps>
   <p-overlayPanel #table [style]="{'max-width': '300px'}">
     <p-table *ngIf="pedidoItens.length > 0" [columns]="columnsPedidoItens" [value]="pedidoItens">
       <ng-template pTemplate="header" let-columns>

@@ -6,11 +6,12 @@ import { Produto } from '../crud/produto';
 import { Endereco } from '../crud/endereco';
 import { PedidoItens } from '../crud/pedido-itens';
 
+import { environment } from '../../environments/environment';
+
 import * as moment from 'moment';
 import { formatCurrency } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class ApiService {
@@ -20,14 +21,15 @@ export class ApiService {
   public produtos: Array<Produto>;
   public enderecos: Array<Endereco>;
   public pedido_itens: Array<PedidoItens>;
-  private API_URL = window.__env;
+  private API_URL = environment.__env;
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
   constructor(
     @Inject(LOCALE_ID) private locale: string,
     private http: HttpClient
-  ) {}
+  ) {
+  }
 
   public get(rota, extra?): Observable<any> {
     return this.http

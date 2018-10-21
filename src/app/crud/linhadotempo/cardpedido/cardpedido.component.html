@@ -1,36 +1,39 @@
-<p-card  *ngIf="pessoa" [style]="{'margin-bottom': '10px'}" [title]="pessoa.nome" [subtitle]="'Contato: ' + pessoa.telefone">
-  <div *ngIf="!etapa.finalizado && compareDate(10)"  [ngSwitch]="mensagemExpira">
-    <p-message *ngSwitchCase="0" severity="error" text="Pedido expirado"></p-message>
-    <p-message *ngSwitchCase="10" severity="warn" text="Pedido expirando"></p-message>
+<p-card #cardpedido *ngIf="pessoa" [style]="{'margin-bottom': '10px'}" [title]="pessoa.nome" [subtitle]="'Contato: ' + pessoa.telefone">
+  <div fxLayout="column">
+    <div *ngIf="!etapa.finalizado && compareDate(10)"  [ngSwitch]="mensagemExpira">
+      <p-message *ngSwitchCase="0" severity="error" text="Pedido expirado"></p-message>
+      <p-message *ngSwitchCase="10" severity="warn" text="Pedido expirando"></p-message>
+    </div>
+    <p-steps [model]="periodos" [activeIndex]="etapa.finalizado ? (periodos.length - 1) : 0" [style]="{'max-height': '90px'}"></p-steps>
+    <p-overlayPanel #table [style]="{'max-width': '320px'}" [showCloseIcon]="true" >
+      <p-table *ngIf="pedidoItens.length > 0" [columns]="columnsPedidoItens" [value]="pedidoItens">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [ngClass]="col.class">
+              {{col.header}}
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>
+            <td *ngFor="let col of columns" [ngClass]="col.class">
+              {{col.field(rowData)}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-overlayPanel>
+    <button type="text" icon="pi pi-search" pButton label="Itens" (click)="table.toggle($event, cardpedido)"  class="mt-10" ></button>
   </div>
-  <p-steps [model]="periodos" [activeIndex]="etapa.finalizado ? 2 : 0"></p-steps>
-  <p-overlayPanel #table [style]="{'max-width': '300px'}">
-    <p-table *ngIf="pedidoItens.length > 0" [columns]="columnsPedidoItens" [value]="pedidoItens">
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th *ngFor="let col of columns" [ngClass]="col.class">
-            {{col.header}}
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr>
-          <td *ngFor="let col of columns" [ngClass]="col.class">
-            {{col.field(rowData)}}
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </p-overlayPanel>
-  <button type="text" icon="pi pi-search" pButton label="Itens" (click)="table.toggle($event)"  class="mt-10" ></button>
   <p-footer>
     <div fxLayout="row" fxLayoutAlign="space-between start">
       <div>
         <span>{{pedido.valor | currency:'BRL':true}}</span>
       </div>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <button pButton icon="pi pi-trash" (click)="excluir()"></button>
+        <button *ngIf="etapa.geralancamento && !pedido.idlancamento" pButton icon="pi pi-file" (click)="lancamentoModal()" class="ml-10"></button>
         <button pButton icon="pi pi-pencil" (click)="editar()" class="ml-10"></button>
+        <button pButton icon="pi pi-trash" (click)="excluir()" class="ml-10"></button>
       </div>
     </div>
   </p-footer>

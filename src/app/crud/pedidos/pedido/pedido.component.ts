@@ -102,7 +102,7 @@ export class PedidoComponent implements OnInit {
       idpedido: [this.pedido.idpedido],
       idpessoa: [this.pedido.idpessoa],
       idendereco: [this.pedido.idendereco],
-      pessoas: [this.pedido.pessoas],
+      pessoa: [this.pedido.pessoa],
       datahora: [this.pedido.datahora],
       formatData: [this.apiService.parseDate(this.pedido.datahora)],
       tempoprevisto: [],
@@ -145,7 +145,7 @@ export class PedidoComponent implements OnInit {
       this.pedidoForm.patchValue({ previsaoFormat: previsao });
     });
 
-    this.pedidoForm.get('pessoas').valueChanges.subscribe(value => {
+    this.pedidoForm.get('pessoa').valueChanges.subscribe(value => {
       if (typeof value === 'object') {
         this.pedidoForm.patchValue({ endereco: value.endereco });
       }
@@ -185,7 +185,7 @@ export class PedidoComponent implements OnInit {
         });
         this.pedidoForm
           .get('endereco')
-          .patchValue(this.pedido.endereco || this.pedido.pessoas.endereco);
+          .patchValue(this.pedido.endereco || this.pedido.pessoa.endereco);
         this.addValidation();
       });
     } else {
@@ -237,12 +237,12 @@ export class PedidoComponent implements OnInit {
   }
 
   cadastrarPessoa($event) {
-    if (typeof this.pedidoForm.get('pessoas').value === 'string') {
+    if (typeof this.pedidoForm.get('pessoa').value === 'string') {
       this.novaPessoa = {
         idpessoa: null,
         nome: '',
         status: 'A',
-        telefone: this.pedidoForm.get('pessoas').value
+        telefone: this.pedidoForm.get('pessoa').value
       };
       this.cadastroPessoa = true;
     }
@@ -251,7 +251,7 @@ export class PedidoComponent implements OnInit {
   salvarPessoa() {
     const pessoa = this.cadPessoa.confirmar();
     this.apiService.add('pessoas', pessoa).subscribe(resp => {
-      this.pedidoForm.get('pessoas').patchValue(resp.dados);
+      this.pedidoForm.get('pessoa').patchValue(resp.dados);
       this.cadastroPessoa = false;
       this.loadPessoa();
     });

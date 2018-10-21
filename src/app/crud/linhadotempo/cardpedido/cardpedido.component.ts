@@ -1,3 +1,4 @@
+import { Lancamento } from './../../lancamento';
 import { MenuItem } from 'primeng/api';
 import {
   Component,
@@ -26,6 +27,8 @@ export class CardpedidoComponent implements OnInit {
   setPedido: EventEmitter<any> = new EventEmitter();
   @Output()
   excluirPedido: EventEmitter<any> = new EventEmitter();
+  @Output()
+  lancamento: EventEmitter<any> = new EventEmitter();
   @Input()
   etapa: any;
   @Input()
@@ -51,7 +54,7 @@ export class CardpedidoComponent implements OnInit {
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
-    this.pessoa = this.pedido.pessoas;
+    this.pessoa = this.pedido.pessoa;
     this.pedidoItens = this.pedido.pedidos_itens;
     if (this.etapa.idetapa !== this.pedido.etapa) {
       this.pedido.etapa = this.etapa.idetapa;
@@ -71,6 +74,13 @@ export class CardpedidoComponent implements OnInit {
         'label': new Date(this.pedido.previsao).toLocaleTimeString()
       }
     ];
+    if (this.pedido.lancamento) {
+      this.periodos.push({
+        'label': new Date(this.pedido.lancamento.datapagto).toLocaleTimeString(),
+        'title': new Date(this.pedido.lancamento.datapagto).toLocaleDateString(),
+        'icon': 'pi pi-money-bill'
+      });
+    }
   }
 
   produto(val) {
@@ -107,9 +117,13 @@ export class CardpedidoComponent implements OnInit {
     return this.mensagemExpira !== undefined ? true : false;
   }
 
-  time_convert(num) { 
-    const hours = Math.floor(num / 60);  
+  time_convert(num) {
+    const hours = Math.floor(num / 60);
     const minutes = num % 60;
-    return `${hours}:${minutes}:00`;         
+    return `${hours}:${minutes}:00`;
+  }
+
+  lancamentoModal() {
+    this.lancamento.emit(this.pedido);
   }
 }

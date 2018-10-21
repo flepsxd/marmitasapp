@@ -9,8 +9,8 @@ import { PedidoItens } from '../crud/pedido-itens';
 import * as moment from 'moment';
 import { formatCurrency } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from '../../../node_modules/rxjs';
-import { tap } from '../../../node_modules/rxjs/operators';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class ApiService {
@@ -20,7 +20,7 @@ export class ApiService {
   public produtos: Array<Produto>;
   public enderecos: Array<Endereco>;
   public pedido_itens: Array<PedidoItens>;
-  private API_URL = 'http://marmitasapi.com';
+  private API_URL = window.__env;
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
@@ -50,6 +50,12 @@ export class ApiService {
   public change(rota, id, objeto): Observable<any> {
     return this.http
       .put(`${this.API_URL}/${rota}/${id}`, objeto, this.getParams())
+      .pipe(response => response);
+  }
+
+  public delete(rota, id): Observable<any> {
+    return this.http
+      .delete(`${this.API_URL}/${rota}/${id}`, this.getParams())
       .pipe(response => response);
   }
 

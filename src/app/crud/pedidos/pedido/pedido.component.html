@@ -2,7 +2,7 @@
   <div class="ui-g ui-fluid pedido-form">
     <div class="ui-g-12">
       <h3>Pessoa</h3>
-      <p-autoComplete class="ui-g-12" formControlName="pessoas" [suggestions]="dadosPessoas" (completeMethod)="getPessoas($event)"
+      <p-autoComplete class="ui-g-12" formControlName="pessoa" [suggestions]="dadosPessoas" (completeMethod)="getPessoas($event)"
         field="nome" [dropdown]="true" dataKey="idpessoa" (onBlur)="cadastrarPessoa($event)" (onSelect)="apiService.aoSelecionar(pedidoForm, 'idpessoa', 'pessoa', $event)">
         <ng-template let-pessoa pTemplate="item">
 
@@ -45,8 +45,8 @@
   <app-pessoa #cadPessoa *ngIf="cadastroPessoa" [source]="novaPessoa"></app-pessoa>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button pButton icon="pi pi-check" (click)="salvarPessoa()" label="Salvar"></button>
       <button pButton icon="pi pi-times" (click)="cancelar()" label="Cancelar"></button>
-      <button pButton icon="pi pi-check" (click)="salvarPessoa()" label="Salvar"></button>
     </div>
   </p-footer>
 </p-dialog>

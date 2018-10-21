@@ -11,7 +11,7 @@ export interface Pedido {
   previsao: string;
   valor: number;
   observacoes?: string;
-  pessoas?: Pessoa;
+  pessoa?: Pessoa;
   endereco?: Endereco;
   pedidos_itens?: Array<PedidoItens>;
   status: string[1];

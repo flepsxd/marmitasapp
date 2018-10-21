@@ -1,3 +1,42 @@
-<p>
-  lancamento works!
-</p>
+<form [formGroup]="lancamentoForm">
+  <div class="ui-g ui-fluid pedido-form">
+    <div class="ui-g-12">
+      <h3>Pessoa</h3>
+      <p-autoComplete class="ui-g-12" formControlName="pessoa" [suggestions]="dadosPessoas" [readonly]="vinculoPessoa" (completeMethod)="getPessoas($event)"
+        field="nome" dataKey="idpessoa" (onBlur)="cadastrarPessoa($event)" (onSelect)="apiService.aoSelecionar(lancamentoForm, 'idpessoa', 'pessoa', $event)">
+        <ng-template let-pessoa pTemplate="item">
+          <div *ngIf="pessoa.nome">Nome: {{pessoa.nome}}</div>
+          <div *ngIf="pessoa.email">E-mail: {{pessoa.email}}</div>
+          <div *ngIf="pessoa.telefone">Telefone: {{pessoa.telefone}}</div>
+        </ng-template>
+      </p-autoComplete>
+    </div>
+    <div class="ui-g-6">
+      <h3>Data/Hora</h3>
+      <p-calendar placeholder="Data/Hora" showTime="true" formControlName="formatData" dateFormat="dd/mm/yy"></p-calendar>
+    </div>
+    <div class="ui-g-6">
+      <h3>Valor</h3>
+      <input type="text" class="ui-g-12" placeholder="Valor" formControlName="valor" pInputText currencyMask />
+    </div>
+    <div class="ui-g-6">
+      <h3>Data/Hora Pagamento</h3>
+      <p-calendar placeholder="Data/Hora Pagamento" showTime="true" formControlName="formatDataPagto" dateFormat="dd/mm/yy"></p-calendar>
+    </div>
+    <div class="ui-g-6">
+      <h3>Valor Pago</h3>
+      <input type="text" class="ui-g-12" placeholder="Valor" formControlName="valorpago" pInputText currencyMask />
+    </div>
+  </div>
+</form>
+
+<p-dialog [header]="'Cadastro de Pessoa'" [(visible)]="cadastroPessoa" appendTo="body" [responsive]="true" showEffect="fade"
+  [modal]="true" [contentStyle]="{'max-height': '600px', 'max-width': '800px'}">
+  <app-pessoa #cadPessoa *ngIf="cadastroPessoa" [source]="novaPessoa"></app-pessoa>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button pButton icon="pi pi-check" (click)="salvarPessoa()" label="Salvar"></button>
+      <button pButton icon="pi pi-times" (click)="cancelar()" label="Cancelar"></button>
+    </div>
+  </p-footer>
+</p-dialog>

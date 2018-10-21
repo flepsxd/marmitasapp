@@ -10,3 +10,7 @@
 :host /deep/ td {
   font-size: 0.8em;
 }
+
+:host /deep/ .ui-steps .ui-steps-item .ui-menuitem-link {
+  padding: 0.7em;
+}

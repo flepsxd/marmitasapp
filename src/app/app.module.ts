@@ -24,6 +24,7 @@ import {MultiSelectModule} from 'primeng/multiselect';
 import {TriStateCheckboxModule} from 'primeng/tristatecheckbox';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {StepsModule} from 'primeng/steps';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 
 import { DragulaModule } from 'ng2-dragula';
 
@@ -34,6 +35,7 @@ import {
 } from 'ng2-currency-mask/src/currency-mask.config';
 
 import { MessageService } from 'primeng/components/common/messageservice';
+import { ConfirmationService } from 'primeng/api'; 
 
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
@@ -166,6 +168,7 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     MultiSelectModule,
     TriStateCheckboxModule,
     OverlayPanelModule,
+    ConfirmDialogModule,
     StepsModule,
     FlexLayoutModule,
     HttpClientModule,
@@ -181,7 +184,8 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     { provide: LOCALE_ID, useValue: 'pt' },
     { provide: HTTP_INTERCEPTORS, useClass: InterceptService, multi: true },
     CurrencyPipe,
-    MessageService
+    MessageService,
+    ConfirmationService
   ],
   exports: [RouterModule],
   entryComponents: [

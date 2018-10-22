@@ -3,7 +3,7 @@ import {
   FormGroup,
   FormBuilder,
   Validators
-} from '../../../../../node_modules/@angular/forms';
+} from '@angular/forms';
 import { ApiService } from '../../../api/api.service';
 import { Pessoa } from '../../pessoa';
 

@@ -16,6 +16,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.items = [
+      { label: 'Usuários', routerLink: '/usuarios'},
       { label: 'Pessoas', routerLink: '/pessoas'},
       { label: 'Pedidos', routerLink: '/pedidos'},
       { label: 'Produtos', routerLink: '/produtos'},

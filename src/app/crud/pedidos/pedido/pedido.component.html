@@ -30,14 +30,15 @@
       <textarea pInputTextarea class="ui-g-12" formControlName="observacoes" autoResize="false"></textarea>
     </div>
     <div class="ui-g-12">
+        <h3>Valor</h3>
+        <input type="text" class="ui-g-12" placeholder="Valor" formControlName="valor" pInputText currencyMask />
+      </div>
+    <div class="ui-g-12">
       <h3>Itens do Pedido</h3>
       <app-crud *ngIf="dadosPedidosItens" [source]="dadosPedidosItens" [columns]="colsPedidosItens" [cad]="cadPedidoItem"
         (aoAtualizar)="aoAtualizar()"></app-crud>
     </div>
-    <div class="ui-g-12">
-      <h3>Valor</h3>
-      <input type="text" class="ui-g-12" placeholder="Valor" formControlName="valor" pInputText currencyMask />
-    </div>
+
   </div>
 </form>
 <p-dialog [header]="'Cadastro de Pessoa'" [(visible)]="cadastroPessoa" appendTo="body" [responsive]="true" showEffect="fade"

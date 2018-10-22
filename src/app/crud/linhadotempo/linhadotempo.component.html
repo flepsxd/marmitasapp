@@ -5,7 +5,7 @@
       <h2>{{item.header}}</h2>
       <button class="mr-10" type="button" pButton icon="pi pi-plus" (click)="adicionar(item)"></button>
     </p-header>
-    <div #dragulaM dragula="timeline" [(dragulaModel)]="item.dados">
+    <div #dragulaM dragula="timeline" [(dragulaModel)]="item.dados" class="timeline">
       <div class="ui-helper-clearfix" *ngFor="let pedido of item.dados; let i = index" [attr.data-index]="i">
         <app-cardpedido  [pedido]="pedido" (excluirPedido)="excluirPedido($event)" (lancamento)="dialogLancamento($event)" (setPedido)="setPedido($event)" [etapa]="item" [ordem]="i"></app-cardpedido>
       </div>

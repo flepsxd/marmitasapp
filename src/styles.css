@@ -111,3 +111,9 @@ h3 {
     height: 100% !important;
   }
 }
+
+
+p-inputmask{
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}

@@ -28,8 +28,8 @@ export class PedidoComponent implements OnInit {
     idagendamento: null,
     idpessoa: null,
     idendereco: null,
-    datahora: new Date().toJSON(),
-    previsao: new Date().toJSON(),
+    datahora: null,
+    previsao: null,
     valor: null,
     observacoes: '',
     status: 'A'
@@ -106,7 +106,7 @@ export class PedidoComponent implements OnInit {
       tempo_previsto: [null, Validators.required],
       previsao: [this.pedido.previsao],
       previsaoFormat: [this.apiService.parseDate(this.pedido.previsao)],
-      valor: [this.pedido.valor],
+      valor: [this.pedido.valor, Validators.required],
       observacoes: [this.pedido.observacoes],
       status: [this.pedido.status],
       endereco: this.formBuilder.group({
@@ -125,7 +125,7 @@ export class PedidoComponent implements OnInit {
 
     this.pedidoForm.get('formatData').valueChanges.subscribe(value => {
       this.pedidoForm.patchValue({ datahora: this.apiService.dateToJSON(value) });
-      const previsao = new Date(value);
+      const previsao = this.apiService.parseDate(value);
       previsao.setMinutes(
         previsao.getMinutes() + this.pedidoForm.get('tempo_previsto').value
       );
@@ -196,7 +196,13 @@ export class PedidoComponent implements OnInit {
   confirmar() {
     const pedido = this.pedidoForm.value;
     pedido.pedidos_itens = this.dadosPedidosItens;
+    pedido.datahora = this.apiService.dateToJSON(pedido.formatData);
+    pedido.previsao = this.apiService.dateToJSON(pedido.previsaoFormat);
     return pedido;
+  }
+
+  validaForm() {
+    return this.apiService.validaForm(this.pedidoForm);
   }
 
   getPessoas($event = { query: null }) {
@@ -224,7 +230,7 @@ export class PedidoComponent implements OnInit {
 
   aoAtualizar() {
     let valor = 0;
-    this.dadosPedidosItens.forEach(function(val, index) {
+    this.dadosPedidosItens.filter(val=>!val.deletar).forEach(function(val, index) {
       valor += val.vlrtotal;
     });
     this.pedidoForm.get('valor').patchValue(valor);
@@ -248,6 +254,7 @@ export class PedidoComponent implements OnInit {
   salvarPessoa() {
     const pessoa = this.cadPessoa.confirmar();
     this.apiService.add('pessoas', pessoa).subscribe(resp => {
+      this.pedidoForm.get('idpessoa').patchValue(resp.dados.idpessoa);
       this.pedidoForm.get('pessoa').patchValue(resp.dados);
       this.cadastroPessoa = false;
       this.loadPessoa();
@@ -266,9 +273,5 @@ export class PedidoComponent implements OnInit {
       return true;
     }
 
-  }
-
-  validaForm() {
-    return this.apiService.validaForm(this.pedidoForm);
   }
 }

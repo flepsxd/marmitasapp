@@ -27,6 +27,7 @@ import {StepsModule} from 'primeng/steps';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {InputMaskModule} from 'primeng/inputmask';
+import {PasswordModule} from 'primeng/password';
 
 import { DragulaModule } from 'ng2-dragula';
 
@@ -72,6 +73,8 @@ import { LinhadotempoComponent } from './crud/linhadotempo/linhadotempo.componen
 import { CardpedidoComponent } from './crud/linhadotempo/cardpedido/cardpedido.component';
 import { EnderecoComponent } from './crud/endereco/endereco.component';
 import { FiltrosComponent } from './filtros/filtros.component';
+import { UsuariosComponent } from './crud/usuarios/usuarios.component';
+import { UsuarioComponent } from './crud/usuarios/usuario/usuario.component';
 
 const appRoutes: Routes = [
   {
@@ -89,6 +92,10 @@ const childRoutes: Routes = [
     path: '',
     canActivate: [AuthGuard],
     children: [
+      {
+        path: 'usuarios',
+        component: UsuariosComponent
+      },
       {
         path: 'pessoas',
         component: PessoasComponent
@@ -143,7 +150,9 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     LinhadotempoComponent,
     CardpedidoComponent,
     EnderecoComponent,
-    FiltrosComponent
+    FiltrosComponent,
+    UsuariosComponent,
+    UsuarioComponent
   ],
   imports: [
     BrowserModule,
@@ -174,6 +183,7 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     StepsModule,
     ProgressSpinnerModule,
     InputMaskModule,
+    PasswordModule,
     FlexLayoutModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes, { enableTracing: true }),
@@ -197,7 +207,8 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     LancamentoComponent,
     PedidoComponent,
     PedidoItensComponent,
-    ProdutoComponent
+    ProdutoComponent,
+    UsuarioComponent
   ],
   bootstrap: [AppComponent]
 })

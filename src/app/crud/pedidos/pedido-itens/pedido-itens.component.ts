@@ -3,11 +3,11 @@ import {
   FormGroup,
   FormBuilder,
   Validators
-} from '../../../../../node_modules/@angular/forms';
+} from '@angular/forms';
 import { ApiService } from '../../../api/api.service';
 import { PedidoItens } from '../../pedido-itens';
 import { Produto } from '../../produto';
-import { Observable } from '../../../../../node_modules/rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-pedido-itens',
@@ -64,25 +64,25 @@ export class PedidoItensComponent implements OnInit {
       .valueChanges.subscribe(vlrunitario => {
         this.pedidoItensForm.patchValue({
           vlrtotal:
-            this.pedidoItensForm.get('quantidade').value * vlrunitario -
-            this.pedidoItensForm.get('desconto').value
+            ((this.pedidoItensForm.get('quantidade').value * vlrunitario) -
+            this.pedidoItensForm.get('desconto').value)
         });
       });
 
     this.pedidoItensForm.get('desconto').valueChanges.subscribe(desconto => {
       this.pedidoItensForm.patchValue({
         vlrtotal:
-          this.pedidoItensForm.get('quantidade').value *
-            this.pedidoItensForm.get('vlrunitario').value -
-          desconto
+          ((this.pedidoItensForm.get('quantidade').value *
+            this.pedidoItensForm.get('vlrunitario').value) -
+          desconto)
       });
     });
 
     this.pedidoItensForm.get('quantidade').valueChanges.subscribe(value => {
       this.pedidoItensForm.patchValue({
         vlrtotal:
-          value * this.pedidoItensForm.get('vlrunitario').value -
-          this.pedidoItensForm.get('desconto').value
+          ((value * this.pedidoItensForm.get('vlrunitario').value) -
+          this.pedidoItensForm.get('desconto').value)
       });
     });
   }

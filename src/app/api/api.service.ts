@@ -228,10 +228,18 @@ export class ApiService {
   }
 
   public parseDate(date) {
-    return moment(date).toDate();
+    if(date) {
+      return moment(date).toDate();
+    } else {
+      return moment().toDate();
+    }
   }
 
-  public dateToJSON(data) {
-    return moment(data).format();
+  public dateToJSON(date) {
+    if(date) {
+      return moment(date).format();
+    } else {
+      return moment().format();
+    }
   }
 }

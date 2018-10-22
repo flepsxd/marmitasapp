@@ -48,15 +48,13 @@ export class CrudComponent implements OnInit {
   ngOnInit() {
     this.dt.filtros = this.filtros;
     this.dt.filtroChange = this.filtroChange;
-    this.dt.editar = this.editar.bind(this);
-    this.dt.remover = this.remover.bind(this);
     this.dt.filtrar = this.carregarDados.bind(this);
     this.carregarDados();
   }
 
   carregarDados() {
     if (this.source) {
-      this.dados = this.source;
+      this.dados = this.source.filter(val => !val.deletar);
     } else {
       this.apiService
         .get(this.cad.resource + (this.cad.extraURL || ''), this.apiService.tratarFilter(this.filtros))
@@ -66,8 +64,7 @@ export class CrudComponent implements OnInit {
     }
   }
 
-  editar(dados) {
-    this.selecionado = dados;
+  onRowSelect() {
     this.container.clear();
     const factory: ComponentFactory<
       any
@@ -86,15 +83,42 @@ export class CrudComponent implements OnInit {
     this.exibirDialog = true;
   }
 
-  remover(dados) {
+  remover() {
+    this.submit = true;
     this.confirmationService.confirm({
       message: 'Deseja remover esse registro?',
       header: 'Confirmar Exclusão',
       icon: 'pi pi-exclamation-triangle',
+      key: this.cad.resource,
       acceptLabel: 'Confirmar',
       rejectLabel: 'Cancelar',
       accept: () => {
-        this.apiService.delete(this.cad.resource, dados[this.cad.chave]).subscribe(() => this.carregarDados());
+        if(!this.source) {
+          this.apiService.delete(this.cad.resource, this.selecionado[this.cad.chave]).subscribe(() => {
+            this.exibirDialog = false;
+            this.submit = false;
+            this.carregarDados();
+            if (this.aoAtualizar) {
+              this.aoAtualizar.emit(true);
+            }
+          }, _ => this.submit = false);
+        } else {
+          const index = this.dados.indexOf(this.selecionado);
+          if(this.source[index][this.cad.chave]) {
+            this.source[index].deletar = true;
+          } else {
+            this.source.splice(index, 1);
+          }
+          this.exibirDialog = false;
+          this.submit = false;
+          this.carregarDados();
+          if (this.aoAtualizar) {
+            this.aoAtualizar.emit(true);
+          }
+        }
+      },
+      reject: () => {
+        this.submit = false;
       }
     });
   }
@@ -127,7 +151,7 @@ export class CrudComponent implements OnInit {
 
   dialogoAdd() {
     this.selecionado = { novo: true };
-    this.editar(this.selecionado);
+    this.onRowSelect();
   }
 
   filtroChange(filtro, index, value) {

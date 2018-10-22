@@ -18,6 +18,19 @@ export class ProdutosComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.filtros = [
+      {
+        key: 'status',
+        title: 'Status',
+        type: 'toggle',
+        verdadeiro: 'Ativo',
+        falso: 'Inativo',
+        valorVerdadeiro: 'A',
+        valorFalso: 'I',
+        valorFormatado: 'A',
+        value: true
+      }
+    ];
     this.cad = {
       component: ProdutoComponent,
       chave: 'idproduto',

@@ -2,3 +2,7 @@
 :host /deep/ .ui-table-caption {
   padding: 0px !important;
 }
+
+:host /deep/ .botoes-opcoes{
+  width: 115px;
+}

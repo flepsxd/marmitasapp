@@ -1,3 +1,4 @@
+import { ConfirmationService } from 'primeng/api';
 import {
   Component,
   OnInit,
@@ -34,17 +35,21 @@ export class CrudComponent implements OnInit {
   componentRef: ComponentRef<any>;
   @Input() filtros: Array<any> = [];
   exibirDialog: any = false;
+  submit = false;
   selecionado: any;
   dados: Array<any>;
 
   constructor(
     private resolver: ComponentFactoryResolver,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit() {
     this.dt.filtros = this.filtros;
     this.dt.filtroChange = this.filtroChange;
+    this.dt.editar = this.editar.bind(this);
+    this.dt.remover = this.remover.bind(this);
     this.dt.filtrar = this.carregarDados.bind(this);
     this.carregarDados();
   }
@@ -61,7 +66,8 @@ export class CrudComponent implements OnInit {
     }
   }
 
-  onRowSelect() {
+  editar(dados) {
+    this.selecionado = dados;
     this.container.clear();
     const factory: ComponentFactory<
       any
@@ -80,10 +86,25 @@ export class CrudComponent implements OnInit {
     this.exibirDialog = true;
   }
 
+  remover(dados) {
+    this.confirmationService.confirm({
+      message: 'Deseja remover esse registro?',
+      header: 'Confirmar Exclusão',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Confirmar',
+      rejectLabel: 'Cancelar',
+      accept: () => {
+        this.apiService.delete(this.cad.resource, dados[this.cad.chave]).subscribe(() => this.carregarDados());
+      }
+    });
+  }
+
   salvar() {
+    this.submit = true;
     this.apiService
       .confirmDialog(this.componentRef.instance, this.cad)
       .subscribe(obj => {
+        this.submit = false;
         if (this.source) {
           if (this.selecionado[this.cad.chave] || !this.selecionado.novo) {
             this.source[this.source.indexOf(this.selecionado)] = obj;
@@ -97,7 +118,7 @@ export class CrudComponent implements OnInit {
         if (this.aoAtualizar) {
           this.aoAtualizar.emit(true);
         }
-      });
+      }, error => {this.submit = false;});
   }
 
   cancelar() {
@@ -106,7 +127,7 @@ export class CrudComponent implements OnInit {
 
   dialogoAdd() {
     this.selecionado = { novo: true };
-    this.onRowSelect();
+    this.editar(this.selecionado);
   }
 
   filtroChange(filtro, index, value) {

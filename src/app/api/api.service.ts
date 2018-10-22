@@ -13,7 +13,8 @@ import { environment } from '../../environments/environment';
 import * as moment from 'moment';
 import { formatCurrency } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, timer, from } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 @Injectable()
 export class ApiService {
@@ -133,7 +134,11 @@ export class ApiService {
   public confirmDialog(instance, cad) {
     if (instance.validaForm) {
       if (!instance.validaForm()) {
-        return of();
+        const myBadPromise = () =>
+            new Promise((resolve, reject) => reject('Rejected!'));
+        return timer(50).pipe(
+          mergeMap(_ => from(myBadPromise()).pipe(t => t))
+        );
       }
     }
     if (instance.confirmarProprio) {
@@ -154,7 +159,7 @@ export class ApiService {
 
   public validaForm(form) {
     if (form.invalid) {
-      let invalid = '';
+      let invalid;
       let tipoErro = '';
       let control;
       let newControl;
@@ -180,6 +185,11 @@ export class ApiService {
           }
         }
       });
+      invalid = invalid.split('_');
+      invalid.map(val => {
+        return capitalize(val);
+      });
+      invalid = invalid.join(' ');
       let erro = '';
       Object.keys(tipoErro).forEach((index) => {
           erro = invalid + (errors[index].text || ' inválido');

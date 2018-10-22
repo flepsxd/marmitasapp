@@ -108,15 +108,18 @@ export class LancamentoComponent implements OnInit {
   }
 
   cadastrarPessoa($event) {
-    if (typeof this.lancamentoForm.get('pessoas').value === 'string') {
-      this.novaPessoa = {
-        idpessoa: null,
-        nome: '',
-        status: 'A',
-        telefone: this.lancamentoForm.get('pessoas').value
-      };
-      this.cadastroPessoa = true;
-    }
+    setTimeout(function() {
+      const value = this.lancamentoForm.get('pessoa').value;
+      if (typeof value === 'string' && value) {
+        this.novaPessoa = {
+          idpessoa: null,
+          nome: '',
+          status: 'A',
+          telefone: Number(value)
+        };
+        this.cadastroPessoa = true;
+      }
+    }.bind(this), 250);
   }
 
   salvarPessoa() {

@@ -1,4 +1,4 @@
-<p-table #dt [value]="dados" [columns]="columns" [responsive]="true" (onRowSelect)="onRowSelect()" selectionMode="single"
+<p-table #dt [value]="dados" [columns]="columns" [responsive]="true" selectionMode="single"
   [(selection)]="selecionado" [paginator]="true" [rows]="20" >
   <ng-template pTemplate="caption">
     <app-filtros [dados]="dt" (search)="dt.filterGlobal($event, 'contains')" (alterarFiltro)="dt.filtroChange($event.filtro, $event.index, $event.valor)" (filtrar)="dt.filtrar($event)"></app-filtros>
@@ -9,12 +9,17 @@
         {{col.header}}
         <p-sortIcon [field]="col.field"></p-sortIcon>
       </th>
+      <th class="botoes-opcoes">Opções</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns">
-    <tr [pSelectableRow]="rowData">
+    <tr>
       <td *ngFor="let col of columns" [ngClass]="[col.class || '', col.field]">
         {{col.fn ? col.fn(rowData[col.field]) : rowData[col.field]}}
+      </td>
+      <td class="botoes-opcoes">
+          <button pButton icon="pi pi-pencil" (click)="dt.editar(rowData)" class="mr-10"></button>
+          <button pButton icon="pi pi-trash" (click)="dt.remover()"></button>
       </td>
     </tr>
   </ng-template>
@@ -29,8 +34,9 @@
   <template #dialogContainer></template>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <button pButton icon="pi pi-check" (click)="salvar()" label="Salvar"></button>
-      <button pButton icon="pi pi-times" (click)="cancelar()" label="Cancelar"></button>
+      <p-progressSpinner *ngIf="submit" [style]="{'height': '28px', 'width': '28px', 'margin-right': '10px', 'margin-bottom': '0px'}"></p-progressSpinner>
+      <button pButton icon="pi pi-check" [disabled]="submit" (click)="salvar()" label="Salvar"></button>
+      <button pButton icon="pi pi-times" [disabled]="submit" (click)="cancelar()" label="Cancelar"></button>
     </div>
   </p-footer>
 </p-dialog>

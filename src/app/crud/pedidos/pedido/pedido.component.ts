@@ -103,7 +103,7 @@ export class PedidoComponent implements OnInit {
       pessoa: [this.pedido.pessoa, Validators.required],
       datahora: [this.pedido.datahora],
       formatData: [this.apiService.parseDate(this.pedido.datahora)],
-      tempoprevisto: [null, Validators.required],
+      tempo_previsto: [null, Validators.required],
       previsao: [this.pedido.previsao],
       previsaoFormat: [this.apiService.parseDate(this.pedido.previsao)],
       valor: [this.pedido.valor],
@@ -127,7 +127,7 @@ export class PedidoComponent implements OnInit {
       this.pedidoForm.patchValue({ datahora: this.apiService.dateToJSON(value) });
       const previsao = new Date(value);
       previsao.setMinutes(
-        previsao.getMinutes() + this.pedidoForm.get('tempoprevisto').value
+        previsao.getMinutes() + this.pedidoForm.get('tempo_previsto').value
       );
       this.pedidoForm.patchValue({ previsaoFormat: previsao });
     });
@@ -135,7 +135,7 @@ export class PedidoComponent implements OnInit {
       this.pedidoForm.patchValue({ previsao: this.apiService.dateToJSON(value) });
     });
 
-    this.pedidoForm.get('tempoprevisto').valueChanges.subscribe(value => {
+    this.pedidoForm.get('tempo_previsto').valueChanges.subscribe(value => {
       const datahora = new Date(this.pedidoForm.get('formatData').value);
       const previsao = new Date(
         datahora.setMinutes(datahora.getMinutes() + value)
@@ -174,7 +174,7 @@ export class PedidoComponent implements OnInit {
         this.dadosPedidosItens = this.pedido.pedidos_itens || [];
         this.pedidoForm.patchValue(this.pedido);
         this.pedidoForm.patchValue({
-          tempoprevisto: this.calculaPrevisaoETempo()
+          tempo_previsto: this.calculaPrevisaoETempo()
         });
         this.pedidoForm.patchValue({
           formatData: this.apiService.parseDate(this.pedido.datahora),
@@ -231,19 +231,18 @@ export class PedidoComponent implements OnInit {
   }
 
   cadastrarPessoa($event) {
-    const that = this;
     setTimeout(function() {
-      const value = that.pedidoForm.get('pessoa').value;
+      const value = this.pedidoForm.get('pessoa').value;
       if (typeof value === 'string' && value) {
-        that.novaPessoa = {
+        this.novaPessoa = {
           idpessoa: null,
           nome: '',
           status: 'A',
           telefone: Number(value)
         };
-        that.cadastroPessoa = true;
+        this.cadastroPessoa = true;
       }
-    });
+    }.bind(this), 250);
   }
 
   salvarPessoa() {

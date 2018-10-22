@@ -6,7 +6,7 @@
           <p-calendar [placeholder]="filtro.title" [(ngModel)]="filtro.value" (onSelect)="filtroChange(filtro, i, dateToJSON(filtro.value))" (onInput)="filtroChange(filtro, i, dateToJSON(filtro.value))" dateFormat="dd/mm/yy"></p-calendar>
       </div>
       <div *ngIf="filtro.type == 'toggle'">
-          <p-triStateCheckbox [(ngModel)]="filtro.value" (onChange)="filtroChange(filtro, i, (filtro.value ? filtro.valorVerdadeiro : filtro.valorFalso))" [label]="filtro.value ? filtro.verdadeiro : (filtro.value == false ? filtro.falso : 'Sem Filtro')"></p-triStateCheckbox>
+          <p-triStateCheckbox [(ngModel)]="filtro.value" (onChange)="filtroChange(filtro, i, (filtro.value == null ? null : (filtro.value ? filtro.valorVerdadeiro : filtro.valorFalso)))" [label]="filtro.value ? filtro.verdadeiro : (filtro.value == false ? filtro.falso : 'Sem Filtro')"></p-triStateCheckbox>
       </div>
       <div *ngIf="filtro.type == 'multiple'">
           <p-multiSelect [options]="filtro.opcoes" [(ngModel)]="filtro.value" [dataKey]="filtro.dataKey" defaultLabel="Selecione..." [optionLabel]="filtro.keyLabel" (onChange)="filtroChange(filtro, i, $event.value)"></p-multiSelect>

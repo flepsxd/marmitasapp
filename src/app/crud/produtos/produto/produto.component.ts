@@ -57,4 +57,8 @@ export class ProdutoComponent implements OnInit {
   confirmar() {
     return this.produtoForm.value;
   }
+
+  validaForm() {
+    return this.apiService.validaForm(this.produtoForm);
+  }
 }

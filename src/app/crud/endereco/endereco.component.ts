@@ -15,7 +15,7 @@ export class EnderecoComponent implements OnInit {
   dadosBairros: Array<any>;
   bairros: Array<any>;
 
-  constructor(private apiService: ApiService) {}
+  constructor(public apiService: ApiService) {}
 
   ngOnInit() {
     this.apiService.get('cidades').subscribe(resp => {

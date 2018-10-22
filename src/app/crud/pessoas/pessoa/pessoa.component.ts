@@ -44,13 +44,14 @@ export class PessoaComponent implements OnInit {
       email: [this.pessoa.email],
       status: [this.pessoa.status, Validators.required],
       statusB: [this.pessoa.status === 'A'],
+      idendereco: [this.pessoa.idendereco],
       endereco: this.formBuilder.group({
         idbairro: [null],
         idcidade: [null],
-        cidade: [null],
-        bairro: [null],
-        endereco: [null],
-        numero: [null],
+        cidade: [null, Validators.required],
+        bairro: [null, Validators.required],
+        endereco: [null, Validators.required],
+        numero: [null, Validators.required],
         complemento: [null],
         cep: [null, Validators.maxLength(9)]
       })
@@ -75,5 +76,9 @@ export class PessoaComponent implements OnInit {
 
   confirmar() {
     return this.pessoaForm.value;
+  }
+
+  validaForm() {
+    return this.apiService.validaForm(this.pessoaForm);
   }
 }

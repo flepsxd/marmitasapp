@@ -6,12 +6,14 @@ import { Produto } from '../crud/produto';
 import { Endereco } from '../crud/endereco';
 import { PedidoItens } from '../crud/pedido-itens';
 
+import {MessageService} from 'primeng/api';
+
 import { environment } from '../../environments/environment';
 
 import * as moment from 'moment';
 import { formatCurrency } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class ApiService {
@@ -27,7 +29,8 @@ export class ApiService {
   };
   constructor(
     @Inject(LOCALE_ID) private locale: string,
-    private http: HttpClient
+    private http: HttpClient,
+    private messageService: MessageService
   ) {
   }
 
@@ -128,6 +131,11 @@ export class ApiService {
   }
 
   public confirmDialog(instance, cad) {
+    if (instance.validaForm) {
+      if (!instance.validaForm()) {
+        return of();
+      }
+    }
     if (instance.confirmarProprio) {
       return instance.confirmarProprio();
     } else if (instance.confirmar) {
@@ -141,6 +149,54 @@ export class ApiService {
       return obs();
     } else {
       throw Error('Não foi criado objeto de retorno confirmar no componente');
+    }
+  }
+
+  public validaForm(form) {
+    if (form.invalid) {
+      let invalid = '';
+      let tipoErro = '';
+      let control;
+      let newControl;
+      const errors = {
+        'required': {
+          text: ' Obrigatório. '
+        }
+      };
+      Object.keys(form.controls).forEach((index) => {
+        control = form.controls[index];
+        if (control.invalid && !invalid) {
+          if (control.controls) {
+            Object.keys(control.controls).forEach((childIndex) => {
+              newControl = control.controls[childIndex];
+              if (newControl.invalid && !invalid) {
+                invalid = capitalize(childIndex);
+                tipoErro = newControl.errors;
+              }
+            });
+          } else {
+            invalid = capitalize(index);
+            tipoErro = control.errors;
+          }
+        }
+      });
+      let erro = '';
+      Object.keys(tipoErro).forEach((index) => {
+          erro = invalid + (errors[index].text || ' inválido');
+      });
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro na Validação!',
+        detail: erro,
+        key: 'Geral'
+      });
+      return false;
+    } else {
+      return true;
+    }
+
+    function capitalize (string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
     }
   }
 
@@ -168,5 +224,4 @@ export class ApiService {
   public dateToJSON(data) {
     return moment(data).format();
   }
-
 }

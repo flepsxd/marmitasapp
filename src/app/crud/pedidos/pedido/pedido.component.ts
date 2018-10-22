@@ -2,15 +2,13 @@ import {
   Component,
   OnInit,
   Input,
-  Output,
-  EventEmitter,
   ViewChild
 } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
   Validators
-} from '../../../../../node_modules/@angular/forms';
+} from '@angular/forms';
 import { ApiService } from '../../../api/api.service';
 import { Pedido } from '../../pedido';
 import { Pessoa } from '../../pessoa';
@@ -42,7 +40,7 @@ export class PedidoComponent implements OnInit {
   etapa: string;
   @Input() source: any;
 
-  dadosPessoas: Array<Pessoa>;
+  dadosPessoas: Array<Pessoa> = [];
   pessoas: Array<Pessoa>;
   cadastroPessoa = false;
   @ViewChild('cadPessoa')
@@ -58,27 +56,27 @@ export class PedidoComponent implements OnInit {
       }
     },
     {
+      header: 'Quantidade',
+      field: 'quantidade',
+      class: 'unidade'
+    },
+    {
       header: 'Valor Unitário',
       field: 'vlrunitario',
       class: 'valor',
       fn: this.apiService.currencyFormat
     },
     {
-      header: 'Quantidade',
-      field: 'quantidade',
-      class: 'unidade'
+      header: 'Desconto',
+      field: 'desconto',
+      class: 'valor',
+      fn: this.apiService.currencyFormat
     },
     {
       header: 'Valor Total',
       field: 'vlrtotal',
       fn: this.apiService.currencyFormat,
       class: 'valor'
-    },
-    {
-      header: 'Desconto',
-      field: 'desconto',
-      class: 'valor',
-      fn: this.apiService.currencyFormat
     }
   ];
   dadosPedidosItens: Array<PedidoItens>;
@@ -102,10 +100,10 @@ export class PedidoComponent implements OnInit {
       idpedido: [this.pedido.idpedido],
       idpessoa: [this.pedido.idpessoa],
       idendereco: [this.pedido.idendereco],
-      pessoa: [this.pedido.pessoa],
+      pessoa: [this.pedido.pessoa, Validators.required],
       datahora: [this.pedido.datahora],
       formatData: [this.apiService.parseDate(this.pedido.datahora)],
-      tempoprevisto: [],
+      tempoprevisto: [null, Validators.required],
       previsao: [this.pedido.previsao],
       previsaoFormat: [this.apiService.parseDate(this.pedido.previsao)],
       valor: [this.pedido.valor],
@@ -114,10 +112,10 @@ export class PedidoComponent implements OnInit {
       endereco: this.formBuilder.group({
         idbairro: [null],
         idcidade: [null],
-        cidade: [null],
-        bairro: [null],
-        endereco: [null],
-        numero: [null],
+        cidade: [null, Validators.required],
+        bairro: [null, Validators.required],
+        endereco: [null, Validators.required],
+        numero: [null, Validators.required],
         complemento: [null],
         cep: [null, Validators.maxLength(9)]
       })
@@ -170,7 +168,6 @@ export class PedidoComponent implements OnInit {
     if (this.source && !this.idpedido) {
       this.pedido = this.source;
       this.dadosPedidosItens = [];
-      this.addValidation();
     } else if (this.idpedido) {
       this.apiService.getId('pedidos', this.idpedido).subscribe(resp => {
         this.pedido = resp.dados;
@@ -186,17 +183,14 @@ export class PedidoComponent implements OnInit {
         this.pedidoForm
           .get('endereco')
           .patchValue(this.pedido.endereco || this.pedido.pessoa.endereco);
-        this.addValidation();
       });
     } else {
       this.dadosPedidosItens = [];
-      this.addValidation();
     }
   }
 
-  addValidation() {
-    this.pedidoForm.get('idpessoa').setValidators(Validators.required);
-    this.pedidoForm.get('idendereco').setValidators(Validators.required);
+  cancelar() {
+    this.cadastroPessoa = false;
   }
 
   confirmar() {
@@ -237,15 +231,19 @@ export class PedidoComponent implements OnInit {
   }
 
   cadastrarPessoa($event) {
-    if (typeof this.pedidoForm.get('pessoa').value === 'string') {
-      this.novaPessoa = {
-        idpessoa: null,
-        nome: '',
-        status: 'A',
-        telefone: this.pedidoForm.get('pessoa').value
-      };
-      this.cadastroPessoa = true;
-    }
+    const that = this;
+    setTimeout(function() {
+      const value = that.pedidoForm.get('pessoa').value;
+      if (typeof value === 'string' && value) {
+        that.novaPessoa = {
+          idpessoa: null,
+          nome: '',
+          status: 'A',
+          telefone: Number(value)
+        };
+        that.cadastroPessoa = true;
+      }
+    });
   }
 
   salvarPessoa() {
@@ -258,10 +256,10 @@ export class PedidoComponent implements OnInit {
   }
 
   somenteNumero(event = null, control = null): boolean {
-    if(control && this.pedidoForm.get(control).value)  {
+    if (control && this.pedidoForm.get(control).value)  {
       this.pedidoForm.get(control).patchValue(this.pedidoForm.get(control).value.toString().replace(/[^0-9]/g, ''));
     }
-    if(event) {
+    if (event) {
       const charCode = (event.which) ? event.which : event.keyCode;
       if (charCode > 31 && (charCode < 48 || charCode > 57)) {
         return false;
@@ -269,5 +267,9 @@ export class PedidoComponent implements OnInit {
       return true;
     }
 
+  }
+
+  validaForm() {
+    return this.apiService.validaForm(this.pedidoForm);
   }
 }

@@ -128,5 +128,9 @@ export class LancamentoComponent implements OnInit {
     });
   }
 
+  validaForm() {
+    return this.apiService.validaForm(this.lancamentoForm);
+  }
+
 
 }

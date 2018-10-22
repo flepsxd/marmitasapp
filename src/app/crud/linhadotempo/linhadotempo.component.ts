@@ -93,7 +93,6 @@ export class LinhadotempoComponent implements OnInit, AfterViewInit {
   }
 
   excluirPedido(idpedido) {
-    var that = this;
     this.confirmationService.confirm({
       message: 'Deseja excluir esse Pedido?',
       header: 'Confirmar Exclusão',
@@ -101,7 +100,7 @@ export class LinhadotempoComponent implements OnInit, AfterViewInit {
       acceptLabel: 'Confirmar',
       rejectLabel: 'Cancelar',
       accept: () => {
-        that.apiService.delete('pedidos', idpedido).subscribe(that.ngOnInit);
+        this.apiService.delete('pedidos', idpedido).subscribe(() => this.getDados());
       }
     });
   }

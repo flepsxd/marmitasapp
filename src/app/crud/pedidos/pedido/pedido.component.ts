@@ -79,7 +79,7 @@ export class PedidoComponent implements OnInit {
       class: 'valor'
     }
   ];
-  dadosPedidosItens: Array<PedidoItens>;
+  dadosPedidosItens: Array<any>;
   cadPedidoItem: Object;
 
   constructor(
@@ -230,7 +230,7 @@ export class PedidoComponent implements OnInit {
 
   aoAtualizar() {
     let valor = 0;
-    this.dadosPedidosItens.filter(val=>!val.deletar).forEach(function(val, index) {
+    this.dadosPedidosItens.filter(val => !val.deletar).forEach(function(val, index) {
       valor += val.vlrtotal;
     });
     this.pedidoForm.get('valor').patchValue(valor);

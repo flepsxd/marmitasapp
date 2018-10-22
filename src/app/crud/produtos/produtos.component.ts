@@ -11,6 +11,7 @@ import { ProdutoComponent } from './produto/produto.component';
 export class ProdutosComponent implements OnInit {
   columns: Array<{}> = [];
   cad: any;
+  filtros: Array<any>;
 
 
   constructor(

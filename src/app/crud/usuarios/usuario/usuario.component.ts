@@ -54,12 +54,12 @@ export class UsuarioComponent implements OnInit {
 
   getDados() {
     if (this.source) {
-      this.pessoa = this.source;
+      this.usuario = this.source;
     } else  if (this.id) {
       this.apiService.getId('usuarios', this.id).subscribe(resp => {
-        this.pessoa = resp.dados;
-        this.usuarioForm.patchValue(this.pessoa);
-        this.usuarioForm.patchValue({ statusB: this.pessoa.status === 'A' });
+        this.usuario = resp.dados;
+        this.usuarioForm.patchValue(this.usuario);
+        this.usuarioForm.patchValue({ statusB: this.usuario.status === 'A' });
       });
     }
   }

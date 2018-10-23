@@ -13,7 +13,7 @@
   </p-card>
 </div>
 <p-dialog [(visible)]="cadastroPedido" [header]="pedido.idpedido ? ('Pedido ' + pedido.idpedido) : 'Novo Pedido'" appendTo="body" [modal]="true"
-  showEffect="fade">
+  showEffect="fade" [contentStyle]="{'max-height': '600px', 'max-width': '800px'}">
   <app-pedido #pedidoFn *ngIf="cadastroPedido" [source]="pedido" [idpedido]="pedido.idpedido"></app-pedido>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">

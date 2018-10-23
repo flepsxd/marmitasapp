@@ -10,7 +10,6 @@
       <div class="ui-g-12">
         <input type="password" class="ui-g-12" placeholder="Senha" id="senha" formControlName="senha" pPassword
           [ngClass]="{ 'is-invalid': submitted && f.senha.errors }" />
-        <p-message *ngIf="isFieldInvalid('senha')" severity="error" text="Senha é obrigatório"></p-message>
       </div>
       <button type="submit" pButton [disabled]="submitted" class="ui-g-12 btn btn-primary">Login</button>
     </form>

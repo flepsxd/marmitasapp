@@ -26,23 +26,40 @@ export class LancamentosComponent implements OnInit {
     this.dados = this.apiService.lancamentos;
     this.columns = [
       {
-        descricao: 'Nome',
-        campo: 'nome'
+        header: 'Lançamento',
+        field: 'idlancamento',
+        class: 'id'
       },
       {
-        descricao: 'Telefone',
-        campo: 'telefone'
+        header: 'Pessoa',
+        field: 'pessoa_nome'
       },
       {
-        descricao: 'E-mail',
-        campo: 'email'
+        header: 'Data/Hora',
+        field: 'datahora',
+        fn: function(dado) {
+          return new Date(dado).toLocaleString();
+        }
       },
       {
-        descricao: 'Status',
-        campo: 'status'
+        header: 'Data/Hora Pago',
+        field: 'datapagto',
+        fn: function(dado) {
+          return new Date(dado).toLocaleString();
+        }
+      },
+      {
+        header: 'Valor Base',
+        field: 'valor',
+        class: 'valor',
+        fn: this.apiService.currencyFormat
+      },
+      {
+        header: 'Valor Pago',
+        field: 'valorpago',
+        class: 'valor',
+        fn: this.apiService.currencyFormat
       },
     ];
   }
-
-  
 }

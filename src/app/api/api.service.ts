@@ -228,7 +228,7 @@ export class ApiService {
   }
 
   public parseDate(date) {
-    if(date) {
+    if (date) {
       return moment(date).toDate();
     } else {
       return moment().toDate();
@@ -236,10 +236,20 @@ export class ApiService {
   }
 
   public dateToJSON(date) {
-    if(date) {
+    if (date) {
       return moment(date).format();
     } else {
       return moment().format();
     }
   }
+
+  public timeToDate(time) {
+    if (time) {
+      const date = moment().format('YYYY-MM-DD');
+      return moment(date + 'T' + time).toDate();
+    } else {
+      return moment().toDate();
+    }
+  }
+
 }

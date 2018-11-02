@@ -60,10 +60,16 @@ export class PedidosComponent implements OnInit {
         }
       },
       {
+        header: 'Valor',
+        field: 'valor',
+        class: 'valor',
+        fn: this.apiService.currencyFormat
+      },
+      {
         header: 'Status',
         field: 'status_formatado',
         class: 'status'
-      }
+      },
     ];
   }
 }

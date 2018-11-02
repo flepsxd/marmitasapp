@@ -9,6 +9,12 @@
       <div class="ui-helper-clearfix" *ngFor="let pedido of item.dados; let i = index" [attr.data-index]="i">
         <app-cardpedido  [pedido]="pedido" (excluirPedido)="excluirPedido($event)" (lancamento)="dialogLancamento($event)" (setPedido)="setPedido($event)" [etapa]="item" [ordem]="i"></app-cardpedido>
       </div>
+      <div class="ui-helper-clearfix naomover" *ngFor="let agendamento of item.agendamentos; let i = index" [attr.data-index]="i">
+        <app-cardpedido  [agendamento]="agendamento" [etapa]="item" [ordem]="i"></app-cardpedido>
+      </div>
+    </div>
+    <div class="timeline">
+
     </div>
   </p-card>
 </div>

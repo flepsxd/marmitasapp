@@ -31,6 +31,17 @@ export class LinhadotempoComponent implements OnInit, AfterViewInit {
     private dragulaService: DragulaService,
     private confirmationService: ConfirmationService
   ) {
+    this.dragulaService.createGroup('timeline', {
+      invalid: function(el) {
+        if (el.className.indexOf('naomover') >= 0) {
+          return true;
+        }
+        return false;
+      }
+    });
+  }
+
+  ngOnInit() {
     this.filtros = [{
       type: 'date',
       title: 'Data',
@@ -68,9 +79,6 @@ export class LinhadotempoComponent implements OnInit, AfterViewInit {
           }
         )
     );
-  }
-
-  ngOnInit() {
     this.getDados();
   }
 
@@ -80,6 +88,7 @@ export class LinhadotempoComponent implements OnInit, AfterViewInit {
         div.item = this.scrumboard[index];
       });
     });
+
   }
 
   getDados() {

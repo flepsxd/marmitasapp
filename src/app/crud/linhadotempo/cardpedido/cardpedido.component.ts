@@ -23,6 +23,7 @@ export class CardpedidoComponent implements OnInit {
   pedidoFn: any;
   @Input()
   pedido: any;
+  @Input() agendamento: any;
   @Output()
   setPedido: EventEmitter<any> = new EventEmitter();
   @Output()
@@ -33,11 +34,12 @@ export class CardpedidoComponent implements OnInit {
   etapa: any;
   @Input()
   ordem: any;
+  dados: any;
   pessoa: Pessoa;
-  pedidoItens: Array<PedidoItens>;
+  itens: Array<any>;
   produtos: Array<Produto>;
   mensagemExpira: any;
-  columnsPedidoItens: Array<any> = [
+  columnsItens: Array<any> = [
     {
       header: 'Produto',
       field: this.produto
@@ -54,32 +56,43 @@ export class CardpedidoComponent implements OnInit {
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
-    this.pessoa = this.pedido.pessoa;
-    this.pedidoItens = this.pedido.pedidos_itens;
-    if (this.etapa.idetapa !== this.pedido.etapa) {
-      this.pedido.etapa = this.etapa.idetapa;
-      this.pedido.ordem = this.ordem;
-      this.apiService
-        .change('pedidos', this.pedido.idpedido, this.pedido)
-        .subscribe();
+    if (this.pedido) {
+      this.dados = this.pedido;
+      this.itens = this.dados.pedidos_itens;
+      if (this.etapa.idetapa !== this.dados.etapa) {
+        this.dados.etapa = this.etapa.idetapa;
+        this.dados.ordem = this.ordem;
+        this.apiService
+          .change('pedidos', this.dados.idpedido, this.pedido)
+          .subscribe();
+      }
+    } else {
+      this.dados = this.agendamento;
+      this.dados.datahora = this.apiService.timeToDate(this.dados.hora);
+      this.dados.previsao = this.apiService.timeToDate(this.dados.previsao);
+      this.itens = this.dados.agendamento_itens;
     }
+    this.pessoa = this.dados.pessoa;
     this.periodos = [
       {
-        'label': new Date(this.pedido.datahora).toLocaleTimeString()
+        'label': new Date(this.dados.datahora).toLocaleTimeString()
       },
       {
         'label': ('~ ' + this.time_convert(this.tempoEstimado()))
       },
       {
-        'label': new Date(this.pedido.previsao).toLocaleTimeString()
+        'label': new Date(this.dados.previsao).toLocaleTimeString()
+      },
+      {
+        'label': '--:--:--'
       }
     ];
-    if (this.pedido.lancamento) {
-      this.periodos.push({
-        'label': new Date(this.pedido.lancamento.datapagto).toLocaleTimeString(),
-        'title': new Date(this.pedido.lancamento.datapagto).toLocaleDateString(),
+    if (this.dados.lancamento) {
+      this.periodos[this.periodos.length - 1] = {
+        'label': new Date(this.dados.lancamento.datapagto).toLocaleTimeString(),
+        'title': new Date(this.dados.lancamento.datapagto).toLocaleDateString(),
         'icon': 'pi pi-money-bill'
-      });
+      };
     }
   }
 
@@ -92,7 +105,7 @@ export class CardpedidoComponent implements OnInit {
   }
 
   excluir() {
-    this.excluirPedido.emit(this.pedido.idpedido);
+    this.excluirPedido.emit(this.dados.idpedido);
   }
 
   editar() {
@@ -100,15 +113,15 @@ export class CardpedidoComponent implements OnInit {
   }
 
   tempoEstimado() {
-    const datahora = this.apiService.parseDate(this.pedido.datahora);
-    const previsao = this.apiService.parseDate(this.pedido.previsao);
+    const datahora = this.apiService.parseDate(this.dados.datahora);
+    const previsao = this.apiService.parseDate(this.dados.previsao);
     const diffMs = previsao.getTime() - datahora.getTime();
     const diffMins = Math.round(diffMs / 60000);
     return diffMins || 0;
   }
 
   compareDate(tempo = 0) {
-    const previsao = this.apiService.parseDate(this.pedido.previsao);
+    const previsao = this.apiService.parseDate(this.dados.previsao);
     const agora = new Date();
     const diffMs = previsao.getTime() - agora.getTime();
     const diffMins = Math.round(diffMs / 60000);

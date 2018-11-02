@@ -63,6 +63,10 @@ body>app-root>* {
   width: 100px;
 }
 
+.mb-5 {
+  margin-bottom: 5px;
+}
+
 .ml-10 {
   margin-left: 10px !important;
 }

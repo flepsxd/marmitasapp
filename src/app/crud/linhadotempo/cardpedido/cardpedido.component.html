@@ -1,12 +1,15 @@
-<p-card #cardpedido *ngIf="pessoa" [style]="{'margin-bottom': '10px'}" [title]="pessoa.nome" [subtitle]="'Contato: ' + pessoa.telefone">
+<p-card #cardpedido *ngIf="pessoa" [style]="{'margin-bottom': '10px'}" [title]="pessoa.nome" [subtitle]="'Contato: ' + pessoa.telefone" [class.agendamento]="agendamento">
   <div fxLayout="column">
+    <p-message *ngIf="!dados.idpedido" severity="info" text="Agendado, sem pedido cadastrado" styleClass="mb-5"></p-message>
+    <p-message *ngIf="dados.idpedido && dados.idagendamento" severity="info" text="Agendamento" styleClass="mb-5"></p-message>
     <div *ngIf="!etapa.finalizado && compareDate(10)"  [ngSwitch]="mensagemExpira">
       <p-message *ngSwitchCase="0" severity="error" text="Pedido expirado"></p-message>
       <p-message *ngSwitchCase="10" severity="warn" text="Pedido expirando"></p-message>
     </div>
     <p-steps [model]="periodos" [activeIndex]="etapa.finalizado ? (periodos.length - 1) : 0" [style]="{'max-height': '90px'}"></p-steps>
+    <div #panelshow></div>
     <p-overlayPanel #table [style]="{'max-width': '320px'}" [showCloseIcon]="true" >
-      <p-table *ngIf="pedidoItens.length > 0" [columns]="columnsPedidoItens" [value]="pedidoItens">
+      <p-table *ngIf="itens.length > 0" [columns]="columnsItens" [value]="itens">
         <ng-template pTemplate="header" let-columns>
           <tr>
             <th *ngFor="let col of columns" [ngClass]="col.class">
@@ -23,15 +26,15 @@
         </ng-template>
       </p-table>
     </p-overlayPanel>
-    <button type="text" icon="pi pi-search" pButton label="Itens" (click)="table.toggle($event, cardpedido)"  class="mt-10" ></button>
+    <button type="text" icon="pi pi-search" pButton label="Itens" (click)="table.toggle($event, cardpedido.el.nativeElement)"  class="mt-10" ></button>
   </div>
   <p-footer>
     <div fxLayout="row" fxLayoutAlign="space-between start">
       <div>
-        <span>{{pedido.valor | currency:'BRL':true}}</span>
+        <span>{{dados.valor | currency:'BRL':"symbol"}}</span>
       </div>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <button *ngIf="etapa.geralancamento && !pedido.idlancamento" pButton icon="pi pi-file" (click)="lancamentoModal()" class="ml-10"></button>
+        <button *ngIf="etapa.geralancamento && !dados.idlancamento" pButton icon="pi pi-file" (click)="lancamentoModal()" class="ml-10"></button>
         <button pButton icon="pi pi-pencil" (click)="editar()" class="ml-10"></button>
         <button pButton icon="pi pi-trash" (click)="excluir()" class="ml-10"></button>
       </div>

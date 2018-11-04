@@ -8,36 +8,22 @@
 }
 
 body {
-  overflow: hidden;
-  height: 100%;
-  max-height: 100%;
+  margin: 0;
+  min-height: 100%;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: "Open Sans","Helvetica Neue",sans-serif;
+  font-weight: 400;
+  color: #333c40;
+  -webkit-font-smoothing: antialiased;
+  font-size: 14px;
 }
 
 body,
 html {
   position: relative;
   height: 100%;
-}
-
-body>app-root {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-  flex-direction: column;
-  box-sizing: border-box;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-}
-
-body>app-root>* {
-  height: 100%;
-  max-height: 100%;
 }
 
 .id {
@@ -93,6 +79,7 @@ h3 {
   margin-block-start: 0.5em !important;
   margin-block-end: 0.5em !important;
 }
+/**
 @media screen and (min-height: 850px) {
   .ui-dialog {
     max-height: 750px !important;
@@ -114,10 +101,21 @@ h3 {
   .ui-dialog {
     height: 100% !important;
   }
-}
+}*/
 
 
 p-inputmask{
   padding-left: 0px !important;
   padding-right: 0px !important;
+}
+
+
+.centralize-spinner{
+  position:absolute;
+  top:calc(50% - 30px);
+  left:calc(50% - 30px);
+  font-size: 60px !important;
+}
+.centralize-spinner:not(.dialog) {
+  top:calc(50% + 39px - 30px);
 }

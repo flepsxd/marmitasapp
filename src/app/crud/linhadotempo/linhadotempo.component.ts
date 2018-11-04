@@ -20,6 +20,8 @@ export class LinhadotempoComponent implements OnInit, AfterViewInit {
   pedido: any = {};
   filtros: Array<any> = [];
   cadastroPedido = false;
+  carregando = false;
+  submit = false;
 
   lancamento: any = {};
   cadastroLancamento = false;
@@ -92,8 +94,10 @@ export class LinhadotempoComponent implements OnInit, AfterViewInit {
   }
 
   getDados() {
+    this.carregando = true;
     this.apiService.get('pedidos/timeline', this.apiService.tratarFilter(this.filtros)).subscribe(resp => {
       this.scrumboard = resp.dados;
+      this.carregando = false;
     });
   }
 
@@ -124,12 +128,14 @@ export class LinhadotempoComponent implements OnInit, AfterViewInit {
   }
 
   salvar() {
+    this.submit = true;
     this.apiService
       .confirmDialog(this.pedidoFn, { resource: 'pedidos', chave: 'idpedido' })
       .subscribe(obj => {
+        this.submit = false;
         this.cadastroPedido = false;
         this.getDados();
-      });
+      }, _ => this.submit = false);
   }
 
   alterarFiltro(filtro, index, value) {
@@ -166,11 +172,13 @@ export class LinhadotempoComponent implements OnInit, AfterViewInit {
   }
 
   salvarLancamento() {
+    this.submit = true;
     this.apiService
       .confirmDialog(this.lancamentoFn, {resource: 'lancamentos', chave: 'idlancamento'})
       .subscribe(obj => {
+        this.submit = false;
         this.cadastroLancamento = false;
         this.getDados();
-      });
+      }, _ => this.submit = false);
   }
 }

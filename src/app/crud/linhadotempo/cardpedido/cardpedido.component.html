@@ -2,13 +2,13 @@
   <div fxLayout="column">
     <p-message *ngIf="!dados.idpedido" severity="info" text="Agendado, sem pedido cadastrado" styleClass="mb-5"></p-message>
     <p-message *ngIf="dados.idpedido && dados.idagendamento" severity="info" text="Agendamento" styleClass="mb-5"></p-message>
-    <div *ngIf="!etapa.finalizado && compareDate(10)"  [ngSwitch]="mensagemExpira">
+    <div *ngIf="dados.idpedido && !etapa.finalizado && compareDate(10)"  [ngSwitch]="mensagemExpira">
       <p-message *ngSwitchCase="0" severity="error" text="Pedido expirado"></p-message>
       <p-message *ngSwitchCase="10" severity="warn" text="Pedido expirando"></p-message>
     </div>
     <p-steps [model]="periodos" [activeIndex]="etapa.finalizado ? (periodos.length - 1) : 0" [style]="{'max-height': '90px'}"></p-steps>
     <div #panelshow></div>
-    <p-overlayPanel #table [style]="{'max-width': '320px'}" [showCloseIcon]="true" >
+    <p-overlayPanel #table [style]="{'max-width': '320px'}" [showCloseIcon]="true">
       <p-table *ngIf="itens.length > 0" [columns]="columnsItens" [value]="itens">
         <ng-template pTemplate="header" let-columns>
           <tr>
@@ -26,14 +26,14 @@
         </ng-template>
       </p-table>
     </p-overlayPanel>
-    <button type="text" icon="pi pi-search" pButton label="Itens" (click)="table.toggle($event, cardpedido.el.nativeElement)"  class="mt-10" ></button>
+    <button type="text" icon="pi pi-search" pButton label="Itens" (click)="table.toggle($event)"  class="mt-10" ></button>
   </div>
   <p-footer>
     <div fxLayout="row" fxLayoutAlign="space-between start">
       <div>
         <span>{{dados.valor | currency:'BRL':"symbol"}}</span>
       </div>
-      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <div *ngIf="dados.idpedido" class="ui-dialog-buttonpane ui-helper-clearfix">
         <button *ngIf="etapa.geralancamento && !dados.idlancamento" pButton icon="pi pi-file" (click)="lancamentoModal()" class="ml-10"></button>
         <button pButton icon="pi pi-pencil" (click)="editar()" class="ml-10"></button>
         <button pButton icon="pi pi-trash" (click)="excluir()" class="ml-10"></button>

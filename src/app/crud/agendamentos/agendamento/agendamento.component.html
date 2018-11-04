@@ -1,0 +1,52 @@
+<form [formGroup]="agendamentoForm">
+    <div class="ui-g ui-fluid pedido-form">
+      <div class="ui-g-12">
+        <h3>Pessoa</h3>
+        <p-autoComplete class="ui-g-12" formControlName="pessoa" [suggestions]="dadosPessoas" (completeMethod)="getPessoas($event)"
+          field="nome" [dropdown]="true" dataKey="idpessoa" (onBlur)="cadastrarPessoa($event)" (onSelect)="apiService.aoSelecionar(agendamentoForm, 'idpessoa', 'pessoa', $event)">
+          <ng-template let-pessoa pTemplate="item">
+
+            <div *ngIf="pessoa.nome">Nome: {{pessoa.nome}}</div>
+            <div *ngIf="pessoa.email">E-mail: {{pessoa.email}}</div>
+            <div *ngIf="pessoa.telefone">Telefone: {{pessoa.telefone}}</div>
+          </ng-template>
+        </p-autoComplete>
+      </div>
+      <div class="ui-g-4">
+        <h3>Data/Hora</h3>
+        <p-calendar placeholder="Hora" timeOnly="true" formControlName="formatHour"></p-calendar>
+      </div>
+      <div class="ui-g-4">
+        <h3>Tempo Previsto</h3>
+        <input type="number" class="ui-g-12" placeholder="Tempo Previsto" formControlName="tempo_previsto" (keypress)="somenteNumero($event)" (input)="somenteNumero('tempo_previsto')" pInputText />
+      </div>
+      <div class="ui-g-4">
+        <h3>Previsão</h3>
+        <p-calendar placeholder="Previsão" [disabled]="true" formControlName="previsaoFormat"></p-calendar>
+      </div>
+      <div class="ui-g-12">
+        <h3>Observações</h3>
+        <textarea pInputTextarea class="ui-g-12" formControlName="observacoes" autoResize="false"></textarea>
+      </div>
+      <div class="ui-g-12">
+          <h3>Valor</h3>
+          <input type="text" class="ui-g-12" placeholder="Valor" formControlName="valor" pInputText currencyMask />
+        </div>
+      <div class="ui-g-12">
+        <h3>Itens do Pedido</h3>
+        <app-crud *ngIf="dadosAgendamentoItens" [source]="dadosAgendamentoItens" [columns]="colsAgendamentoItens" [cad]="cadAgendamentoItem"
+          (aoAtualizar)="aoAtualizar()"></app-crud>
+      </div>
+
+    </div>
+  </form>
+  <p-dialog [header]="'Cadastro de Pessoa'" [(visible)]="cadastroPessoa" appendTo="body" [responsive]="true" showEffect="fade"
+    [modal]="true" [contentStyle]="{'max-height': '600px', 'max-width': '800px'}">
+    <app-pessoa #cadPessoa *ngIf="cadastroPessoa" [source]="novaPessoa"></app-pessoa>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <button pButton icon="pi pi-check" (click)="salvarPessoa()" label="Salvar"></button>
+        <button pButton icon="pi pi-times" (click)="cancelar()" label="Cancelar"></button>
+      </div>
+    </p-footer>
+  </p-dialog>

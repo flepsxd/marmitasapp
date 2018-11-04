@@ -18,21 +18,34 @@
     </div>
   </p-card>
 </div>
+<p-blockUI [blocked]="carregando">
+  <i class="pi pi-spin pi-spinner centralize-spinner"></i>
+</p-blockUI>
 <p-dialog [(visible)]="cadastroPedido" [header]="pedido.idpedido ? ('Pedido ' + pedido.idpedido) : 'Novo Pedido'" appendTo="body" [modal]="true"
   showEffect="fade" [contentStyle]="{'max-height': '600px', 'max-width': '800px'}">
-  <app-pedido #pedidoFn *ngIf="cadastroPedido" [source]="pedido" [idpedido]="pedido.idpedido"></app-pedido>
+  <app-block-div #blockdivdialogPedido>
+    <app-pedido #pedidoFn *ngIf="cadastroPedido" [source]="pedido" [idpedido]="pedido.idpedido"></app-pedido>
+  </app-block-div>
+  <p-blockUI [target]="blockdivdialogPedido" [blocked]="submit">
+    <i class="pi pi-spin pi-spinner centralize-spinner dialog"></i>
+  </p-blockUI>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button pButton icon="pi pi-check" (click)="salvar()" label="Salvar" class="ml-10"></button>
+      <button pButton icon="pi pi-check" (click)="salvar()" [disabled]="submit" label="Salvar" class="ml-10"></button>
     </div>
   </p-footer>
 </p-dialog>
 <p-dialog [(visible)]="cadastroLancamento" [header]="(lancamento ? ('Lancamento ' + lancamento.idlancamento) : 'Gerar Lançamento') + (' - Ref. Pedido: ' + lancamento.idpedido)" appendTo="body" [modal]="true" showEffect="fade" [style]="{'max-width': '450px'}">
-  <app-lancamento #lancamentoFn *ngIf="cadastroLancamento" [vinculoPessoa]="true" [source]="lancamento" [idlancamento]="lancamento ? lancamento.idlancamento : null"></app-lancamento>
+  <app-block-div #blockdivdialogLancamento>
+    <app-lancamento #lancamentoFn *ngIf="cadastroLancamento" [vinculoPessoa]="true" [source]="lancamento" [idlancamento]="lancamento ? lancamento.idlancamento : null"></app-lancamento>
+  </app-block-div>
+  <p-blockUI [target]="blockdivdialogLancamento" [blocked]="submit">
+    <i class="pi pi-spin pi-spinner centralize-spinner dialog"></i>
+  </p-blockUI>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button pButton icon="pi pi-check" (click)="salvarLancamento()" label="Salvar" class="ml-10"></button>
-      <button pButton icon="pi pi-check" (click)="cancelarLancamento()" label="Cancelar" class="ml-10"></button>
+      <button pButton icon="pi pi-check" (click)="salvarLancamento()" [disabled]="submit" label="Salvar" class="ml-10"></button>
+      <button pButton icon="pi pi-check" (click)="cancelarLancamento()" [disabled]="submit" label="Cancelar" class="ml-10"></button>
     </div>
   </p-footer>
 </p-dialog>

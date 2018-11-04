@@ -1,5 +1,5 @@
-<p-table #dt [value]="dados" [columns]="columns" [responsive]="true" (onRowSelect)="onRowSelect($event)" selectionMode="single"
-  [(selection)]="selecionado" [paginator]="true" [rows]="20" >
+<p-table #dt [value]="dados" [columns]="columns" [responsive]="true" (onRowSelect)="onRowSelect($event)" selectionMode="single" [scrollable]="true"
+  [(selection)]="selecionado" [rows]="20" >
   <ng-template pTemplate="caption">
     <app-filtros [dados]="dt" (search)="dt.filterGlobal($event, 'contains')" (alterarFiltro)="dt.filtroChange($event.filtro, $event.index, $event.valor)" (filtrar)="dt.filtrar($event)"></app-filtros>
   </ng-template>
@@ -24,16 +24,24 @@
     </div>
   </ng-template>
 </p-table>
-<p-dialog [header]="cad.header" [(visible)]="exibirDialog" appendTo="body" [responsive]="true" showEffect="fade"
-  [modal]="true" [contentStyle]="{'max-height': '600px', 'max-width': '800px'}">
-  <template #dialogContainer></template>
+<p-blockUI [blocked]="carregando">
+  <i class="pi pi-spin pi-spinner centralize-spinner"></i>
+</p-blockUI>
+<p-dialog #dialogcad [header]="cad.header" [(visible)]="exibirDialog" appendTo="body" [responsive]="true" showEffect="fade"
+  [modal]="true" [contentStyle]="{'max-width': '800px'}">
+  <app-block-div #blockdivdialog>
+    <template #dialogContainer></template>
+  </app-block-div>
+  <p-blockUI [target]="blockdivdialog" [blocked]="submit">
+    <i class="pi pi-spin pi-spinner centralize-spinner dialog"></i>
+  </p-blockUI>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
       <button pButton icon="pi pi-trash" [disabled]="submit" (click)="remover()" style="float: left;"></button>
-      <p-progressSpinner *ngIf="submit" [style]="{'height': '28px', 'width': '28px', 'margin-right': '10px', 'margin-bottom': '0px'}"></p-progressSpinner>
       <button pButton icon="pi pi-check" [disabled]="submit" (click)="salvar()" label="Salvar"></button>
       <button pButton icon="pi pi-times" [disabled]="submit" (click)="cancelar()" label="Cancelar"></button>
     </div>
   </p-footer>
 </p-dialog>
+
 <p-confirmDialog [key]="cad.resource" appendTo="body"></p-confirmDialog>

@@ -12,6 +12,7 @@ export class LancamentosComponent implements OnInit {
   dados: Lancamento[];
   columns: Array<{}> = [];
   cad: any;
+  filtros: Array<any> = [];
 
 
   constructor(
@@ -21,7 +22,9 @@ export class LancamentosComponent implements OnInit {
   ngOnInit() {
     this.cad = {
       component: LancamentoComponent,
-      chave: 'idlancamento'
+      chave: 'idlancamento',
+      resource: 'lancamentos',
+      header: 'Cadastro de Lançamento'
     };
     this.dados = this.apiService.lancamentos;
     this.columns = [

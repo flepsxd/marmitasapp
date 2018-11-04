@@ -1,6 +1,6 @@
-<div>
-  <app-header></app-header>
-  <div class="fix-body">
+<div class="full-content">
+  <app-header *ngIf="isLoggedIn$ | async"  class="layout-header"></app-header>
+  <div class="layout-content">
     <router-outlet></router-outlet>
   </div>
   <p-growl key="Geral"></p-growl>

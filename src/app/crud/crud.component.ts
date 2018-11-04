@@ -37,6 +37,7 @@ export class CrudComponent implements OnInit {
   exibirDialog: any = false;
   submit = false;
   selecionado: any;
+  carregando = false;
   dados: Array<any>;
 
   constructor(
@@ -56,10 +57,12 @@ export class CrudComponent implements OnInit {
     if (this.source) {
       this.dados = this.source.filter(val => !val.deletar);
     } else {
+      this.carregando = true;
       this.apiService
         .get(this.cad.resource + (this.cad.extraURL || ''), this.apiService.tratarFilter(this.filtros))
         .subscribe(resp => {
           this.dados = resp.dados;
+          this.carregando = false;
         });
     }
   }
@@ -142,7 +145,7 @@ export class CrudComponent implements OnInit {
         if (this.aoAtualizar) {
           this.aoAtualizar.emit(true);
         }
-      }, error => {this.submit = false;});
+      }, error => this.submit = false);
   }
 
   cancelar() {
@@ -160,6 +163,5 @@ export class CrudComponent implements OnInit {
     }
     filtro.valorFormatado = value;
     this.filtros[index] = filtro;
-    console.log(this.filtros);
   }
 }

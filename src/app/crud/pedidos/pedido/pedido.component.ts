@@ -100,6 +100,7 @@ export class PedidoComponent implements OnInit {
       idpedido: [this.pedido.idpedido],
       idpessoa: [this.pedido.idpessoa],
       idendereco: [this.pedido.idendereco],
+      idagendamento: [this.pedido.idagendamento],
       pessoa: [this.pedido.pessoa, Validators.required],
       datahora: [this.pedido.datahora],
       formatData: [this.apiService.parseDate(this.pedido.datahora)],
@@ -174,11 +175,9 @@ export class PedidoComponent implements OnInit {
         this.dadosPedidosItens = this.pedido.pedidos_itens || [];
         this.pedidoForm.patchValue(this.pedido);
         this.pedidoForm.patchValue({
-          tempo_previsto: this.calculaPrevisaoETempo()
-        });
-        this.pedidoForm.patchValue({
           formatData: this.apiService.parseDate(this.pedido.datahora),
-          previsaoFormat: this.apiService.parseDate(this.pedido.previsao)
+          previsaoFormat: this.apiService.parseDate(this.pedido.previsao),
+          tempo_previsto: this.calculaPrevisaoETempo()
         });
         this.pedidoForm
           .get('endereco')

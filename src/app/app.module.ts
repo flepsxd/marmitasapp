@@ -28,6 +28,7 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {InputMaskModule} from 'primeng/inputmask';
 import {PasswordModule} from 'primeng/password';
+import {BlockUIModule} from 'primeng/blockui';
 
 import { DragulaModule } from 'ng2-dragula';
 
@@ -75,6 +76,10 @@ import { EnderecoComponent } from './crud/endereco/endereco.component';
 import { FiltrosComponent } from './filtros/filtros.component';
 import { UsuariosComponent } from './crud/usuarios/usuarios.component';
 import { UsuarioComponent } from './crud/usuarios/usuario/usuario.component';
+import { BlockDivComponent } from './block-div/block-div.component';
+import { AgendamentosComponent } from './crud/agendamentos/agendamentos.component';
+import { AgendamentoComponent } from './crud/agendamentos/agendamento/agendamento.component';
+import { AgendamentoItensComponent } from './crud/agendamentos/agendamento-itens/agendamento-itens.component';
 
 const appRoutes: Routes = [
   {
@@ -103,6 +108,10 @@ const childRoutes: Routes = [
       {
         path: 'pedidos',
         component: PedidosComponent
+      },
+      {
+        path: 'agendamentos',
+        component: AgendamentosComponent
       },
       {
         path: 'lancamentos',
@@ -152,7 +161,11 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     EnderecoComponent,
     FiltrosComponent,
     UsuariosComponent,
-    UsuarioComponent
+    UsuarioComponent,
+    BlockDivComponent,
+    AgendamentosComponent,
+    AgendamentoComponent,
+    AgendamentoItensComponent
   ],
   imports: [
     BrowserModule,
@@ -185,6 +198,7 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     InputMaskModule,
     PasswordModule,
     FlexLayoutModule,
+    BlockUIModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes, { enableTracing: true }),
     RouterModule.forChild(childRoutes),
@@ -208,7 +222,8 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     PedidoComponent,
     PedidoItensComponent,
     ProdutoComponent,
-    UsuarioComponent
+    UsuarioComponent,
+    AgendamentoComponent
   ],
   bootstrap: [AppComponent]
 })

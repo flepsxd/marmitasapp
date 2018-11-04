@@ -5,8 +5,7 @@ import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-header',
-  templateUrl: './header.component.html',
-  styles: []
+  templateUrl: './header.component.html'
 })
 export class HeaderComponent implements OnInit {
   items: MenuItem[];
@@ -20,6 +19,7 @@ export class HeaderComponent implements OnInit {
       { label: 'Pessoas', routerLink: '/pessoas'},
       { label: 'Produtos', routerLink: '/produtos'},
       { label: 'Pedidos', routerLink: '/pedidos'},
+      { label: 'Agendamentos', routerLink: '/agendamentos'},
       { label: 'Lançamentos', routerLink: '/lancamentos'},
       { label: 'Linha do Tempo', routerLink: '/linhadotempo'},
       { label: 'Logout', command: (event) => { this.authService.logout(); }}

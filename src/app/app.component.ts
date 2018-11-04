@@ -1,3 +1,5 @@
+import { AuthService } from './auth/auth.service';
+import { Observable } from 'rxjs';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,4 +9,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'marmitasapp';
+  isLoggedIn$: Observable<boolean>;
+
+  constructor(private authService: AuthService) {
+    this.isLoggedIn$ = this.authService.isLoggedIn;
+  }
 }

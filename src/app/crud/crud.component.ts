@@ -96,7 +96,7 @@ export class CrudComponent implements OnInit {
       acceptLabel: 'Confirmar',
       rejectLabel: 'Cancelar',
       accept: () => {
-        if(!this.source) {
+        if (!this.source) {
           this.apiService.delete(this.cad.resource, this.selecionado[this.cad.chave]).subscribe(() => {
             this.exibirDialog = false;
             this.submit = false;
@@ -107,7 +107,7 @@ export class CrudComponent implements OnInit {
           }, _ => this.submit = false);
         } else {
           const index = this.dados.indexOf(this.selecionado);
-          if(this.source[index][this.cad.chave]) {
+          if (this.source[index][this.cad.chave]) {
             this.source[index].deletar = true;
           } else {
             this.source.splice(index, 1);

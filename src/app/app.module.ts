@@ -223,7 +223,8 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     PedidoItensComponent,
     ProdutoComponent,
     UsuarioComponent,
-    AgendamentoComponent
+    AgendamentoComponent,
+    AgendamentoItensComponent
   ],
   bootstrap: [AppComponent]
 })

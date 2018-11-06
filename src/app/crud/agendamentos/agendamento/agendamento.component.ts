@@ -28,7 +28,9 @@ export class AgendamentoComponent implements OnInit {
     hora: null,
     previsao: null,
     valor: null,
-    observacoes: ''
+    observacoes: '',
+    status: 'A',
+    proximodia: true
   };
   @Input()
   idagendamento: number;
@@ -101,6 +103,9 @@ export class AgendamentoComponent implements OnInit {
       previsaoFormat: [this.apiService.timeToDate(this.agendamento.previsao)],
       valor: [this.agendamento.valor, Validators.required],
       observacoes: [this.agendamento.observacoes],
+      status: [this.agendamento.status, Validators.required],
+      statusB: [this.agendamento.status === 'A'],
+      proximodia: [this.agendamento.proximodia]
     });
 
     this.getDados();
@@ -118,10 +123,6 @@ export class AgendamentoComponent implements OnInit {
     });
 
     this.agendamentoForm.get('tempo_previsto').valueChanges.subscribe(value => {
-      if (this.calculaPrevisaoETempo() < 0) {
-        this.agendamentoForm.get('tempo_previsto').patchValue(0);
-        return;
-      }
       const datahora = new Date(this.agendamentoForm.get('formatHour').value);
       const previsao = new Date(
         datahora.setMinutes(datahora.getMinutes() + value)
@@ -154,9 +155,9 @@ export class AgendamentoComponent implements OnInit {
         this.dadosAgendamentoItens = this.agendamento.agendamento_itens || [];
         this.agendamentoForm.patchValue(this.agendamento);
         this.agendamentoForm.patchValue({
-          tempo_previsto: this.calculaPrevisaoETempo()
-        });
-        this.agendamentoForm.patchValue({
+          tempo_previsto: this.calculaPrevisaoETempo(),
+          statusB: this.agendamento.status === 'A',
+          proximodia: (this.agendamento.proximodia === 1 || this.agendamento.proximodia),
           formatHour: this.apiService.timeToDate(this.agendamento.hora),
           previsaoFormat: this.apiService.timeToDate(this.agendamento.previsao)
         });

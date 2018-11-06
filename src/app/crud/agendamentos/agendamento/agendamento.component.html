@@ -18,11 +18,11 @@
       </div>
       <div class="ui-g-4">
         <h3>Tempo Previsto</h3>
-        <input type="number" class="ui-g-12" placeholder="Tempo Previsto" formControlName="tempo_previsto" (keypress)="somenteNumero($event)" (input)="somenteNumero('tempo_previsto')" pInputText />
+        <input type="number" class="ui-g-12" placeholder="Tempo Previsto" min="0" formControlName="tempo_previsto" (keypress)="somenteNumero($event)" (input)="somenteNumero('tempo_previsto')" pInputText />
       </div>
       <div class="ui-g-4">
         <h3>Previsão</h3>
-        <p-calendar placeholder="Previsão" [disabled]="true" formControlName="previsaoFormat"></p-calendar>
+        <p-calendar placeholder="Previsão" timeOnly="true" [disabled]="true" formControlName="previsaoFormat"></p-calendar>
       </div>
       <div class="ui-g-12">
         <h3>Observações</h3>
@@ -33,11 +33,19 @@
           <input type="text" class="ui-g-12" placeholder="Valor" formControlName="valor" pInputText currencyMask />
         </div>
       <div class="ui-g-12">
-        <h3>Itens do Pedido</h3>
+        <h3>Itens do Agendamento</h3>
         <app-crud *ngIf="dadosAgendamentoItens" [source]="dadosAgendamentoItens" [columns]="colsAgendamentoItens" [cad]="cadAgendamentoItem"
           (aoAtualizar)="aoAtualizar()"></app-crud>
       </div>
 
+      <div class="ui-g-6">
+        <h3>Status</h3>
+        <p-inputSwitch formControlName="statusB" [style]="{float: right}"></p-inputSwitch>
+      </div>
+      <div class="ui-g-6">
+        <h3>Próximo Dia</h3>
+        <p-inputSwitch formControlName="proximodia" [style]="{float: right}"></p-inputSwitch>
+      </div>
     </div>
   </form>
   <p-dialog [header]="'Cadastro de Pessoa'" [(visible)]="cadastroPessoa" appendTo="body" [responsive]="true" showEffect="fade"

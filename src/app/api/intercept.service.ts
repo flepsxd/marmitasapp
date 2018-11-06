@@ -1,3 +1,4 @@
+import { MessageService } from 'primeng/components/common/messageservice';
 import { Injectable } from '@angular/core';
 import {
   HttpInterceptor,
@@ -24,10 +25,21 @@ export class InterceptService implements HttpInterceptor {
         if (response.status === 400) {
           this.authService.logout();
         }
+        if (response.status === 422) {
+          Object.keys(response.error.erro).forEach(element => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro na Solicitação da Função!',
+              detail: response.error.erro[element],
+              life: 30,
+              key: 'Geral'
+            });
+          });
+        }
         return throwError(response);
       })
     );
   }
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private messageService: MessageService) {}
 }

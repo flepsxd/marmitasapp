@@ -8,5 +8,7 @@ export interface Agendamento {
   valor: number;
   observacoes?: string;
   pessoa?: Pessoa;
+  status?: String;
+  proximodia?: any;
   agendamento_itens?: Array<any>;
 }

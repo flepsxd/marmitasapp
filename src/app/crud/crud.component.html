@@ -37,7 +37,7 @@
   </p-blockUI>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button pButton icon="pi pi-trash" [disabled]="submit" (click)="remover()" style="float: left;"></button>
+      <button *ngIf="selecionado && selecionado[cad.chave]" pButton icon="pi pi-trash" [disabled]="submit" (click)="remover()" style="float: left;"></button>
       <button pButton icon="pi pi-check" [disabled]="submit" (click)="salvar()" label="Salvar"></button>
       <button pButton icon="pi pi-times" [disabled]="submit" (click)="cancelar()" label="Cancelar"></button>
     </div>

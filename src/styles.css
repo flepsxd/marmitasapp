@@ -49,6 +49,11 @@ html {
   width: 100px;
 }
 
+.descricao-total{
+  width: 180px;
+  max-width: 180px;
+}
+
 .mb-5 {
   margin-bottom: 5px;
 }

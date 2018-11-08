@@ -1,0 +1,23 @@
+<p-treeTable #dt [value]="dados" [columns]="columns">
+  <ng-template pTemplate="caption">
+    <app-filtros [dados]="dt" (search)="dt.filterGlobal($event, 'contains')" (alterarFiltro)="dt.filtroChange($event.filtro, $event.index, $event.valor)" (filtrar)="dt.filtrar($event)"></app-filtros>
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns; let i = index" [attr.data-index]="i" [ngClass]="[col.class || '', col.field]">
+        {{col.header}}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+    <tr>
+      <td *ngFor="let col of columns; let i = index" [ngClass]="[col.class || '', col.field]">
+        <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+        {{col.fn ? col.fn(rowData[col.field]) : rowData[col.field]}}
+      </td>
+    </tr>
+  </ng-template>
+</p-treeTable>
+<p-blockUI [blocked]="carregando">
+  <i class="pi pi-spin pi-spinner centralize-spinner"></i>
+</p-blockUI>

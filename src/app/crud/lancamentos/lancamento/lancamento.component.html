@@ -3,7 +3,7 @@
     <div class="ui-g-12">
       <h3>Pessoa</h3>
       <p-autoComplete class="ui-g-12" formControlName="pessoa" [suggestions]="dadosPessoas" [readonly]="vinculoPessoa" (completeMethod)="getPessoas($event)"
-        field="nome" dataKey="idpessoa" (onBlur)="cadastrarPessoa($event)" (onSelect)="apiService.aoSelecionar(lancamentoForm, 'idpessoa', 'pessoa', $event)">
+        field="nome" [dropdown]="!vinculoPessoa" dataKey="idpessoa" (onBlur)="cadastrarPessoa($event)" (onSelect)="apiService.aoSelecionar(lancamentoForm, 'idpessoa', 'pessoa', $event)">
         <ng-template let-pessoa pTemplate="item">
           <div *ngIf="pessoa.nome">Nome: {{pessoa.nome}}</div>
           <div *ngIf="pessoa.email">E-mail: {{pessoa.email}}</div>

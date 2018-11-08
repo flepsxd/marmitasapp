@@ -19,6 +19,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DragDropModule } from 'primeng/dragdrop';
 import { GrowlModule } from 'primeng/growl';
+import {DropdownModule} from 'primeng/dropdown';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {TriStateCheckboxModule} from 'primeng/tristatecheckbox';
@@ -29,6 +30,8 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {InputMaskModule} from 'primeng/inputmask';
 import {PasswordModule} from 'primeng/password';
 import {BlockUIModule} from 'primeng/blockui';
+
+import {TreeTableModule} from 'primeng/treetable';
 
 import { DragulaModule } from 'ng2-dragula';
 
@@ -80,6 +83,8 @@ import { BlockDivComponent } from './block-div/block-div.component';
 import { AgendamentosComponent } from './crud/agendamentos/agendamentos.component';
 import { AgendamentoComponent } from './crud/agendamentos/agendamento/agendamento.component';
 import { AgendamentoItensComponent } from './crud/agendamentos/agendamento-itens/agendamento-itens.component';
+import { RelatorioComponent } from './relatorio/relatorio.component';
+import { RelatorioTreeComponent } from './relatorio-tree/relatorio-tree.component';
 
 const appRoutes: Routes = [
   {
@@ -124,6 +129,10 @@ const childRoutes: Routes = [
       {
         path: 'linhadotempo',
         component: LinhadotempoComponent
+      },
+      {
+        path: 'relatorios',
+        component: RelatorioComponent
       }
     ]
   }
@@ -165,7 +174,9 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     BlockDivComponent,
     AgendamentosComponent,
     AgendamentoComponent,
-    AgendamentoItensComponent
+    AgendamentoItensComponent,
+    RelatorioComponent,
+    RelatorioTreeComponent
   ],
   imports: [
     BrowserModule,
@@ -188,6 +199,7 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     CurrencyMaskModule,
     DragDropModule,
     GrowlModule,
+    DropdownModule,
     ToggleButtonModule,
     MultiSelectModule,
     TriStateCheckboxModule,
@@ -199,6 +211,7 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     PasswordModule,
     FlexLayoutModule,
     BlockUIModule,
+    TreeTableModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes, { enableTracing: true }),
     RouterModule.forChild(childRoutes),

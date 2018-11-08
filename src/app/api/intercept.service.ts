@@ -26,11 +26,12 @@ export class InterceptService implements HttpInterceptor {
           this.authService.logout();
         }
         if (response.status === 422) {
-          Object.keys(response.error.erro).forEach(element => {
+          const error = response.error.erro || response.error;
+          Object.keys(error).forEach(element => {
             this.messageService.add({
               severity: 'error',
               summary: 'Erro na Solicitação da Função!',
-              detail: response.error.erro[element],
+              detail: error[element],
               life: 30,
               key: 'Geral'
             });

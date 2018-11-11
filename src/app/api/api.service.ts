@@ -252,4 +252,29 @@ export class ApiService {
     }
   }
 
+  public filterPessoa($event = {query: null}, dadosPessoas) {
+    if (!$event.query) {
+      return dadosPessoas;
+    } else {
+      return this.filter(
+        dadosPessoas,
+        $event.query,
+        function(ele) {
+          const telefone = $event.query.toLowerCase().replace(/\D/gm, '');
+          const nome = $event.query.toLowerCase().replace(/ /gm, '');
+          return (
+            (telefone && (ele.telefone + '')
+              .toLowerCase()
+              .replace(/\D/gm, '')
+              .includes(telefone)) ||
+              (nome && (ele.nome + '')
+              .toLowerCase()
+              .replace(/ /gm, '')
+              .includes(nome))
+          );
+        }
+      );
+    }
+  }
+
 }

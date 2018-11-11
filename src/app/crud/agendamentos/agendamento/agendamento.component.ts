@@ -184,26 +184,7 @@ export class AgendamentoComponent implements OnInit {
   }
 
   getPessoas($event = { query: null }) {
-    if (!$event.query) {
-      this.dadosPessoas = this.pessoas;
-    } else {
-      this.dadosPessoas = this.apiService.filter(
-        this.pessoas,
-        $event.query,
-        function(ele) {
-          return (
-            (ele.telefone + '')
-              .toLowerCase()
-              .replace(/\D/gm, '')
-              .includes($event.query.toLowerCase().replace(/\D/gm, '')) ||
-            (ele.nome + '')
-              .toLowerCase()
-              .replace(/\D/gm, '')
-              .includes($event.query.toLowerCase().replace(/\D/gm, ''))
-          );
-        }
-      );
-    }
+    this.dadosPessoas = this.apiService.filterPessoa($event, this.pessoas);
   }
 
   aoAtualizar() {

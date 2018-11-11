@@ -28,6 +28,7 @@ export class RelatorioTreeComponent implements OnInit {
   aoAtualizar: EventEmitter<any> = new EventEmitter();
   componentRef: ComponentRef<any>;
   @Input() filtros: Array<any> = [];
+  @Input() totalizadores: Array<any> = [];
   selecionado: any;
   carregando = false;
   dados: Array<any>;
@@ -45,14 +46,14 @@ export class RelatorioTreeComponent implements OnInit {
 
   carregarDados() {
     this.carregando = true;
+    this.filtros.forEach(el => {
+      if (el.posAtualizar) {
+        el.posAtualizar(el.value);
+      }
+    });
     this.apiService
       .get(this.cad.resource + (this.cad.extraURL || ''), this.apiService.tratarFilter(this.filtros))
       .subscribe(resp => {
-        this.filtros.forEach(el => {
-          if (el.posAtualizar) {
-            el.posAtualizar(el.value);
-          }
-        });
         this.dados = this.transform(resp.dados);
         this.carregando = false;
       });

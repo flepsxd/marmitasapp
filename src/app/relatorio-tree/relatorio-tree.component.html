@@ -17,6 +17,20 @@
       </td>
     </tr>
   </ng-template>
+  <ng-template pTemplate="footer">
+    <tr *ngIf="totalizadores.length > 0 && dados && dados.length > 0">
+      <td>Totais</td>
+      <td *ngFor="let col of columns | slice:1; let i = index" [ngClass]="[col.class || '', col.field]">
+        <span *ngIf="i > 0" >
+          <span *ngFor="let tot of totalizadores">
+            <span *ngIf="tot.field == col.field">
+              {{tot.total(dados)}}
+            </span>
+          </span>
+        </span>
+      </td>
+    </tr>
+</ng-template>
 </p-treeTable>
 <p-blockUI [blocked]="carregando">
   <i class="pi pi-spin pi-spinner centralize-spinner"></i>

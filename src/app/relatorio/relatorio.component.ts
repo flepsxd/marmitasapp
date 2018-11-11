@@ -33,6 +33,11 @@ export class RelatorioComponent implements OnInit {
       class: 'unidade'
     },
     {
+      header: 'Qntd. Pedidos',
+      field: 'qntdpedido',
+      class: 'unidade'
+    },
+    {
       header: 'Status',
       field: 'status_formatado',
       class: 'status'
@@ -61,14 +66,21 @@ export class RelatorioComponent implements OnInit {
       class: 'unidade'
     },
     {
+      header: 'Qntd. Pedidos',
+      field: 'qntdpedido',
+      class: 'unidade'
+    },
+    {
       header: 'Status',
       field: 'status_formatado',
       class: 'status'
     }
   ];
+  totalizadores: Array<any> = [];
 
   constructor(private apiService: ApiService) {
       const perini = new Date();
+      perini.setHours(0, 0, 0, 0);
       const perfim = new Date(perini);
       perfim.setDate(perfim.getDate() + 30);
       this.alterarFiltroAgrupamento();
@@ -114,6 +126,44 @@ export class RelatorioComponent implements OnInit {
             label: 'Pessoas'
           }],
           posAtualizar: this.alterarFiltroAgrupamento.bind(this)
+        }
+      ];
+      this.totalizadores = [
+        {
+          title: 'Valor Total',
+          field: 'valor',
+          class: 'valor',
+          total: function(dados) {
+            let total = 0;
+            dados.forEach(el => {
+              total += el.valor;
+            });
+            return this.apiService.currencyFormat(total);
+          }.bind(this)
+        },
+        {
+          title: 'Quantidade de Items Vendidos',
+          field: 'quantidade',
+          class: 'unidade',
+          total: function(dados) {
+            let total = 0;
+            dados.forEach(el => {
+              total += el.quantidade;
+            });
+            return total;
+          }
+        },
+        {
+          title: 'Quantidade de Pedidos',
+          field: 'qntdpedido',
+          class: 'unidade',
+          total: function(dados) {
+            let total = 0;
+            dados.forEach(el => {
+              total += el.qntdpedido;
+            });
+            return total;
+          }
         }
       ];
   }

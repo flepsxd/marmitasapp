@@ -25,6 +25,7 @@ export class AgendamentoComponent implements OnInit {
   agendamento: Agendamento = {
     idagendamento: null,
     idpessoa: null,
+    idformapagto: null,
     hora: null,
     previsao: null,
     valor: null,
@@ -38,6 +39,7 @@ export class AgendamentoComponent implements OnInit {
 
   dadosPessoas: Array<Pessoa> = [];
   pessoas: Array<Pessoa>;
+  formapagtos: Array<any>;
   cadastroPessoa = false;
   @ViewChild('cadPessoa')
   cadPessoa: any;
@@ -90,11 +92,13 @@ export class AgendamentoComponent implements OnInit {
       extraURL: `/agendamentos/${this.idagendamento}`,
       chave: 'idagendamento_item'
     };
-    this.loadPessoa();
+    this.loadDados();
 
     this.agendamentoForm = this.formBuilder.group({
       idagendamento: [this.agendamento.idagendamento],
       idpessoa: [this.agendamento.idpessoa],
+      idformapagto: [this.agendamento.idformapagto],
+      formapagto: [null, Validators.required],
       pessoa: [this.agendamento.pessoa, Validators.required],
       hora: [this.agendamento.hora],
       formatHour: [this.apiService.timeToDate(this.agendamento.hora)],
@@ -109,6 +113,10 @@ export class AgendamentoComponent implements OnInit {
     });
 
     this.getDados();
+
+    this.agendamentoForm.get('formapagto').valueChanges.subscribe(value => {
+      this.agendamentoForm.patchValue({ idformapagto: value.idformapagto});
+    });
 
     this.agendamentoForm.get('formatHour').valueChanges.subscribe(value => {
       this.agendamentoForm.patchValue({ hora: this.apiService.parseDate(value).toLocaleTimeString() });
@@ -131,11 +139,20 @@ export class AgendamentoComponent implements OnInit {
     });
   }
 
-  loadPessoa() {
+  loadDados() {
     this.apiService.get('pessoas', { ativo: true }).subscribe(resp => {
       this.pessoas = resp.dados;
     });
+    this.apiService.get('formapagtos').subscribe(resp => {
+      this.formapagtos = resp.dados;
+      this.formapagtos.forEach(el => {
+        if (el.idformapagto === this.agendamento.idformapagto) {
+          this.agendamentoForm.get('formapagto').patchValue(el);
+        }
+      });
+    });
   }
+
 
   calculaPrevisaoETempo() {
     const hora = this.apiService.timeToDate(this.agendamentoForm.get('hora').value);
@@ -216,7 +233,7 @@ export class AgendamentoComponent implements OnInit {
       this.agendamentoForm.get('idpessoa').patchValue(resp.dados.idpessoa);
       this.agendamentoForm.get('pessoa').patchValue(resp.dados);
       this.cadastroPessoa = false;
-      this.loadPessoa();
+      this.loadDados();
     });
   }
 

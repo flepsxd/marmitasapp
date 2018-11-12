@@ -1,6 +1,6 @@
 <p-treeTable #dt [value]="dados" [columns]="columns">
   <ng-template pTemplate="caption">
-    <app-filtros [dados]="dt" (search)="dt.filterGlobal($event, 'contains')" (alterarFiltro)="dt.filtroChange($event.filtro, $event.index, $event.valor)" (filtrar)="dt.filtrar($event)"></app-filtros>
+    <app-filtros [dados]="dt" [searchDesabilitado]="true" (alterarFiltro)="dt.filtroChange($event.filtro, $event.index, $event.valor)" (filtrar)="dt.filtrar($event)"></app-filtros>
   </ng-template>
   <ng-template pTemplate="header" let-columns>
     <tr>

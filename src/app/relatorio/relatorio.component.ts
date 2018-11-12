@@ -79,37 +79,15 @@ export class RelatorioComponent implements OnInit {
   totalizadores: Array<any> = [];
 
   constructor(private apiService: ApiService) {
+    this.apiService.get('formapagtos').subscribe(resp => {
+      this.filtros[3].opcoes =  resp.dados;
+    });
       const perini = new Date();
       perini.setHours(0, 0, 0, 0);
       const perfim = new Date(perini);
       perfim.setDate(perfim.getDate() + 30);
       this.alterarFiltroAgrupamento();
       this.filtros = [
-        {
-          type: 'date',
-          title: 'Início',
-          key: 'perini',
-          value: perini,
-          valorFormatado: this.apiService.dateToJSON(perini)
-        },
-        {
-          type: 'date',
-          title: 'Fim',
-          key: 'perfim',
-          value: perfim,
-          valorFormatado: this.apiService.dateToJSON(perfim)
-        },
-        {
-          key: 'status',
-          title: 'Status',
-          type: 'toggle',
-          verdadeiro: 'Ativo',
-          falso: 'Inativo',
-          valorVerdadeiro: 'A',
-          valorFalso: 'I',
-          valorFormatado: 'A',
-          value: true,
-        },
         {
           type: 'select',
           title: 'Agrupamento',
@@ -126,7 +104,40 @@ export class RelatorioComponent implements OnInit {
             label: 'Pessoas'
           }],
           posAtualizar: this.alterarFiltroAgrupamento.bind(this)
-        }
+        },
+        {
+          type: 'date',
+          title: 'Início',
+          key: 'perini',
+          value: perini,
+          valorFormatado: this.apiService.dateToJSON(perini)
+        },
+        {
+          type: 'date',
+          title: 'Fim',
+          key: 'perfim',
+          value: perfim,
+          valorFormatado: this.apiService.dateToJSON(perfim)
+        },
+        {
+          type: 'multiple',
+          title: 'Forma de Pagamento',
+          key: 'pedidos.lancamento.idformapagto',
+          dataKey: 'idformapagto',
+          keyLabel: 'descricao',
+          array: true
+        },
+        {
+          key: 'status',
+          title: 'Status',
+          type: 'toggle',
+          verdadeiro: 'Ativo',
+          falso: 'Inativo',
+          valorVerdadeiro: 'A',
+          valorFalso: 'I',
+          valorFormatado: 'A',
+          value: true,
+        },
       ];
       this.totalizadores = [
         {

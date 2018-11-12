@@ -3,6 +3,7 @@ import { Pessoa } from './pessoa';
 export interface Agendamento {
   idagendamento?: number;
   idpessoa: number;
+  idformapagto: number;
   hora: string;
   previsao: string;
   valor: number;

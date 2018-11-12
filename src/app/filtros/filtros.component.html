@@ -15,7 +15,7 @@
           <input type="text" pInputText [(ngModel)]="filtro.value" [placeholder]="filtro.title" (onChange)="filtroChange(filtro, i, filtro.value)">
       </div>
       <div *ngIf="filtro.type == 'select'">
-          <p-dropdown [options]="filtro.opcoes" [(ngModel)]="filtro.value" [dataKey]="filtro.dataKey" [optionLabel]="filtro.keyLabel" (onChange)="filtroChange(filtro, i, $event.value)" [showClear]="filtro.clear"></p-dropdown>
+          <p-dropdown [options]="filtro.opcoes" [autoWidth]="false" [(ngModel)]="filtro.value" [dataKey]="filtro.dataKey" [optionLabel]="filtro.keyLabel" (onChange)="filtroChange(filtro, i, $event.value)" [showClear]="filtro.clear"></p-dropdown>
       </div>
   </div>
   <div style="margin-left: auto; margin-right: 20px; margin-top: auto;">

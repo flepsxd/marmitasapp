@@ -10,14 +10,28 @@ import { AgendamentoComponent } from './agendamento/agendamento.component';
 export class AgendamentosComponent implements OnInit {
   columns: Array<{}> = [];
   cad: any;
+  formapagtos: Array<any> = [];
   filtros: Array<any>;
 
   constructor(private apiService: ApiService) {
+
+    this.apiService.get('formapagtos').subscribe(resp => {
+      this.formapagtos = resp.dados;
+      this.filtros[1].opcoes = this.formapagtos;
+    });
       this.filtros = [
         {
           type: 'date',
           title: 'Data',
           key: 'datahora'
+        },
+        {
+          type: 'multiple',
+          title: 'Forma de Pagamento',
+          key: 'idformapagto',
+          dataKey: 'idformapagto',
+          keyLabel: 'descricao',
+          array: true
         }
       ];
   }
@@ -47,11 +61,23 @@ export class AgendamentosComponent implements OnInit {
         field: 'previsao'
       },
       {
+        header: 'Próximo Dia',
+        field: 'proximodia',
+        fn: function(val) {
+          return val === 1 ? 'Sim' : 'Não';
+        }
+      },
+      {
         header: 'Valor',
         field: 'valor',
         class: 'valor',
         fn: this.apiService.currencyFormat
-      }
+      },
+      {
+        header: 'Forma de Pagamento',
+        field: 'formapagtodesc',
+        class: 'status'
+      },
     ];
   }
 }

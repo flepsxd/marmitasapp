@@ -166,6 +166,9 @@ export class ApiService {
       const errors = {
         'required': {
           text: ' Obrigatório. '
+        },
+        'minlength': {
+          text: ' é muito pequeno'
         }
       };
       Object.keys(form.controls).forEach((index) => {

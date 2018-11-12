@@ -15,6 +15,7 @@ export class LancamentoComponent implements OnInit {
     idlancamento: null,
     idpessoa: null,
     idpedido: null,
+    idformapagto: null,
     valor: null,
     datahora: new Date(),
     valorpago: null,
@@ -26,6 +27,7 @@ export class LancamentoComponent implements OnInit {
 
   dadosPessoas: Array<Pessoa>;
   pessoas: Array<Pessoa>;
+  formapagtos: Array<any>;
   cadastroPessoa = false;
   @ViewChild('cadPessoa')
   cadPessoa: any;
@@ -37,12 +39,14 @@ export class LancamentoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadPessoas();
+    this.loadDados();
 
     this.lancamentoForm = this.formBuilder.group({
       idlancamento: [this.lancamento.idlancamento],
       idpedido: [this.lancamento.idpedido],
       idpessoa: [this.lancamento.idpessoa, Validators.required],
+      idformapagto: [this.lancamento.idformapagto],
+      formapagto: [null, Validators.required],
       pessoa: [{value: this.lancamento.pessoa, disabled: this.vinculoPessoa}],
       valor: [this.lancamento.valor],
       datahora: [this.lancamento.datahora, Validators.required],
@@ -50,6 +54,10 @@ export class LancamentoComponent implements OnInit {
       valorpago: [this.lancamento.valorpago, Validators.required],
       datapagto: [this.lancamento.datapagto, Validators.required],
       formatDataPagto: [this.apiService.parseDate(this.lancamento.datapagto), Validators.required]
+    });
+
+    this.lancamentoForm.get('formapagto').valueChanges.subscribe(value => {
+      this.lancamentoForm.patchValue({ idformapagto: value.idformapagto});
     });
 
     this.getDados();
@@ -67,6 +75,18 @@ export class LancamentoComponent implements OnInit {
       });
     }
   }
+  loadDados() {
+    this.loadPessoas();
+    this.apiService.get('formapagtos').subscribe(resp => {
+      this.formapagtos = resp.dados;
+      this.formapagtos.forEach(el => {
+        if (el.idformapagto === this.lancamento.idformapagto) {
+          this.lancamentoForm.get('formapagto').patchValue(el);
+        }
+      });
+    });
+  }
+
 
   getDados() {
     if (this.source) {

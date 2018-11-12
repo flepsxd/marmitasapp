@@ -28,6 +28,7 @@ export class PedidoComponent implements OnInit {
     idagendamento: null,
     idpessoa: null,
     idendereco: null,
+    idformapagto: null,
     datahora: null,
     previsao: null,
     valor: null,
@@ -42,6 +43,7 @@ export class PedidoComponent implements OnInit {
 
   dadosPessoas: Array<Pessoa> = [];
   pessoas: Array<Pessoa>;
+  formapagtos: Array<any>;
   cadastroPessoa = false;
   @ViewChild('cadPessoa')
   cadPessoa: any;
@@ -94,13 +96,15 @@ export class PedidoComponent implements OnInit {
       extraURL: `/pedido/${this.idpedido}`,
       chave: 'idpedido_item'
     };
-    this.loadPessoa();
+    this.loadDados();
 
     this.pedidoForm = this.formBuilder.group({
       idpedido: [this.pedido.idpedido],
       idpessoa: [this.pedido.idpessoa],
       idendereco: [this.pedido.idendereco],
       idagendamento: [this.pedido.idagendamento],
+      idformapagto: [this.pedido.idformapagto],
+      formapagto: [null, Validators.required],
       pessoa: [this.pedido.pessoa, Validators.required],
       datahora: [this.pedido.datahora],
       formatData: [this.apiService.parseDate(this.pedido.datahora)],
@@ -119,10 +123,14 @@ export class PedidoComponent implements OnInit {
         numero: [null, Validators.required],
         complemento: [null],
         cep: [null, Validators.maxLength(9)]
-      })
+      }),
     });
 
     this.getDados();
+
+    this.pedidoForm.get('formapagto').valueChanges.subscribe(value => {
+      this.pedidoForm.patchValue({ idformapagto: value.idformapagto});
+    });
 
     this.pedidoForm.get('formatData').valueChanges.subscribe(value => {
       this.pedidoForm.patchValue({ datahora: this.apiService.dateToJSON(value) });
@@ -151,9 +159,17 @@ export class PedidoComponent implements OnInit {
     });
   }
 
-  loadPessoa() {
+  loadDados() {
     this.apiService.get('pessoas', { ativo: true }).subscribe(resp => {
       this.pessoas = resp.dados;
+    });
+    this.apiService.get('formapagtos').subscribe(resp => {
+      this.formapagtos = resp.dados;
+      this.formapagtos.forEach(el => {
+        if (el.idformapagto === this.pedido.idformapagto) {
+          this.pedidoForm.get('formapagto').patchValue(el);
+        }
+      });
     });
   }
 
@@ -237,7 +253,7 @@ export class PedidoComponent implements OnInit {
       this.pedidoForm.get('idpessoa').patchValue(resp.dados.idpessoa);
       this.pedidoForm.get('pessoa').patchValue(resp.dados);
       this.cadastroPessoa = false;
-      this.loadPessoa();
+      this.loadDados();
     });
   }
 

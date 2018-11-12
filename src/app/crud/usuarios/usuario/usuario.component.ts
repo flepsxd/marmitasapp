@@ -33,9 +33,9 @@ export class UsuarioComponent implements OnInit {
     this.usuarioForm = this.formBuilder.group({
       id: [this.usuario.id],
       nome: [this.usuario.nome, Validators.required],
-      email: [this.usuario.email, Validators.required],
-      senha: [null],
-      status: [this.usuario.status, Validators.required],
+      email: [this.usuario.email, [Validators.required, Validators.minLength(6)]],
+      senha: [null, [Validators.required, Validators.minLength(6)]],
+      status: [this.usuario.status],
       statusB: [this.usuario.status === 'A'],
     });
 

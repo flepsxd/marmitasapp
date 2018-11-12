@@ -19,6 +19,7 @@ export class LinhadotempoComponent implements OnInit, AfterViewInit {
   dragActive: any;
   pedido: any = {};
   filtros: Array<any> = [];
+  formapagtos: Array<any> = [];
   cadastroPedido = false;
   carregando = false;
   submit = false;
@@ -33,24 +34,43 @@ export class LinhadotempoComponent implements OnInit, AfterViewInit {
     private dragulaService: DragulaService,
     private confirmationService: ConfirmationService
   ) {
-    this.dragulaService.createGroup('timeline', {
-      invalid: function(el) {
-        if (el.className.indexOf('naomover') >= 0) {
-          return true;
+    const timeline = this.dragulaService.find('timeline');
+    if (!timeline) {
+      this.dragulaService.createGroup('timeline', {
+        invalid: function(el) {
+          if (el.className.indexOf('naomover') >= 0) {
+            return true;
+          }
+          return false;
         }
-        return false;
-      }
-    });
+      });
+    }
   }
 
   ngOnInit() {
-    this.filtros = [{
-      type: 'date',
-      title: 'Data',
-      value: new Date(),
-      key: 'datahora',
-      valorFormatado: this.apiService.dateToJSON(new Date())
-    }];
+    this.apiService.get('formapagtos').subscribe(resp => {
+      this.formapagtos = resp.dados;
+      this.filtros[1].opcoes = this.formapagtos;
+    });
+    const data = new Date();
+    data.setHours(0, 0, 0, 0);
+    this.filtros = [
+      {
+        type: 'date',
+        title: 'Data',
+        value: data,
+        key: 'datahora',
+        valorFormatado: this.apiService.dateToJSON(data)
+      },
+      {
+        type: 'multiple',
+        title: 'Forma de Pagamento',
+        key: 'idformapagto',
+        dataKey: 'idformapagto',
+        keyLabel: 'descricao',
+        array: true
+      }
+    ];
     this.subs.add(
       this.dragulaService
         .dropModel('timeline')

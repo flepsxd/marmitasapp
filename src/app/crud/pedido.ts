@@ -7,6 +7,7 @@ export interface Pedido {
   idagendamento?: number;
   idpessoa: number;
   idendereco?: number;
+  idformapagto: number;
   datahora: string;
   previsao: string;
   valor: number;

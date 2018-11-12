@@ -76,6 +76,9 @@ export class RelatorioTreeComponent implements OnInit {
   filtroChange(filtro, index, value) {
     if (filtro.array) {
       value = value.map((val) => val[filtro.dataKey]);
+      if (value.length === 0) {
+        value = null;
+      }
     }
     filtro.valorFormatado = value;
     if (filtro.aoAtualizar) {

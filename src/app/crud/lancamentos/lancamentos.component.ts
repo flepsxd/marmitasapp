@@ -11,13 +11,28 @@ import { LancamentoComponent } from './lancamento/lancamento.component';
 export class LancamentosComponent implements OnInit {
   dados: Lancamento[];
   columns: Array<{}> = [];
+  formapagtos: Array<any> = [];
   cad: any;
   filtros: Array<any> = [];
 
 
   constructor(
     private apiService: ApiService
-  ) { }
+  ) {
+    this.apiService.get('formapagtos').subscribe(resp => {
+      this.formapagtos = resp.dados;
+      this.filtros[0].opcoes = this.formapagtos;
+    });
+    this.filtros = [
+      {
+        type: 'multiple',
+        title: 'Forma de Pagamento',
+        key: 'idformapagto',
+        dataKey: 'idformapagto',
+        keyLabel: 'descricao',
+        array: true
+      }];
+  }
 
   ngOnInit() {
     this.cad = {
@@ -62,6 +77,11 @@ export class LancamentosComponent implements OnInit {
         field: 'valorpago',
         class: 'valor',
         fn: this.apiService.currencyFormat
+      },
+      {
+        header: 'Forma de Pagamento',
+        field: 'formapagtodesc',
+        class: 'status'
       },
     ];
   }

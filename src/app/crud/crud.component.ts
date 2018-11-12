@@ -69,6 +69,7 @@ export class CrudComponent implements OnInit {
 
   onRowSelect() {
     this.container.clear();
+    this.submit = false;
     const factory: ComponentFactory<
       any
     > = this.resolver.resolveComponentFactory(this.cad.component);
@@ -160,6 +161,9 @@ export class CrudComponent implements OnInit {
   filtroChange(filtro, index, value) {
     if (filtro.array) {
       value = value.map((val) => val[filtro.dataKey]);
+      if (value.length === 0) {
+        value = null;
+      }
     }
     filtro.valorFormatado = value;
     this.filtros[index] = filtro;

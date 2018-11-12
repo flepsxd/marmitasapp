@@ -27,6 +27,10 @@
       <h3>Valor Pago</h3>
       <input type="text" class="ui-g-12" placeholder="Valor" formControlName="valorpago" pInputText currencyMask />
     </div>
+    <div class="ui-g-12">
+      <h3>Forma de Pagamento</h3>
+      <p-dropdown [autoWidth]="false" [options]="formapagtos" formControlName="formapagto" dataKey="idformapagto" optionLabel="descricao"></p-dropdown>
+    </div>
   </div>
 </form>
 

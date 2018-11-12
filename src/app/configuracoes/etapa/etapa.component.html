@@ -1,0 +1,16 @@
+<form [formGroup]="etapaForm">
+  <div class="ui-g ui-fluid">
+    <div class="ui-g-12">
+      <h3>Descrição</h3>
+      <input type="text" class="ui-g-12" placeholder="Descrição" formControlName="descricao" pInputText />
+    </div>
+    <div class="ui-g-6">
+      <h3>Finalizado ?</h3>
+      <p-inputSwitch formControlName="finalizado" [style]="{float: right}"></p-inputSwitch>
+    </div>
+    <div class="ui-g-6">
+      <h3>Gera Lançamento</h3>
+      <p-inputSwitch formControlName="geralancamento" [style]="{float: right}"></p-inputSwitch>
+    </div>
+  </div>
+</form>

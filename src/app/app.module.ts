@@ -30,6 +30,7 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {InputMaskModule} from 'primeng/inputmask';
 import {PasswordModule} from 'primeng/password';
 import {BlockUIModule} from 'primeng/blockui';
+import {TabViewModule} from 'primeng/tabview';
 
 import {TreeTableModule} from 'primeng/treetable';
 
@@ -85,6 +86,9 @@ import { AgendamentoComponent } from './crud/agendamentos/agendamento/agendament
 import { AgendamentoItensComponent } from './crud/agendamentos/agendamento-itens/agendamento-itens.component';
 import { RelatorioComponent } from './relatorio/relatorio.component';
 import { RelatorioTreeComponent } from './relatorio-tree/relatorio-tree.component';
+import { ConfiguracoesComponent } from './configuracoes/configuracoes.component';
+import { EtapaComponent } from './configuracoes/etapa/etapa.component';
+import { FormapagtoComponent } from './configuracoes/formapagto/formapagto.component';
 
 const appRoutes: Routes = [
   {
@@ -133,6 +137,10 @@ const childRoutes: Routes = [
       {
         path: 'relatorios',
         component: RelatorioComponent
+      },
+      {
+        path: 'configuracoes',
+        component: ConfiguracoesComponent
       }
     ]
   }
@@ -176,7 +184,10 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     AgendamentoComponent,
     AgendamentoItensComponent,
     RelatorioComponent,
-    RelatorioTreeComponent
+    RelatorioTreeComponent,
+    ConfiguracoesComponent,
+    EtapaComponent,
+    FormapagtoComponent
   ],
   imports: [
     BrowserModule,
@@ -211,6 +222,7 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     PasswordModule,
     FlexLayoutModule,
     BlockUIModule,
+    TabViewModule,
     TreeTableModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes, { enableTracing: true }),
@@ -237,7 +249,9 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     ProdutoComponent,
     UsuarioComponent,
     AgendamentoComponent,
-    AgendamentoItensComponent
+    AgendamentoItensComponent,
+    EtapaComponent,
+    FormapagtoComponent
   ],
   bootstrap: [AppComponent]
 })

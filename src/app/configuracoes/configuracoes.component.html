@@ -1,0 +1,9 @@
+<p-tabView orientation="left">
+  <p-tabPanel header="Etapas">
+    <app-crud [columns]="columnsEtapas" [cad]="cadEtapas" [ordenar]="false"></app-crud>
+
+  </p-tabPanel>
+  <p-tabPanel header="Forma de Pagamentos" >
+    <app-crud [columns]="columnsFormapagto" [cad]="cadFormaPagto"></app-crud>
+  </p-tabPanel>
+</p-tabView>

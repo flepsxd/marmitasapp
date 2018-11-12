@@ -32,6 +32,7 @@ export class CrudComponent implements OnInit {
   source?: Array<any>;
   @Output()
   aoAtualizar: EventEmitter<any> = new EventEmitter();
+  @Input() ordenar = true;
   componentRef: ComponentRef<any>;
   @Input() filtros: Array<any> = [];
   exibirDialog: any = false;
